@@ -57,4 +57,13 @@
 		<url-pattern>/unblock</url-pattern>
 	</servlet-mapping>
 
+	<servlet>
+		<servlet-name>delete</servlet-name>
+		<servlet-class>biz.neustar.clouds.chat.DeleteServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>delete</servlet-name>
+		<url-pattern>/delete</url-pattern>
+	</servlet-mapping>
+
 </web-app> 
