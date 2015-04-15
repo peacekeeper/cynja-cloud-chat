@@ -5,7 +5,7 @@ of dependents via XDI graphs.
 
 ### How to build
 
-First, [XDI2](http://github.com/projectdanube/xdi2) and [LittleProxy](http://github.com/adamfisk/LittleProxy) need to be build.
+First, [XDI2](http://github.com/projectdanube/xdi2) needs to be build.
 
 After that, just run
 
@@ -15,21 +15,20 @@ To build all components.
 
 ### How to run
 
-    mvn sprint-boot:run
+	mvn jetty:run
 
-Then the proxy status page is available at
+Then go to:
 
-    http://localhost:8080/proxies/status
+	http://localhost:3080/
 
-which would provide the sample output:
+The API is available at:
 
-    HTTP/1.1 200 OK
-    Server: Apache-Coyote/1.1
-    Content-Type: application/json;charset=UTF-8
-    Transfer-Encoding: chunked
-    Date: Fri, 19 Sep 2014 15:37:06 GMT
+	http://localhost:3080/establish
+	http://localhost:3080/approve
+	http://localhost:3080/view
+	http://localhost:3080/block
+	http://localhost:3080/unblock
+	http://localhost:3080/delete
+	ws://localhost:3080/chat/{fromchild}/{tochild}
 
-    {
-      "id" : 2,
-      "time_started" : "2014-09-19T15:36:54.478+0000"
-    }
+TODO: Document the API
