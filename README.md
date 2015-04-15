@@ -21,14 +21,14 @@ Then go to:
 
 	http://localhost:3080/
 
-The API is available at:
+### Documentation
 
-	http://localhost:3080/establish
-	http://localhost:3080/approve
-	http://localhost:3080/view
-	http://localhost:3080/block
-	http://localhost:3080/unblock
-	http://localhost:3080/delete
-	ws://localhost:3080/chat/{fromchild}/{tochild}
+The API endpoints are:
 
-TODO: Document the API
+	HTTP POST:  http://localhost:3080/establish?child1=...&child2=...
+	HTTP POST:  http://localhost:3080/approve?parent=...&child1=...&child2=...
+	HTTP POST:  http://localhost:3080/view?parentOrChild=...
+	HTTP POST:  http://localhost:3080/block?parent=...&child1=...&child2=...
+	HTTP POST:  http://localhost:3080/unblock?parent=...&child1=...&child2=...
+	HTTP POST:  http://localhost:3080/delete?parent=...&child1=...&child2=...
+	WebSocket:  ws://localhost:3080/chat/{fromchild}/{tochild}
