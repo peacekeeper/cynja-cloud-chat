@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns="http://java.sun.com/xml/ns/javaee"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
+	id="WebApp_ID" version="3.0">
+
+	<display-name>biz.neustar.clouds.chat</display-name>
+
+	<filter>
+		<filter-name>init</filter-name>
+		<filter-class>biz.neustar.clouds.chat.InitFilter</filter-class>
+		<load-on-startup>1</load-on-startup>
+	</filter>
+
+	<servlet>
+		<servlet-name>establish</servlet-name>
+		<servlet-class>biz.neustar.clouds.chat.EstablishServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>establish</servlet-name>
+		<url-pattern>/establish</url-pattern>
+	</servlet-mapping>
+
+	<servlet>
+		<servlet-name>approve</servlet-name>
+		<servlet-class>biz.neustar.clouds.chat.ApproveServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>approve</servlet-name>
+		<url-pattern>/approve</url-pattern>
+	</servlet-mapping>
+
+	<servlet>
+		<servlet-name>view</servlet-name>
+		<servlet-class>biz.neustar.clouds.chat.ViewServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>view</servlet-name>
+		<url-pattern>/view</url-pattern>
+	</servlet-mapping>
+
+	<servlet>
+		<servlet-name>block</servlet-name>
+		<servlet-class>biz.neustar.clouds.chat.BlockServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>block</servlet-name>
+		<url-pattern>/block</url-pattern>
+	</servlet-mapping>
+
+	<servlet>
+		<servlet-name>unblock</servlet-name>
+		<servlet-class>biz.neustar.clouds.chat.UnblockServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>unblock</servlet-name>
+		<url-pattern>/unblock</url-pattern>
+	</servlet-mapping>
+
+</web-app> 

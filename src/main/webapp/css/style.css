@@ -1,0 +1,25 @@
+#example {
+	border-bottom: 2px solid black;
+	padding: 10px;
+}
+
+#chat {
+	float: right;
+	border-left: 2px solid black;
+	padding: 10px;
+}
+
+#messages {
+	background-color: #dddddd;
+	width: 500px;
+	height: 400px;
+}
+
+td.example {
+	font-size: 0.8em;
+	color: gray;
+}
+
+p.heading {
+	font-weight: bold;
+}
