@@ -1,7 +1,7 @@
 <img src="http://neustarpc.github.com/neustar-clouds/images/logo.png"><br>
 
-This is a prototype of a HTTP proxy server that allows guardians to manage HTTP accesses via browsers
-of dependents via XDI graphs.
+This is a simple chat server that integrates with XDI personal clouds.
+It allows parents to manage chat connections of their children.
 
 ### How to build
 
