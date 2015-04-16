@@ -185,8 +185,8 @@ function chatMessage() {
 
 <div id="chat">
 <table>
-<tr><td>From:</td><td><input type="text" id="chatChild1"></td><td class="example">e.g. [=]!:uuid:3333</td></tr>
-<tr><td>To:</td><td><input type="text" id="chatChild2"></td><td class="example">e.g. [=]!:uuid:7777</td></tr>
+<tr><td>From Child:</td><td><input type="text" id="chatChild1"></td><td class="example">e.g. [=]!:uuid:3333</td></tr>
+<tr><td>To Child:</td><td><input type="text" id="chatChild2"></td><td class="example">e.g. [=]!:uuid:7777</td></tr>
 <tr><td><button onclick="chatStart();">Start Chat</button></td><td><button onclick="chatStop();">Stop Chat</button></td></tr>
 </table>
 <textarea id="messages"></textarea>
@@ -221,7 +221,7 @@ function chatMessage() {
 <div>
 <p class="heading">View Connections</p>
 <table>
-<tr><td>ParentOrChild</td><td><input type="text" id="viewParentOrChild"></td><td class="example">e.g. [=]!:uuid:3333, or [=]!:uuid:1111</td></tr>
+<tr><td>Parent Or Child</td><td><input type="text" id="viewParentOrChild"></td><td class="example">e.g. [=]!:uuid:3333, or [=]!:uuid:1111</td></tr>
 </table>
 <button onclick="view();">View</button>
 </div>
