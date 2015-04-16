@@ -174,7 +174,7 @@ function chatMessage() {
 <body>
 
 <pre id="example">
- * CYNJA CLOUD CHAT - example parent/child data
+ * CYNJA CLOUD CHAT - example parent/child data - <a href="https://github.com/neustarpc/cynja-cloud-chat">https://github.com/neustarpc/cynja-cloud-chat</a>
  * ================
 
  * Parents                                                      * Parents
