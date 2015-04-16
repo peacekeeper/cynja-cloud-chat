@@ -6,6 +6,7 @@ import java.util.List;
 import xdi2.core.syntax.XDIAddress;
 import biz.neustar.clouds.chat.exceptions.ConnectionNotFoundException;
 import biz.neustar.clouds.chat.exceptions.NotParentOfChildException;
+import biz.neustar.clouds.chat.model.Log;
 import biz.neustar.clouds.chat.model.StubConnection;
 import biz.neustar.clouds.chat.service.ConnectionService;
 import biz.neustar.clouds.chat.service.ParentChildService;
@@ -60,6 +61,20 @@ public class StubConnectionService implements ConnectionService {
 		}
 
 		return connections.toArray(new StubConnection[connections.size()]);
+	}
+
+	@Override
+	public Log[] viewConnectionLog(XDIAddress parent, XDIAddress child1, XDIAddress child2) {
+
+		StubConnection connection = this.findConnection(child1, child2);
+		if (connection == null) throw new ConnectionNotFoundException("No connection found between " + child1 + " and " + child2);
+
+		boolean isParent1 = this.parentChildService.isParent(parent, child1);
+		boolean isParent2 = this.parentChildService.isParent(parent, child2);
+
+		if (! isParent1 && ! isParent2) throw new NotParentOfChildException("" + parent + " is not a parent of either " + child1 + " or " + child2);
+
+		return connection.viewLog();
 	}
 
 	@Override

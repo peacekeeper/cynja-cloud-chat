@@ -75,10 +75,13 @@ public class WebSocketEndpoint extends javax.websocket.Endpoint {
 
 		for (WebSocketMessageHandler webSocketMessageHandler : WEBSOCKETMESSAGEHANDLERS.values()) {
 
-			if (! fromWebSocketMessageHandler.getFromChild().equals(webSocketMessageHandler.getToChild())) continue;
-			if (! fromWebSocketMessageHandler.getToChild().equals(webSocketMessageHandler.getFromChild())) continue;
+			if ((fromWebSocketMessageHandler.getFromChild().equals(webSocketMessageHandler.getToChild()) &&
+					fromWebSocketMessageHandler.getToChild().equals(webSocketMessageHandler.getFromChild())) || (
+							fromWebSocketMessageHandler.getFromChild().equals(webSocketMessageHandler.getFromChild()) &&
+							fromWebSocketMessageHandler.getToChild().equals(webSocketMessageHandler.getToChild()))) {
 
-			webSocketMessageHandler.send(line);
+				webSocketMessageHandler.send(line);
+			}
 		}
 	}
 
@@ -128,7 +131,7 @@ public class WebSocketEndpoint extends javax.websocket.Endpoint {
 
 			// create message handler
 
-			WebSocketMessageHandler webSocketMessageHandler = new WebSocketMessageHandler(session, serverEndpointConfig.getPath(), fromChild, toChild);
+			WebSocketMessageHandler webSocketMessageHandler = new WebSocketMessageHandler(session, fromChild, toChild, connection);
 			session.addMessageHandler(webSocketMessageHandler);
 
 			WEBSOCKETMESSAGEHANDLERS.put(session.getId(), webSocketMessageHandler);

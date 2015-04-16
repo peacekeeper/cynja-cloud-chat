@@ -10,4 +10,6 @@ public interface Connection {
 	public boolean isApproved2();
 	public boolean isBlocked1();
 	public boolean isBlocked2();
+	public void addLog(String line);
+	public Log[] viewLog();
 }

@@ -40,6 +40,15 @@
 	</servlet-mapping>
 
 	<servlet>
+		<servlet-name>log</servlet-name>
+		<servlet-class>biz.neustar.clouds.chat.LogServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>log</servlet-name>
+		<url-pattern>/log</url-pattern>
+	</servlet-mapping>
+
+	<servlet>
 		<servlet-name>block</servlet-name>
 		<servlet-class>biz.neustar.clouds.chat.BlockServlet</servlet-class>
 	</servlet>

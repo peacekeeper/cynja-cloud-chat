@@ -55,6 +55,21 @@ function view() {
 	});
 }
 
+function log() {
+
+	var parent = $("#logParent").val();
+	var child1 = $("#logChild1").val();
+	var child2 = $("#logChild2").val();
+
+	$.ajax({
+	    url: '/log',
+	    type: 'POST',
+	    data: 'parent=' + _.escape(parent) + '&' + 'child1=' + _.escape(child1) + '&' + 'child2=' + _.escape(child2),
+	    success: function(data) { alert('success: ' + JSON.stringify(data)); },
+	    error: function(msg) { alert('error: ' + JSON.stringify(msg)); }
+	});
+}
+
 function block() {
 
 	var parent = $("#blockParent").val();
@@ -85,7 +100,7 @@ function unblock() {
 	});
 }
 
-function delete() {
+function delet() {
 
 	var parent = $("#deleteParent").val();
 	var child1 = $("#deleteChild1").val();
@@ -113,7 +128,7 @@ function chatStart() {
 
 	ws.onmessage = function(event) {
 
-		$('#messages').append(event.data + "\n");
+		$('#messages').val($('#messages').val() + event.data + "\n");
 	};
 
 	ws.onerror = function(event) {
@@ -124,11 +139,13 @@ function chatStart() {
 	ws.onopen = function(event) {
 
 		alert('Chat opened.');
+		$('#messages').val('');
 	};
 
 	ws.onclose = function(event) {
 
 		alert('Chat closed: ' + event.code + ' ' + event.reason);
+		$('#messages').val('');
 	};
 }
 
@@ -147,7 +164,6 @@ function chatMessage() {
 	var chatMessage = $("#chatMessage").val();
 
 	ws.send(chatMessage);
-	$('#messages').append(chatMessage + "\n");
 	$("chatMessage").val('');
 }
 
@@ -169,8 +185,8 @@ function chatMessage() {
 
 <div id="chat">
 <table>
-<tr><td>Child 1:</td><td><input type="text" id="chatChild1"></td><td class="example">e.g. [=]!:uuid:3333</td></tr>
-<tr><td>Child 2:</td><td><input type="text" id="chatChild2"></td><td class="example">e.g. [=]!:uuid:7777</td></tr>
+<tr><td>From:</td><td><input type="text" id="chatChild1"></td><td class="example">e.g. [=]!:uuid:3333</td></tr>
+<tr><td>To:</td><td><input type="text" id="chatChild2"></td><td class="example">e.g. [=]!:uuid:7777</td></tr>
 <tr><td><button onclick="chatStart();">Start Chat</button></td><td><button onclick="chatStop();">Stop Chat</button></td></tr>
 </table>
 <textarea id="messages"></textarea>
@@ -211,6 +227,16 @@ function chatMessage() {
 </div>
 
 <div>
+<p class="heading">View Connection Log</p>
+<table>
+<tr><td>Parent</td><td><input type="text" id="logParent"></td><td class="example">e.g. [=]!:uuid:1111</td></tr>
+<tr><td>Child 1</td><td><input type="text" id="logChild1"></td><td class="example">e.g. [=]!:uuid:3333</td></tr>
+<tr><td>Child 2</td><td><input type="text" id="logChild2"></td><td class="example">e.g. [=]!:uuid:7777</td></tr>
+</table>
+<button onclick="log();">View Log</button>
+</div>
+
+<div>
 <p class="heading">Block Connection</p>
 <table>
 <tr><td>Parent</td><td><input type="text" id="blockParent"></td><td class="example">e.g. [=]!:uuid:1111</td></tr>
@@ -237,7 +263,7 @@ function chatMessage() {
 <tr><td>Child 1</td><td><input type="text" id="deleteChild1"></td><td class="example">e.g. [=]!:uuid:3333</td></tr>
 <tr><td>Child 2</td><td><input type="text" id="deleteChild2"></td><td class="example">e.g. [=]!:uuid:7777</td></tr>
 </table>
-<button onclick="delete();">Unblock</button>
+<button onclick="delet();">Delete</button>
 </div>
 
 </body>

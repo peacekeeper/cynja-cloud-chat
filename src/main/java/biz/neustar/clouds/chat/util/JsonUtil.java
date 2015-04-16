@@ -1,8 +1,10 @@
 package biz.neustar.clouds.chat.util;
 
 import java.io.Writer;
+import java.text.DateFormat;
 
 import biz.neustar.clouds.chat.model.Connection;
+import biz.neustar.clouds.chat.model.Log;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -14,7 +16,11 @@ import com.google.gson.stream.JsonWriter;
 
 public class JsonUtil {
 
-	private static final Gson gson = new GsonBuilder().disableHtmlEscaping().serializeNulls().create();
+	private static final Gson gson = new GsonBuilder()
+	.setDateFormat(DateFormat.FULL, DateFormat.FULL)
+	.disableHtmlEscaping()
+	.serializeNulls()
+	.create();
 
 	public static void write(Writer writer, JsonElement jsonElement) {
 
@@ -43,5 +49,10 @@ public class JsonUtil {
 		jsonObject.add("children", childrenJsonArray);
 
 		return jsonObject;
+	}
+
+	public static JsonObject logToJson(Log log) {
+
+		return (JsonObject) gson.toJsonTree(log);
 	}
 }
