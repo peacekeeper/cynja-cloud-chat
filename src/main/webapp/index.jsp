@@ -15,8 +15,8 @@
 
 function establish() {
 
-	var child1 = $("#establishChild1").val();
-	var child2 = $("#establishChild2").val();
+	var child1 = $("#establishChild1").val().trim(); if (! child1) { alert("Please enter \"Child 1\""); return; }
+	var child2 = $("#establishChild2").val().trim(); if (! child2) { alert("Please enter \"Child 2\""); return; }
 
 	$.ajax({
 	    url: '/establish',
@@ -29,9 +29,9 @@ function establish() {
 
 function approve() {
 
-	var parent = $("#approveParent").val();
-	var child1 = $("#approveChild1").val();
-	var child2 = $("#approveChild2").val();
+	var parent = $("#approveParent").val().trim(); if (! parent) { alert("Please enter \"Parent\""); return; }
+	var child1 = $("#approveChild1").val().trim(); if (! child1) { alert("Please enter \"Child 1\""); return; }
+	var child2 = $("#approveChild2").val().trim(); if (! child2) { alert("Please enter \"Child 2\""); return; }
 
 	$.ajax({
 	    url: '/approve',
@@ -44,7 +44,7 @@ function approve() {
 
 function view() {
 
-	var parentOrChild = $("#viewParentOrChild").val();
+	var parentOrChild = $("#viewParentOrChild").val().trim(); if (! parentOrChild) { alert("Please enter \"Parent Or Child\""); return; }
 
 	$.ajax({
 	    url: '/view',
@@ -57,9 +57,9 @@ function view() {
 
 function log() {
 
-	var parent = $("#logParent").val();
-	var child1 = $("#logChild1").val();
-	var child2 = $("#logChild2").val();
+	var parent = $("#logParent").val().trim(); if (! parent) { alert("Please enter \"Parent\""); return; }
+	var child1 = $("#logChild1").val().trim(); if (! child1) { alert("Please enter \"Child 1\""); return; }
+	var child2 = $("#logChild2").val().trim(); if (! child2) { alert("Please enter \"Child 2\""); return; }
 
 	$.ajax({
 	    url: '/log',
@@ -72,9 +72,9 @@ function log() {
 
 function block() {
 
-	var parent = $("#blockParent").val();
-	var child1 = $("#blockChild1").val();
-	var child2 = $("#blockChild2").val();
+	var parent = $("#blockParent").val().trim(); if (! parent) { alert("Please enter \"Parent\""); return; }
+	var child1 = $("#blockChild1").val().trim(); if (! child1) { alert("Please enter \"Child 1\""); return; }
+	var child2 = $("#blockChild2").val().trim(); if (! child2) { alert("Please enter \"Child 2\""); return; }
 
 	$.ajax({
 	    url: '/block',
@@ -87,9 +87,9 @@ function block() {
 
 function unblock() {
 
-	var parent = $("#unblockParent").val();
-	var child1 = $("#unblockChild1").val();
-	var child2 = $("#unblockChild2").val();
+	var parent = $("#unblockParent").val().trim(); if (! parent) { alert("Please enter \"Parent\""); return; }
+	var child1 = $("#unblockChild1").val().trim(); if (! child1) { alert("Please enter \"Child 1\""); return; }
+	var child2 = $("#unblockChild2").val().trim(); if (! child2) { alert("Please enter \"Child 2\""); return; }
 
 	$.ajax({
 	    url: '/unblock',
@@ -102,9 +102,9 @@ function unblock() {
 
 function delet() {
 
-	var parent = $("#deleteParent").val();
-	var child1 = $("#deleteChild1").val();
-	var child2 = $("#deleteChild2").val();
+	var parent = $("#deleteParent").val().trim(); if (! parent) { alert("Please enter \"Parent\""); return; }
+	var child1 = $("#deleteChild1").val().trim(); if (! child1) { alert("Please enter \"Child 1\""); return; }
+	var child2 = $("#deleteChild2").val().trim(); if (! child2) { alert("Please enter \"Child 2\""); return; }
 
 	$.ajax({
 	    url: '/delete',
@@ -121,10 +121,12 @@ function chatStart() {
 
 	if (ws) chatStop();
 
-	var child1 = $("#chatChild1").val();
-	var child2 = $("#chatChild2").val();
+	var child1 = $("#chatChild1").val().trim(); if (! child1) { alert("Please enter \"Child 1\""); return; }
+	var child2 = $("#chatChild2").val().trim(); if (! child2) { alert("Please enter \"Child 2\""); return; }
 
-	ws = new WebSocket("ws://127.0.0.1:3080/chat/" + _.escape(child1) + '/' + _.escape(child2), ["cynja-chat"]);
+	var url = window.location.href.replace("http", "ws") + "chat/" + _.escape(child1) + '/' + _.escape(child2);
+
+	ws = new WebSocket(url, ["cynja-chat"]);
 
 	ws.onmessage = function(event) {
 
@@ -161,7 +163,7 @@ function chatMessage() {
 
 	if (! ws) { alert('No open chat.'); return; }
 
-	var chatMessage = $("#chatMessage").val();
+	var chatMessage = $("#chatMessage").val().trim();
 
 	ws.send(chatMessage);
 	$("chatMessage").val('');
