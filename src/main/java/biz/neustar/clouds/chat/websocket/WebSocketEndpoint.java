@@ -2,10 +2,9 @@ package biz.neustar.clouds.chat.websocket;
 
 import java.io.IOException;
 import java.net.URLDecoder;
+import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import javax.servlet.ServletContext;
 import javax.websocket.CloseReason;
@@ -32,7 +31,7 @@ public class WebSocketEndpoint extends javax.websocket.Endpoint {
 
 	private static final String PATH = "/chat/{fromChild}/{toChild}";
 
-	public static final Map<String, WebSocketMessageHandler> WEBSOCKETMESSAGEHANDLERS = new HashMap<String, WebSocketMessageHandler> ();
+	public static final List<WebSocketMessageHandler> WEBSOCKETMESSAGEHANDLERS = new ArrayList<WebSocketMessageHandler> ();
 
 	public static void install(ServletContext servletContext) throws DeploymentException {
 
@@ -73,7 +72,7 @@ public class WebSocketEndpoint extends javax.websocket.Endpoint {
 
 	public static void send(WebSocketMessageHandler fromWebSocketMessageHandler, String line) {
 
-		for (WebSocketMessageHandler webSocketMessageHandler : WEBSOCKETMESSAGEHANDLERS.values()) {
+		for (WebSocketMessageHandler webSocketMessageHandler : WEBSOCKETMESSAGEHANDLERS) {
 
 			if ((fromWebSocketMessageHandler.getFromChild().equals(webSocketMessageHandler.getToChild()) &&
 					fromWebSocketMessageHandler.getToChild().equals(webSocketMessageHandler.getFromChild())) || (
@@ -129,12 +128,16 @@ public class WebSocketEndpoint extends javax.websocket.Endpoint {
 				return;
 			}
 
+			// add session to connection
+
+			connection.addSession(session);
+
 			// create message handler
 
 			WebSocketMessageHandler webSocketMessageHandler = new WebSocketMessageHandler(session, fromChild, toChild, connection);
-			session.addMessageHandler(webSocketMessageHandler);
 
-			WEBSOCKETMESSAGEHANDLERS.put(session.getId(), webSocketMessageHandler);
+			session.addMessageHandler(webSocketMessageHandler);
+			WEBSOCKETMESSAGEHANDLERS.add(webSocketMessageHandler);
 
 			log.info("WebSocket session " + session.getId() + " opened (" + serverEndpointConfig.getPath() + ") between " + fromChild + " and " + toChild);
 		} catch (Exception ex) {
@@ -152,7 +155,19 @@ public class WebSocketEndpoint extends javax.websocket.Endpoint {
 	@Override
 	public void onClose(Session session, CloseReason closeReason) {
 
-		WEBSOCKETMESSAGEHANDLERS.remove(session.getId());
+		// find message handler and connection
+
+		WebSocketMessageHandler webSocketMessageHandler = (WebSocketMessageHandler) session.getMessageHandlers().iterator().next();
+		Connection connection = webSocketMessageHandler.getConnection();
+
+		// remove session from connection
+
+		connection.removeSession(session);
+
+		// remove message handler
+
+		session.removeMessageHandler(webSocketMessageHandler);
+		WEBSOCKETMESSAGEHANDLERS.remove(webSocketMessageHandler);
 
 		log.info("WebSocket session " + session.getId() + " closed.");
 	}

@@ -3,6 +3,8 @@ package biz.neustar.clouds.chat.util;
 import java.io.Writer;
 import java.text.DateFormat;
 
+import javax.websocket.Session;
+
 import biz.neustar.clouds.chat.model.Connection;
 import biz.neustar.clouds.chat.model.Log;
 
@@ -31,6 +33,8 @@ public class JsonUtil {
 
 	public static JsonObject connectionToJson(Connection connection) {
 
+		JsonArray childrenJsonArray = new JsonArray();
+
 		JsonObject child1JsonObject = new JsonObject();
 		child1JsonObject.add("child", new JsonPrimitive(connection.getChild1().toString()));
 		child1JsonObject.add("approved", new JsonPrimitive(connection.isApproved1()));
@@ -41,12 +45,23 @@ public class JsonUtil {
 		child2JsonObject.add("approved", new JsonPrimitive(connection.isApproved2()));
 		child2JsonObject.add("blocked", new JsonPrimitive(connection.isBlocked2()));
 
-		JsonArray childrenJsonArray = new JsonArray();
 		childrenJsonArray.add(child1JsonObject);
 		childrenJsonArray.add(child2JsonObject);
 
+		JsonArray sessionsJsonArray = new JsonArray();
+
+		for (Session session : connection.getSessions()) {
+
+			JsonObject sessionJsonObject = new JsonObject();
+			sessionJsonObject.add("id", new JsonPrimitive(session.getId()));
+			sessionJsonObject.add("open", new JsonPrimitive(session.isOpen()));
+
+			sessionsJsonArray.add(sessionJsonObject);
+		}
+
 		JsonObject jsonObject = new JsonObject();
 		jsonObject.add("children", childrenJsonArray);
+		jsonObject.add("sessions", sessionsJsonArray);
 
 		return jsonObject;
 	}

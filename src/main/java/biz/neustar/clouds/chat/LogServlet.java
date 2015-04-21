@@ -24,7 +24,7 @@ public class LogServlet extends HttpServlet {
 		XDIAddress child1 = XDIAddress.create(req.getParameter("child1"));
 		XDIAddress child2 = XDIAddress.create(req.getParameter("child2"));
 
-		Log[] logs = CynjaCloudChat.connectionService.viewConnectionLog(parent, child1, child2);
+		Log[] logs = CynjaCloudChat.connectionService.viewConnectionLogs(parent, child1, child2);
 
 		JsonArray jsonArray = new JsonArray();
 

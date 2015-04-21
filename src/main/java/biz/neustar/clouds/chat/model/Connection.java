@@ -1,5 +1,7 @@
 package biz.neustar.clouds.chat.model;
 
+import javax.websocket.Session;
+
 import xdi2.core.syntax.XDIAddress;
 
 public interface Connection {
@@ -11,5 +13,9 @@ public interface Connection {
 	public boolean isBlocked1();
 	public boolean isBlocked2();
 	public void addLog(String line);
-	public Log[] viewLog();
+	public Log[] getLogs();
+
+	public void addSession(Session session);
+	public void removeSession(Session session);
+	public Session[] getSessions();
 }

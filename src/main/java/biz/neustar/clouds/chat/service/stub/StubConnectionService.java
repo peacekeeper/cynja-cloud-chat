@@ -6,6 +6,7 @@ import java.util.List;
 import xdi2.core.syntax.XDIAddress;
 import biz.neustar.clouds.chat.exceptions.ConnectionNotFoundException;
 import biz.neustar.clouds.chat.exceptions.NotParentOfChildException;
+import biz.neustar.clouds.chat.model.Connection;
 import biz.neustar.clouds.chat.model.Log;
 import biz.neustar.clouds.chat.model.StubConnection;
 import biz.neustar.clouds.chat.service.ConnectionService;
@@ -64,7 +65,7 @@ public class StubConnectionService implements ConnectionService {
 	}
 
 	@Override
-	public Log[] viewConnectionLog(XDIAddress parent, XDIAddress child1, XDIAddress child2) {
+	public Log[] viewConnectionLogs(XDIAddress parent, XDIAddress child1, XDIAddress child2) {
 
 		StubConnection connection = this.findConnection(child1, child2);
 		if (connection == null) throw new ConnectionNotFoundException("No connection found between " + child1 + " and " + child2);
@@ -74,11 +75,11 @@ public class StubConnectionService implements ConnectionService {
 
 		if (! isParent1 && ! isParent2) throw new NotParentOfChildException("" + parent + " is not a parent of either " + child1 + " or " + child2);
 
-		return connection.viewLog();
+		return connection.getLogs();
 	}
 
 	@Override
-	public void approveConnection(XDIAddress parent, XDIAddress child1, XDIAddress child2) {
+	public Connection approveConnection(XDIAddress parent, XDIAddress child1, XDIAddress child2) {
 
 		StubConnection connection = this.findConnection(child1, child2);
 		if (connection == null) throw new ConnectionNotFoundException("No connection found between " + child1 + " and " + child2);
@@ -90,10 +91,12 @@ public class StubConnectionService implements ConnectionService {
 
 		if (isParent1) connection.setApproved1(true);
 		if (isParent2) connection.setApproved2(true);
+		
+		return connection;
 	}
 
 	@Override
-	public void blockConnection(XDIAddress parent, XDIAddress child1, XDIAddress child2) {
+	public Connection blockConnection(XDIAddress parent, XDIAddress child1, XDIAddress child2) {
 
 		StubConnection connection = this.findConnection(child1, child2);
 		if (connection == null) throw new ConnectionNotFoundException("No connection found between " + child1 + " and " + child2);
@@ -105,10 +108,12 @@ public class StubConnectionService implements ConnectionService {
 
 		if (isParent1) connection.setBlocked1(true);
 		if (isParent2) connection.setBlocked2(true);
+		
+		return connection;
 	}
 
 	@Override
-	public void unblockConnection(XDIAddress parent, XDIAddress child1, XDIAddress child2) {
+	public Connection unblockConnection(XDIAddress parent, XDIAddress child1, XDIAddress child2) {
 
 		StubConnection connection = this.findConnection(child1, child2);
 		if (connection == null) throw new ConnectionNotFoundException("No connection found between " + child1 + " and " + child2);
@@ -120,10 +125,12 @@ public class StubConnectionService implements ConnectionService {
 
 		if (isParent1) connection.setBlocked1(false);
 		if (isParent2) connection.setBlocked2(false);
+		
+		return connection;
 	}
 
 	@Override
-	public void deleteConnection(XDIAddress parent, XDIAddress child1, XDIAddress child2) {
+	public Connection deleteConnection(XDIAddress parent, XDIAddress child1, XDIAddress child2) {
 
 		StubConnection connection = this.findConnection(child1, child2);
 		if (connection == null) throw new ConnectionNotFoundException("No connection found between " + child1 + " and " + child2);
@@ -134,5 +141,7 @@ public class StubConnectionService implements ConnectionService {
 		if (! isParent1 && ! isParent2) throw new NotParentOfChildException("" + parent + " is not a parent of either " + child1 + " or " + child2);
 
 		this.connections.remove(connection);
+		
+		return connection;
 	}
 }

@@ -3,6 +3,8 @@ package biz.neustar.clouds.chat.model;
 import java.util.Date;
 import java.util.LinkedList;
 
+import javax.websocket.Session;
+
 import xdi2.core.syntax.XDIAddress;
 
 public class StubConnection implements Connection {
@@ -13,7 +15,8 @@ public class StubConnection implements Connection {
 	private boolean approved1, approved2;
 	private boolean blocked1, blocked2;
 
-	private LinkedList<Log> log;
+	private LinkedList<Log> logs;
+	private LinkedList<Session> sessions;
 
 	public StubConnection(XDIAddress child1, XDIAddress child2) {
 
@@ -24,7 +27,8 @@ public class StubConnection implements Connection {
 		this.blocked1 = false;
 		this.blocked2 = false;
 
-		this.log = new LinkedList<Log> ();
+		this.logs = new LinkedList<Log> ();
+		this.sessions = new LinkedList<Session> ();
 	}
 
 	public XDIAddress getChild1() {
@@ -66,12 +70,30 @@ public class StubConnection implements Connection {
 
 	public void addLog(String line) {
 
-		this.log.add(new Log(line, new Date()));
-		if (this.log.size() > MAX_SIZE) this.log.pop();
+		this.logs.add(new Log(line, new Date()));
+		if (this.logs.size() > MAX_SIZE) this.logs.pop();
 	}
 
-	public Log[] viewLog() {
+	public Log[] getLogs() {
 
-		return this.log.toArray(new Log[this.log.size()]);
+		return this.logs.toArray(new Log[this.logs.size()]);
+	}
+
+	@Override
+	public void addSession(Session session) {
+
+		this.sessions.add(session);
+	}
+
+	@Override
+	public void removeSession(Session session) {
+
+		this.sessions.remove(session);
+	}
+
+	@Override
+	public Session[] getSessions() {
+
+		return this.sessions.toArray(new Session[this.sessions.size()]);
 	}
 }

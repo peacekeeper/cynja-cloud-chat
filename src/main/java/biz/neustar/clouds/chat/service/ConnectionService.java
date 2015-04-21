@@ -9,9 +9,9 @@ public interface ConnectionService {
 	public Connection establishConnection(XDIAddress child1, XDIAddress child2);
 	public Connection findConnection(XDIAddress child1, XDIAddress child2);
 	public Connection[] viewConnections(XDIAddress parentOrChild);
-	public Log[] viewConnectionLog(XDIAddress parent, XDIAddress child1, XDIAddress child2);
-	public void approveConnection(XDIAddress parent, XDIAddress child1, XDIAddress child2);
-	public void blockConnection(XDIAddress parent, XDIAddress child1, XDIAddress child2);
-	public void unblockConnection(XDIAddress parent, XDIAddress child1, XDIAddress child2);
-	public void deleteConnection(XDIAddress parent, XDIAddress child1, XDIAddress child2);
+	public Log[] viewConnectionLogs(XDIAddress parent, XDIAddress child1, XDIAddress child2);
+	public Connection approveConnection(XDIAddress parent, XDIAddress child1, XDIAddress child2);
+	public Connection blockConnection(XDIAddress parent, XDIAddress child1, XDIAddress child2);
+	public Connection unblockConnection(XDIAddress parent, XDIAddress child1, XDIAddress child2);
+	public Connection deleteConnection(XDIAddress parent, XDIAddress child1, XDIAddress child2);
 }

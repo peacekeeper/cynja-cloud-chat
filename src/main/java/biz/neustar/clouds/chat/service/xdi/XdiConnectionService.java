@@ -26,28 +26,32 @@ public class XdiConnectionService implements ConnectionService {
 	}
 
 	@Override
-	public Log[] viewConnectionLog(XDIAddress parent, XDIAddress child1, XDIAddress child2) {
+	public Log[] viewConnectionLogs(XDIAddress parent, XDIAddress child1, XDIAddress child2) {
 
 		return null;
 	}
 
 	@Override
-	public void approveConnection(XDIAddress parent, XDIAddress initiatingChild, XDIAddress targetChild) {
+	public Connection approveConnection(XDIAddress parent, XDIAddress initiatingChild, XDIAddress targetChild) {
 
+		return null;
 	}
 
 	@Override
-	public void blockConnection(XDIAddress parent, XDIAddress initiatingChild, XDIAddress targetChild) {
+	public Connection blockConnection(XDIAddress parent, XDIAddress initiatingChild, XDIAddress targetChild) {
 
+		return null;
 	}
 
 	@Override
-	public void unblockConnection(XDIAddress parent, XDIAddress initiatingChild, XDIAddress targetChild) {
+	public Connection unblockConnection(XDIAddress parent, XDIAddress initiatingChild, XDIAddress targetChild) {
 
+		return null;
 	}
 
 	@Override
-	public void deleteConnection(XDIAddress parent, XDIAddress initiatingChild, XDIAddress targetChild) {
+	public Connection deleteConnection(XDIAddress parent, XDIAddress initiatingChild, XDIAddress targetChild) {
 
+		return null;
 	}
 }
