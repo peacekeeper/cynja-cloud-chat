@@ -30,7 +30,8 @@ The API endpoints are:
 	HTTP POST:  http://localhost:3080/establish?child1=...&child2=...
 	
 	This is called by child1 to establish a connection with child2.
-	The connection has to be approved by parents of both children in order to work.
+	The connection has to be approved by parents of both children,
+	before chat sessions can be started.
 	
 	HTTP POST:  http://localhost:3080/approve?parent=...&child1=...&child2=...
 	
