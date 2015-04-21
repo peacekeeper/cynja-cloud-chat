@@ -45,26 +45,27 @@ The API endpoints are:
 	
 	HTTP POST:  http://localhost:3080/log?parent=...&child1=...&child2=...
 	
-	This is called by a parent to view the recent chat messages for a given connection between child1 and child 2.
+	This is called by a parent to view the recent chat messages for a given connection
+	between child1 and child2.
 	
 	HTTP POST:  http://localhost:3080/block?parent=...&child1=...&child2=...
 	
 	This is called by a parent to "block" a connection between child1 and child2.
-	This ends any existing chat session that may exist right now between child1 and child2.
-	The connection between child1 and child2 still exists, but no chat session can
-	be started, until the connection gets "unblocked" again.
+	This ends all currently open chat sessions between child1 and child2.
+	The connection between child1 and child2 still exists, but no new chat session
+	can be started, until the connection gets "unblocked" again.
 
 	HTTP POST:  http://localhost:3080/unblock?parent=...&child1=...&child2=...
 	
 	This is called by a parent to "unblock" a connection between child1 and child2.
-	After that, new chat session can be opened again.
+	After that, new chat sessions can be opened again.
 	If the connection has been blocked by parents of both child1 and child2, then it
-	also has to be unblocked by both sides again.
+	also has to be unblocked again by both sides.
 
 	HTTP POST:  http://localhost:3080/delete?parent=...&child1=...&child2=...
 	
 	This is called by a parent to "delete" a connection between child1 and child2.
-	This ends any existing chat session that may exist right now between child1 and child2.
+	This ends all currently open chat sessions between child1 and child2.
 	After that, a connection has to be re-created from start, using the "establish" and
 	"approve" API calls.
 
