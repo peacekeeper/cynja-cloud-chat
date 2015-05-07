@@ -21,7 +21,7 @@ function establish() {
 	$.ajax({
 	    url: '/establish',
 	    type: 'POST',
-	    data: 'child1=' + _.escape(child1) + '&' + 'child2=' + _.escape(child2),
+	    data: 'child1=' + encodeURIComponent(child1) + '&' + 'child2=' + encodeURIComponent(child2),
 	    success: function(data) { alert('success: ' + JSON.stringify(data)); },
 	    error: function(msg) { alert('error: ' + JSON.stringify(msg)); }
 	});
@@ -36,7 +36,7 @@ function approve() {
 	$.ajax({
 	    url: '/approve',
 	    type: 'POST',
-	    data: 'parent=' + _.escape(parent) + '&' + 'child1=' + _.escape(child1) + '&' + 'child2=' + _.escape(child2),
+	    data: 'parent=' + encodeURIComponent(parent) + '&' + 'child1=' + encodeURIComponent(child1) + '&' + 'child2=' + encodeURIComponent(child2),
 	    success: function(data) { alert('success: ' + JSON.stringify(data)); },
 	    error: function(msg) { alert('error: ' + JSON.stringify(msg)); }
 	});
@@ -49,7 +49,7 @@ function view() {
 	$.ajax({
 	    url: '/view',
 	    type: 'POST',
-	    data: 'parentOrChild=' + _.escape(parentOrChild),
+	    data: 'parentOrChild=' + encodeURIComponent(parentOrChild),
 	    success: function(data) { alert('success: ' + JSON.stringify(data)); },
 	    error: function(msg) { alert('error: ' + JSON.stringify(msg)); }
 	});
@@ -64,7 +64,7 @@ function log() {
 	$.ajax({
 	    url: '/log',
 	    type: 'POST',
-	    data: 'parent=' + _.escape(parent) + '&' + 'child1=' + _.escape(child1) + '&' + 'child2=' + _.escape(child2),
+	    data: 'parent=' + encodeURIComponent(parent) + '&' + 'child1=' + encodeURIComponent(child1) + '&' + 'child2=' + encodeURIComponent(child2),
 	    success: function(data) { alert('success: ' + JSON.stringify(data)); },
 	    error: function(msg) { alert('error: ' + JSON.stringify(msg)); }
 	});
@@ -79,7 +79,7 @@ function block() {
 	$.ajax({
 	    url: '/block',
 	    type: 'POST',
-	    data: 'parent=' + _.escape(parent) + '&' + 'child1=' + _.escape(child1) + '&' + 'child2=' + _.escape(child2),
+	    data: 'parent=' + encodeURIComponent(parent) + '&' + 'child1=' + encodeURIComponent(child1) + '&' + 'child2=' + encodeURIComponent(child2),
 	    success: function(data) { alert('success: ' + JSON.stringify(data)); },
 	    error: function(msg) { alert('error: ' + JSON.stringify(msg)); }
 	});
@@ -94,7 +94,7 @@ function unblock() {
 	$.ajax({
 	    url: '/unblock',
 	    type: 'POST',
-	    data: 'parent=' + _.escape(parent) + '&' + 'child1=' + _.escape(child1) + '&' + 'child2=' + _.escape(child2),
+	    data: 'parent=' + encodeURIComponent(parent) + '&' + 'child1=' + encodeURIComponent(child1) + '&' + 'child2=' + encodeURIComponent(child2),
 	    success: function(data) { alert('success: ' + JSON.stringify(data)); },
 	    error: function(msg) { alert('error: ' + JSON.stringify(msg)); }
 	});
@@ -109,7 +109,7 @@ function delet() {
 	$.ajax({
 	    url: '/delete',
 	    type: 'POST',
-	    data: 'parent=' + _.escape(parent) + '&' + 'child1=' + _.escape(child1) + '&' + 'child2=' + _.escape(child2),
+	    data: 'parent=' + encodeURIComponent(parent) + '&' + 'child1=' + encodeURIComponent(child1) + '&' + 'child2=' + encodeURIComponent(child2),
 	    success: function(data) { alert('success: ' + JSON.stringify(data)); },
 	    error: function(msg) { alert('error: ' + JSON.stringify(msg)); }
 	});
@@ -124,7 +124,7 @@ function chatStart() {
 	var child1 = $("#chatChild1").val().trim(); if (! child1) { alert("Please enter \"Child 1\""); return; }
 	var child2 = $("#chatChild2").val().trim(); if (! child2) { alert("Please enter \"Child 2\""); return; }
 
-	var url = window.location.href.replace("http", "ws") + "chat/" + _.escape(child1) + '/' + _.escape(child2);
+	var url = window.location.href.replace("http", "ws") + "chat/" + encodeURIComponent(child1) + '/' + encodeURIComponent(child2);
 
 	ws = new WebSocket(url, ["cynja-chat"]);
 
