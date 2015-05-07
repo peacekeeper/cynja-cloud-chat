@@ -79,3 +79,7 @@ The API endpoints are:
 	ws://localhost:3080/chat/child1/child2
 	ws://localhost:3080/chat/child2/child1
 	During the WebSocket protocol handshake, the sub-protocol "cynja-chat" is used.
+
+Notes:
+
+	Make sure all path components and query values in the URLs are properly URL encoded.
