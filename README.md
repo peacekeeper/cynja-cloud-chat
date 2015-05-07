@@ -9,6 +9,8 @@ Sample deployment: http://54.172.108.151:3080/
 
 First, [XDI2](http://github.com/projectdanube/xdi2) needs to be build.
 
+For now, use the snapshot-0.7-pre-no-value-node branch.
+
 After that, just run
 
     mvn clean install
