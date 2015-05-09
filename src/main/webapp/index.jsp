@@ -13,13 +13,13 @@
 
 <script type="text/javascript">
 
-function establish() {
+function request() {
 
-	var child1 = $("#establishChild1").val().trim(); if (! child1) { alert("Please enter \"Child 1\""); return; }
-	var child2 = $("#establishChild2").val().trim(); if (! child2) { alert("Please enter \"Child 2\""); return; }
+	var child1 = $("#requestChild1").val().trim(); if (! child1) { alert("Please enter \"Child 1\""); return; }
+	var child2 = $("#requestChild2").val().trim(); if (! child2) { alert("Please enter \"Child 2\""); return; }
 
 	$.ajax({
-	    url: '/establish',
+	    url: '/request',
 	    type: 'POST',
 	    data: 'child1=' + encodeURIComponent(child1) + '&' + 'child2=' + encodeURIComponent(child2),
 	    success: function(data) { alert('success: ' + JSON.stringify(data)); },
@@ -202,12 +202,12 @@ function chatMessage() {
 </div>
 
 <div>
-<p class="heading">Establish Connection</p>
+<p class="heading">Request Connection</p>
 <table>
-<tr><td>Child 1</td><td><input type="text" id="establishChild1"></td><td class="example">e.g. [=]!:uuid:3333</td></tr>
-<tr><td>Child 2</td><td><input type="text" id="establishChild2"></td><td class="example">e.g. [=]!:uuid:7777</td></tr>
+<tr><td>Child 1</td><td><input type="text" id="requestChild1"></td><td class="example">e.g. [=]!:uuid:3333</td></tr>
+<tr><td>Child 2</td><td><input type="text" id="requestChild2"></td><td class="example">e.g. [=]!:uuid:7777</td></tr>
 </table>
-<button onclick="establish();">Establish</button>
+<button onclick="request();">Request</button>
 </div>
 
 <div>

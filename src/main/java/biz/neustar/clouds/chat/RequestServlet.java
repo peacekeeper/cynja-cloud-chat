@@ -9,7 +9,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import xdi2.core.syntax.XDIAddress;
 
-public class EstablishServlet extends HttpServlet {
+public class RequestServlet extends HttpServlet {
 
 	private static final long serialVersionUID = 2049298539409005496L;
 

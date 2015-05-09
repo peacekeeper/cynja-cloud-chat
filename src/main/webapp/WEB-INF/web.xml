@@ -13,12 +13,12 @@
 	</filter>
 
 	<servlet>
-		<servlet-name>establish</servlet-name>
-		<servlet-class>biz.neustar.clouds.chat.EstablishServlet</servlet-class>
+		<servlet-name>request</servlet-name>
+		<servlet-class>biz.neustar.clouds.chat.RequestServlet</servlet-class>
 	</servlet>
 	<servlet-mapping>
-		<servlet-name>establish</servlet-name>
-		<url-pattern>/establish</url-pattern>
+		<servlet-name>request</servlet-name>
+		<url-pattern>/request</url-pattern>
 	</servlet-mapping>
 
 	<servlet>
