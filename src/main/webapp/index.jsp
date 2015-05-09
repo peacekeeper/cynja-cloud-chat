@@ -19,7 +19,7 @@ function request() {
 	var child2 = $("#requestChild2").val().trim(); if (! child2) { alert("Please enter \"Child 2\""); return; }
 
 	$.ajax({
-	    url: '/request',
+	    url: '/1/request',
 	    type: 'POST',
 	    data: 'child1=' + encodeURIComponent(child1) + '&' + 'child2=' + encodeURIComponent(child2),
 	    success: function(data) { alert('success: ' + JSON.stringify(data)); },
@@ -34,7 +34,7 @@ function approve() {
 	var child2 = $("#approveChild2").val().trim(); if (! child2) { alert("Please enter \"Child 2\""); return; }
 
 	$.ajax({
-	    url: '/approve',
+	    url: '/1/approve',
 	    type: 'POST',
 	    data: 'parent=' + encodeURIComponent(parent) + '&' + 'child1=' + encodeURIComponent(child1) + '&' + 'child2=' + encodeURIComponent(child2),
 	    success: function(data) { alert('success: ' + JSON.stringify(data)); },
@@ -47,7 +47,7 @@ function view() {
 	var parentOrChild = $("#viewParentOrChild").val().trim(); if (! parentOrChild) { alert("Please enter \"Parent Or Child\""); return; }
 
 	$.ajax({
-	    url: '/view',
+	    url: '/1/view',
 	    type: 'POST',
 	    data: 'parentOrChild=' + encodeURIComponent(parentOrChild),
 	    success: function(data) { alert('success: ' + JSON.stringify(data)); },
@@ -62,7 +62,7 @@ function log() {
 	var child2 = $("#logChild2").val().trim(); if (! child2) { alert("Please enter \"Child 2\""); return; }
 
 	$.ajax({
-	    url: '/log',
+	    url: '/1/log',
 	    type: 'POST',
 	    data: 'parent=' + encodeURIComponent(parent) + '&' + 'child1=' + encodeURIComponent(child1) + '&' + 'child2=' + encodeURIComponent(child2),
 	    success: function(data) { alert('success: ' + JSON.stringify(data)); },
@@ -77,7 +77,7 @@ function block() {
 	var child2 = $("#blockChild2").val().trim(); if (! child2) { alert("Please enter \"Child 2\""); return; }
 
 	$.ajax({
-	    url: '/block',
+	    url: '/1/block',
 	    type: 'POST',
 	    data: 'parent=' + encodeURIComponent(parent) + '&' + 'child1=' + encodeURIComponent(child1) + '&' + 'child2=' + encodeURIComponent(child2),
 	    success: function(data) { alert('success: ' + JSON.stringify(data)); },
@@ -92,7 +92,7 @@ function unblock() {
 	var child2 = $("#unblockChild2").val().trim(); if (! child2) { alert("Please enter \"Child 2\""); return; }
 
 	$.ajax({
-	    url: '/unblock',
+	    url: '/1/unblock',
 	    type: 'POST',
 	    data: 'parent=' + encodeURIComponent(parent) + '&' + 'child1=' + encodeURIComponent(child1) + '&' + 'child2=' + encodeURIComponent(child2),
 	    success: function(data) { alert('success: ' + JSON.stringify(data)); },
@@ -107,7 +107,7 @@ function delet() {
 	var child2 = $("#deleteChild2").val().trim(); if (! child2) { alert("Please enter \"Child 2\""); return; }
 
 	$.ajax({
-	    url: '/delete',
+	    url: '/1/delete',
 	    type: 'POST',
 	    data: 'parent=' + encodeURIComponent(parent) + '&' + 'child1=' + encodeURIComponent(child1) + '&' + 'child2=' + encodeURIComponent(child2),
 	    success: function(data) { alert('success: ' + JSON.stringify(data)); },
@@ -124,7 +124,7 @@ function chatStart() {
 	var child1 = $("#chatChild1").val().trim(); if (! child1) { alert("Please enter \"Child 1\""); return; }
 	var child2 = $("#chatChild2").val().trim(); if (! child2) { alert("Please enter \"Child 2\""); return; }
 
-	var url = window.location.href.replace("http", "ws") + "chat/" + encodeURIComponent(child1) + '/' + encodeURIComponent(child2);
+	var url = window.location.href.replace("http", "ws") + "1/chat/" + encodeURIComponent(child1) + '/' + encodeURIComponent(child2);
 
 	ws = new WebSocket(url, ["cynja-chat"]);
 

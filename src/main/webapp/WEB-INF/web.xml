@@ -18,7 +18,7 @@
 	</servlet>
 	<servlet-mapping>
 		<servlet-name>request</servlet-name>
-		<url-pattern>/request</url-pattern>
+		<url-pattern>/1/request</url-pattern>
 	</servlet-mapping>
 
 	<servlet>
@@ -27,7 +27,7 @@
 	</servlet>
 	<servlet-mapping>
 		<servlet-name>approve</servlet-name>
-		<url-pattern>/approve</url-pattern>
+		<url-pattern>/1/approve</url-pattern>
 	</servlet-mapping>
 
 	<servlet>
@@ -36,7 +36,7 @@
 	</servlet>
 	<servlet-mapping>
 		<servlet-name>view</servlet-name>
-		<url-pattern>/view</url-pattern>
+		<url-pattern>/1/view</url-pattern>
 	</servlet-mapping>
 
 	<servlet>
@@ -45,7 +45,7 @@
 	</servlet>
 	<servlet-mapping>
 		<servlet-name>log</servlet-name>
-		<url-pattern>/log</url-pattern>
+		<url-pattern>/1/log</url-pattern>
 	</servlet-mapping>
 
 	<servlet>
@@ -54,7 +54,7 @@
 	</servlet>
 	<servlet-mapping>
 		<servlet-name>block</servlet-name>
-		<url-pattern>/block</url-pattern>
+		<url-pattern>/1/block</url-pattern>
 	</servlet-mapping>
 
 	<servlet>
@@ -63,7 +63,7 @@
 	</servlet>
 	<servlet-mapping>
 		<servlet-name>unblock</servlet-name>
-		<url-pattern>/unblock</url-pattern>
+		<url-pattern>/1/unblock</url-pattern>
 	</servlet-mapping>
 
 	<servlet>
@@ -72,7 +72,7 @@
 	</servlet>
 	<servlet-mapping>
 		<servlet-name>delete</servlet-name>
-		<url-pattern>/delete</url-pattern>
+		<url-pattern>/1/delete</url-pattern>
 	</servlet-mapping>
 
 </web-app> 

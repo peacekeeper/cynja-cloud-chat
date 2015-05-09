@@ -29,7 +29,7 @@ public class WebSocketEndpoint extends javax.websocket.Endpoint {
 
 	private static final Logger log = LoggerFactory.getLogger(WebSocketEndpoint.class);
 
-	private static final String PATH = "/chat/{fromChild}/{toChild}";
+	private static final String PATH = "/1/chat/{fromChild}/{toChild}";
 
 	public static final List<WebSocketMessageHandler> WEBSOCKETMESSAGEHANDLERS = new ArrayList<WebSocketMessageHandler> ();
 
