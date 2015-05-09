@@ -8,7 +8,7 @@ import biz.neustar.clouds.chat.service.ConnectionService;
 public class XdiConnectionService implements ConnectionService {
 
 	@Override
-	public Connection establishConnection(XDIAddress initiatingChild, XDIAddress targetChild) {
+	public Connection requestConnection(XDIAddress initiatingChild, XDIAddress targetChild) {
 
 		return null;
 	}

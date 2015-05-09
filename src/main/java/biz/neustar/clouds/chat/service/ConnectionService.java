@@ -6,7 +6,7 @@ import biz.neustar.clouds.chat.model.Log;
 
 public interface ConnectionService {
 
-	public Connection establishConnection(XDIAddress child1, XDIAddress child2);
+	public Connection requestConnection(XDIAddress child1, XDIAddress child2);
 	public Connection findConnection(XDIAddress child1, XDIAddress child2);
 	public Connection[] viewConnections(XDIAddress parentOrChild);
 	public Log[] viewConnectionLogs(XDIAddress parent, XDIAddress child1, XDIAddress child2);

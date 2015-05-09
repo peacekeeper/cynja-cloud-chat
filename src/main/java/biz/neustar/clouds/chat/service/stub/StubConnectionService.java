@@ -25,7 +25,7 @@ public class StubConnectionService implements ConnectionService {
 	}
 
 	@Override
-	public StubConnection establishConnection(XDIAddress child1, XDIAddress child2) {
+	public StubConnection requestConnection(XDIAddress child1, XDIAddress child2) {
 
 		StubConnection connection = new StubConnection(child1, child2);
 		this.connections.add(connection);

@@ -68,7 +68,7 @@ The API endpoints are:
 	
 	This is called by a parent to "delete" a connection between child1 and child2.
 	This ends all currently open chat sessions between child1 and child2.
-	After that, a connection has to be re-created from start, using the "establish" and
+	After that, a connection has to be re-created from start, using the "request" and
 	"approve" API calls.
 
 	WebSocket:  ws://localhost:3080/1/chat/{fromchild}/{tochild}
