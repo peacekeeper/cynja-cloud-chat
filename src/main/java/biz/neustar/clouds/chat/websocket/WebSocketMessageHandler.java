@@ -10,6 +10,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import xdi2.core.syntax.XDIAddress;
+import biz.neustar.clouds.chat.CynjaCloudChat;
 import biz.neustar.clouds.chat.model.Connection;
 
 public class WebSocketMessageHandler implements javax.websocket.MessageHandler.Whole<Reader> {
@@ -17,15 +18,15 @@ public class WebSocketMessageHandler implements javax.websocket.MessageHandler.W
 	private static final Logger log = LoggerFactory.getLogger(WebSocketMessageHandler.class);
 
 	private Session session;
-	private XDIAddress fromChild;
-	private XDIAddress toChild;
+	private XDIAddress child1;
+	private XDIAddress child2;
 	private Connection connection;
 
-	public WebSocketMessageHandler(Session session, XDIAddress fromChild, XDIAddress toChild, Connection connection) {
+	public WebSocketMessageHandler(Session session, XDIAddress child1, XDIAddress child2, Connection connection) {
 
 		this.session = session;
-		this.fromChild = fromChild;
-		this.toChild = toChild;
+		this.child1 = child1;
+		this.child2 = child2;
 		this.connection = connection;
 	}
 
@@ -40,7 +41,7 @@ public class WebSocketMessageHandler implements javax.websocket.MessageHandler.W
 		try {
 
 			line = bufferedReader.readLine();
-			line = this.getFromChild().toString() + "> " + line;
+			line = this.getChild1().toString() + "> " + line;
 		} catch (IOException ex) {
 
 			throw new RuntimeException(ex.getMessage(), ex);
@@ -50,7 +51,7 @@ public class WebSocketMessageHandler implements javax.websocket.MessageHandler.W
 
 		// log line
 
-		this.getConnection().addLog(line);
+		CynjaCloudChat.logService.addLog(this.connection, line);
 
 		// send line to message handlers
 
@@ -73,14 +74,14 @@ public class WebSocketMessageHandler implements javax.websocket.MessageHandler.W
 		return this.session;
 	}
 
-	public XDIAddress getFromChild() {
+	public XDIAddress getChild1() {
 
-		return this.fromChild;
+		return this.child1;
 	}
 
-	public XDIAddress getToChild() {
+	public XDIAddress getChild2() {
 
-		return this.toChild;
+		return this.child2;
 	}
 
 	public Connection getConnection() {

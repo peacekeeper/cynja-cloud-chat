@@ -36,32 +36,32 @@ public class JsonUtil {
 		JsonArray childrenJsonArray = new JsonArray();
 
 		JsonObject child1JsonObject = new JsonObject();
-		child1JsonObject.add("child", new JsonPrimitive(connection.getChild1().toString()));
-		child1JsonObject.add("approved", new JsonPrimitive(connection.isApproved1()));
-		child1JsonObject.add("blocked", new JsonPrimitive(connection.isBlocked1()));
+		child1JsonObject.add("child", gson.toJsonTree(connection.getChild1().toString()));
+		child1JsonObject.add("approved", gson.toJsonTree(connection.isApproved1()));
+		child1JsonObject.add("blocked", gson.toJsonTree(connection.isBlocked1()));
 
 		JsonObject child2JsonObject = new JsonObject();
-		child2JsonObject.add("child", new JsonPrimitive(connection.getChild2().toString()));
-		child2JsonObject.add("approved", new JsonPrimitive(connection.isApproved2()));
-		child2JsonObject.add("blocked", new JsonPrimitive(connection.isBlocked2()));
+		child2JsonObject.add("child", gson.toJsonTree(connection.getChild2().toString()));
+		child2JsonObject.add("approved", gson.toJsonTree(connection.isApproved2()));
+		child2JsonObject.add("blocked", gson.toJsonTree(connection.isBlocked2()));
 
 		childrenJsonArray.add(child1JsonObject);
 		childrenJsonArray.add(child2JsonObject);
 
-		JsonArray sessionsJsonArray = new JsonArray();
+/*		JsonArray sessionsJsonArray = new JsonArray();
 
 		for (Session session : connection.getSessions()) {
 
 			JsonObject sessionJsonObject = new JsonObject();
-			sessionJsonObject.add("id", new JsonPrimitive(session.getId()));
-			sessionJsonObject.add("open", new JsonPrimitive(session.isOpen()));
+			sessionJsonObject.add("id", gson.toJsonTree(session.getId()));
+			sessionJsonObject.add("open", gson.toJsonTree(session.isOpen()));
 
 			sessionsJsonArray.add(sessionJsonObject);
-		}
+		}*/
 
 		JsonObject jsonObject = new JsonObject();
 		jsonObject.add("children", childrenJsonArray);
-		jsonObject.add("sessions", sessionsJsonArray);
+		//jsonObject.add("sessions", sessionsJsonArray);
 
 		return jsonObject;
 	}

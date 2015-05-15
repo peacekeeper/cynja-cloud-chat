@@ -17,8 +17,9 @@ public class RequestServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
 		XDIAddress child1 = XDIAddress.create(req.getParameter("child1"));
+		String child1SecretToken = req.getParameter("child1SecretToken");
 		XDIAddress child2 = XDIAddress.create(req.getParameter("child2"));
 
-		CynjaCloudChat.connectionService.requestConnection(child1, child2);
+		CynjaCloudChat.connectionService.requestConnection(child1, child1SecretToken, child2);
 	}
 }

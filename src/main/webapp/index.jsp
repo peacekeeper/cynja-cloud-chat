@@ -16,12 +16,13 @@
 function request() {
 
 	var child1 = $("#requestChild1").val().trim(); if (! child1) { alert("Please enter \"Child 1\""); return; }
+	var child1SecretToken = $("#requestChild1SecretToken").val().trim(); if (! child1SecretToken) { alert("Please enter \"Child 1 Secret Token\""); return; }
 	var child2 = $("#requestChild2").val().trim(); if (! child2) { alert("Please enter \"Child 2\""); return; }
 
 	$.ajax({
 	    url: '/1/request',
 	    type: 'POST',
-	    data: 'child1=' + encodeURIComponent(child1) + '&' + 'child2=' + encodeURIComponent(child2),
+	    data: 'child1=' + encodeURIComponent(child1) + '&' + 'child1SecretToken=' + encodeURIComponent(child1SecretToken) + '&' + 'child2=' + encodeURIComponent(child2),
 	    success: function(data) { alert('success: ' + JSON.stringify(data)); },
 	    error: function(msg) { alert('error: ' + JSON.stringify(msg)); }
 	});
@@ -30,41 +31,58 @@ function request() {
 function approve() {
 
 	var parent = $("#approveParent").val().trim(); if (! parent) { alert("Please enter \"Parent\""); return; }
+	var parentSecretToken = $("#approveParentSecretToken").val().trim(); if (! parentSecretToken) { alert("Please enter \"Parent Secret Token\""); return; }
 	var child1 = $("#approveChild1").val().trim(); if (! child1) { alert("Please enter \"Child 1\""); return; }
 	var child2 = $("#approveChild2").val().trim(); if (! child2) { alert("Please enter \"Child 2\""); return; }
 
 	$.ajax({
 	    url: '/1/approve',
 	    type: 'POST',
-	    data: 'parent=' + encodeURIComponent(parent) + '&' + 'child1=' + encodeURIComponent(child1) + '&' + 'child2=' + encodeURIComponent(child2),
+	    data: 'parent=' + encodeURIComponent(parent) + '&' + 'parentSecretToken=' + encodeURIComponent(parentSecretToken) + '&' + 'child1=' + encodeURIComponent(child1) + '&' + 'child2=' + encodeURIComponent(child2),
 	    success: function(data) { alert('success: ' + JSON.stringify(data)); },
 	    error: function(msg) { alert('error: ' + JSON.stringify(msg)); }
 	});
 }
 
-function view() {
+function viewasparent() {
 
-	var parentOrChild = $("#viewParentOrChild").val().trim(); if (! parentOrChild) { alert("Please enter \"Parent Or Child\""); return; }
+	var parent = $("#viewasparentParent").val().trim(); if (! parent) { alert("Please enter \"Parent\""); return; }
+	var parentSecretToken = $("#viewasparentParentSecretToken").val().trim(); if (! parentSecretToken) { alert("Please enter \"Parent Secret Token\""); return; }
 
 	$.ajax({
-	    url: '/1/view',
+	    url: '/1/viewasparent',
 	    type: 'POST',
-	    data: 'parentOrChild=' + encodeURIComponent(parentOrChild),
+	    data: 'parent=' + encodeURIComponent(parent) + '&' + 'parentSecretToken=' + encodeURIComponent(parentSecretToken),
 	    success: function(data) { alert('success: ' + JSON.stringify(data)); },
 	    error: function(msg) { alert('error: ' + JSON.stringify(msg)); }
 	});
 }
 
-function log() {
+function viewaschild() {
 
-	var parent = $("#logParent").val().trim(); if (! parent) { alert("Please enter \"Parent\""); return; }
-	var child1 = $("#logChild1").val().trim(); if (! child1) { alert("Please enter \"Child 1\""); return; }
-	var child2 = $("#logChild2").val().trim(); if (! child2) { alert("Please enter \"Child 2\""); return; }
+	var child = $("#viewaschildChild").val().trim(); if (! child) { alert("Please enter \"Child\""); return; }
+	var childSecretToken = $("#viewaschildChildSecretToken").val().trim(); if (! childSecretToken) { alert("Please enter \"Child Secret Token\""); return; }
 
 	$.ajax({
-	    url: '/1/log',
+	    url: '/1/viewaschild',
 	    type: 'POST',
-	    data: 'parent=' + encodeURIComponent(parent) + '&' + 'child1=' + encodeURIComponent(child1) + '&' + 'child2=' + encodeURIComponent(child2),
+	    data: 'child=' + encodeURIComponent(child) + '&' + 'childSecretToken=' + encodeURIComponent(childSecretToken),
+	    success: function(data) { alert('success: ' + JSON.stringify(data)); },
+	    error: function(msg) { alert('error: ' + JSON.stringify(msg)); }
+	});
+}
+
+function logs() {
+
+	var parent = $("#logsParent").val().trim(); if (! parent) { alert("Please enter \"Parent\""); return; }
+	var parentSecretToken = $("#logsParentSecretToken").val().trim(); if (! parentSecretToken) { alert("Please enter \"Parent Secret Token\""); return; }
+	var child1 = $("#logsChild1").val().trim(); if (! child1) { alert("Please enter \"Child 1\""); return; }
+	var child2 = $("#logsChild2").val().trim(); if (! child2) { alert("Please enter \"Child 2\""); return; }
+
+	$.ajax({
+	    url: '/1/logs',
+	    type: 'POST',
+	    data: 'parent=' + encodeURIComponent(parent) + '&' + 'parentSecretToken=' + encodeURIComponent(parentSecretToken) + '&' + 'child1=' + encodeURIComponent(child1) + '&' + 'child2=' + encodeURIComponent(child2),
 	    success: function(data) { alert('success: ' + JSON.stringify(data)); },
 	    error: function(msg) { alert('error: ' + JSON.stringify(msg)); }
 	});
@@ -73,13 +91,14 @@ function log() {
 function block() {
 
 	var parent = $("#blockParent").val().trim(); if (! parent) { alert("Please enter \"Parent\""); return; }
+	var parentSecretToken = $("#blockParentSecretToken").val().trim(); if (! parentSecretToken) { alert("Please enter \"Parent Secret Token\""); return; }
 	var child1 = $("#blockChild1").val().trim(); if (! child1) { alert("Please enter \"Child 1\""); return; }
 	var child2 = $("#blockChild2").val().trim(); if (! child2) { alert("Please enter \"Child 2\""); return; }
 
 	$.ajax({
 	    url: '/1/block',
 	    type: 'POST',
-	    data: 'parent=' + encodeURIComponent(parent) + '&' + 'child1=' + encodeURIComponent(child1) + '&' + 'child2=' + encodeURIComponent(child2),
+	    data: 'parent=' + encodeURIComponent(parent) + '&' + 'parentSecretToken=' + encodeURIComponent(parentSecretToken) + '&' + 'child1=' + encodeURIComponent(child1) + '&' + 'child2=' + encodeURIComponent(child2),
 	    success: function(data) { alert('success: ' + JSON.stringify(data)); },
 	    error: function(msg) { alert('error: ' + JSON.stringify(msg)); }
 	});
@@ -88,13 +107,14 @@ function block() {
 function unblock() {
 
 	var parent = $("#unblockParent").val().trim(); if (! parent) { alert("Please enter \"Parent\""); return; }
+	var parentSecretToken = $("#unblockParentSecretToken").val().trim(); if (! parentSecretToken) { alert("Please enter \"Parent Secret Token\""); return; }
 	var child1 = $("#unblockChild1").val().trim(); if (! child1) { alert("Please enter \"Child 1\""); return; }
 	var child2 = $("#unblockChild2").val().trim(); if (! child2) { alert("Please enter \"Child 2\""); return; }
 
 	$.ajax({
 	    url: '/1/unblock',
 	    type: 'POST',
-	    data: 'parent=' + encodeURIComponent(parent) + '&' + 'child1=' + encodeURIComponent(child1) + '&' + 'child2=' + encodeURIComponent(child2),
+	    data: 'parent=' + encodeURIComponent(parent) + '&' + 'parentSecretToken=' + encodeURIComponent(parentSecretToken) + '&' + 'child1=' + encodeURIComponent(child1) + '&' + 'child2=' + encodeURIComponent(child2),
 	    success: function(data) { alert('success: ' + JSON.stringify(data)); },
 	    error: function(msg) { alert('error: ' + JSON.stringify(msg)); }
 	});
@@ -103,13 +123,14 @@ function unblock() {
 function delet() {
 
 	var parent = $("#deleteParent").val().trim(); if (! parent) { alert("Please enter \"Parent\""); return; }
+	var parentSecretToken = $("#deleteParentSecretToken").val().trim(); if (! parentSecretToken) { alert("Please enter \"Parent Secret Token\""); return; }
 	var child1 = $("#deleteChild1").val().trim(); if (! child1) { alert("Please enter \"Child 1\""); return; }
 	var child2 = $("#deleteChild2").val().trim(); if (! child2) { alert("Please enter \"Child 2\""); return; }
 
 	$.ajax({
 	    url: '/1/delete',
 	    type: 'POST',
-	    data: 'parent=' + encodeURIComponent(parent) + '&' + 'child1=' + encodeURIComponent(child1) + '&' + 'child2=' + encodeURIComponent(child2),
+	    data: 'parent=' + encodeURIComponent(parent) + '&' + 'parentSecretToken=' + encodeURIComponent(parentSecretToken) + '&' + 'child1=' + encodeURIComponent(child1) + '&' + 'child2=' + encodeURIComponent(child2),
 	    success: function(data) { alert('success: ' + JSON.stringify(data)); },
 	    error: function(msg) { alert('error: ' + JSON.stringify(msg)); }
 	});
@@ -183,6 +204,8 @@ function chatMessage() {
  *   [=]!:uuid:1111 and [=]!:uuid:2222                          *   [=]!:uuid:5555 and [=]!:uuid:6666
  * have the following children                                  * have the following children
  *   [=]!:uuid:3333, [=]!:uuid:4444                             *   [=]!:uuid:7777, [=]!:uuid:8888, [=]!:uuid:9999
+ 
+ * Secret token for all parents and children: abcd
 </pre>
 
 <div id="chat">
@@ -205,6 +228,7 @@ function chatMessage() {
 <p class="heading">Request Connection</p>
 <table>
 <tr><td>Child 1</td><td><input type="text" id="requestChild1"></td><td class="example">e.g. [=]!:uuid:3333</td></tr>
+<tr><td>Child 1 Secret Token</td><td><input type="text" id="requestChild1SecretToken"></td><td class="example">e.g. abcd</td></tr>
 <tr><td>Child 2</td><td><input type="text" id="requestChild2"></td><td class="example">e.g. [=]!:uuid:7777</td></tr>
 </table>
 <button onclick="request();">Request</button>
@@ -214,6 +238,7 @@ function chatMessage() {
 <p class="heading">Approve Connection</p>
 <table>
 <tr><td>Parent</td><td><input type="text" id="approveParent"></td><td class="example">e.g. [=]!:uuid:1111, and [=]!:uuid:6666</td></tr>
+<tr><td>Parent Secret Token</td><td><input type="text" id="approveParentSecretToken"></td><td class="example">e.g. abcd</td></tr>
 <tr><td>Child 1</td><td><input type="text" id="approveChild1"></td><td class="example">e.g. [=]!:uuid:3333</td></tr>
 <tr><td>Child 2</td><td><input type="text" id="approveChild2"></td><td class="example">e.g. [=]!:uuid:7777</td></tr>
 </table>
@@ -221,19 +246,30 @@ function chatMessage() {
 </div>
 
 <div>
-<p class="heading">View Connections</p>
+<p class="heading">View Connections As Parent</p>
 <table>
-<tr><td>Parent Or Child</td><td><input type="text" id="viewParentOrChild"></td><td class="example">e.g. [=]!:uuid:3333, or [=]!:uuid:1111</td></tr>
+<tr><td>Parent</td><td><input type="text" id="viewasparentParent"></td><td class="example">e.g. [=]!:uuid:3333, or [=]!:uuid:1111</td></tr>
+<tr><td>Parent Secret Token</td><td><input type="text" id="viewasparentParentSecretToken"></td><td class="example">e.g. abcd</td></tr>
 </table>
-<button onclick="view();">View</button>
+<button onclick="viewasparent();">View As Parent</button>
+</div>
+
+<div>
+<p class="heading">View Connections As Child</p>
+<table>
+<tr><td>Child</td><td><input type="text" id="viewaschildChild"></td><td class="example">e.g. [=]!:uuid:3333, or [=]!:uuid:1111</td></tr>
+<tr><td>Child Secret Token</td><td><input type="text" id="viewaschildChildSecretToken"></td><td class="example">e.g. abcd</td></tr>
+</table>
+<button onclick="viewaschild();">View As Child</button>
 </div>
 
 <div>
 <p class="heading">View Connection Log</p>
 <table>
-<tr><td>Parent</td><td><input type="text" id="logParent"></td><td class="example">e.g. [=]!:uuid:1111</td></tr>
-<tr><td>Child 1</td><td><input type="text" id="logChild1"></td><td class="example">e.g. [=]!:uuid:3333</td></tr>
-<tr><td>Child 2</td><td><input type="text" id="logChild2"></td><td class="example">e.g. [=]!:uuid:7777</td></tr>
+<tr><td>Parent</td><td><input type="text" id="logsParent"></td><td class="example">e.g. [=]!:uuid:1111</td></tr>
+<tr><td>Parent Secret Token</td><td><input type="text" id="logsParentSecretToken"></td><td class="example">e.g. abcd</td></tr>
+<tr><td>Child 1</td><td><input type="text" id="logsChild1"></td><td class="example">e.g. [=]!:uuid:3333</td></tr>
+<tr><td>Child 2</td><td><input type="text" id="logsChild2"></td><td class="example">e.g. [=]!:uuid:7777</td></tr>
 </table>
 <button onclick="log();">View Log</button>
 </div>
@@ -242,6 +278,7 @@ function chatMessage() {
 <p class="heading">Block Connection</p>
 <table>
 <tr><td>Parent</td><td><input type="text" id="blockParent"></td><td class="example">e.g. [=]!:uuid:1111</td></tr>
+<tr><td>Parent Secret Token</td><td><input type="text" id="blockParentSecretToken"></td><td class="example">e.g. abcd</td></tr>
 <tr><td>Child 1</td><td><input type="text" id="blockChild1"></td><td class="example">e.g. [=]!:uuid:3333</td></tr>
 <tr><td>Child 2</td><td><input type="text" id="blockChild2"></td><td class="example">e.g. [=]!:uuid:7777</td></tr>
 </table>
@@ -252,6 +289,7 @@ function chatMessage() {
 <p class="heading">Unblock Connection</p>
 <table>
 <tr><td>Parent</td><td><input type="text" id="unblockParent"></td><td class="example">e.g. [=]!:uuid:1111</td></tr>
+<tr><td>Parent Secret Token</td><td><input type="text" id="unblockParentSecretToken"></td><td class="example">e.g. abcd</td></tr>
 <tr><td>Child 1</td><td><input type="text" id="unblockChild1"></td><td class="example">e.g. [=]!:uuid:3333</td></tr>
 <tr><td>Child 2</td><td><input type="text" id="unblockChild2"></td><td class="example">e.g. [=]!:uuid:7777</td></tr>
 </table>
@@ -262,6 +300,7 @@ function chatMessage() {
 <p class="heading">Delete Connection</p>
 <table>
 <tr><td>Parent</td><td><input type="text" id="deleteParent"></td><td class="example">e.g. [=]!:uuid:1111</td></tr>
+<tr><td>Parent Secret Token</td><td><input type="text" id="deleteParentSecretToken"></td><td class="example">e.g. abcd</td></tr>
 <tr><td>Child 1</td><td><input type="text" id="deleteChild1"></td><td class="example">e.g. [=]!:uuid:3333</td></tr>
 <tr><td>Child 2</td><td><input type="text" id="deleteChild2"></td><td class="example">e.g. [=]!:uuid:7777</td></tr>
 </table>

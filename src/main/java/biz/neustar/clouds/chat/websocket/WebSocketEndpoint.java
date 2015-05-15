@@ -29,7 +29,7 @@ public class WebSocketEndpoint extends javax.websocket.Endpoint {
 
 	private static final Logger log = LoggerFactory.getLogger(WebSocketEndpoint.class);
 
-	private static final String PATH = "/1/chat/{fromChild}/{toChild}";
+	private static final String PATH = "/1/chat/{child1}/{child2}";
 
 	public static final List<WebSocketMessageHandler> WEBSOCKETMESSAGEHANDLERS = new ArrayList<WebSocketMessageHandler> ();
 
@@ -74,10 +74,10 @@ public class WebSocketEndpoint extends javax.websocket.Endpoint {
 
 		for (WebSocketMessageHandler webSocketMessageHandler : WEBSOCKETMESSAGEHANDLERS) {
 
-			if ((fromWebSocketMessageHandler.getFromChild().equals(webSocketMessageHandler.getToChild()) &&
-					fromWebSocketMessageHandler.getToChild().equals(webSocketMessageHandler.getFromChild())) || (
-							fromWebSocketMessageHandler.getFromChild().equals(webSocketMessageHandler.getFromChild()) &&
-							fromWebSocketMessageHandler.getToChild().equals(webSocketMessageHandler.getToChild()))) {
+			if ((fromWebSocketMessageHandler.getChild1().equals(webSocketMessageHandler.getChild2()) &&
+					fromWebSocketMessageHandler.getChild2().equals(webSocketMessageHandler.getChild1())) || (
+							fromWebSocketMessageHandler.getChild1().equals(webSocketMessageHandler.getChild1()) &&
+							fromWebSocketMessageHandler.getChild2().equals(webSocketMessageHandler.getChild2()))) {
 
 				webSocketMessageHandler.send(line);
 			}
@@ -103,12 +103,13 @@ public class WebSocketEndpoint extends javax.websocket.Endpoint {
 
 			// parse parameters
 
-			XDIAddress fromChild = XDIAddress.create(URLDecoder.decode(session.getPathParameters().get("fromChild"), "UTF-8"));
-			XDIAddress toChild = XDIAddress.create(URLDecoder.decode(session.getPathParameters().get("toChild"), "UTF-8"));
+			XDIAddress child1 = XDIAddress.create(URLDecoder.decode(session.getPathParameters().get("child1"), "UTF-8"));
+			String child1SecretToken = session.getRequestParameterMap().get("child1SecretToken").get(0);
+			XDIAddress child2 = XDIAddress.create(URLDecoder.decode(session.getPathParameters().get("child2"), "UTF-8"));
 
 			// check connection
 
-			Connection connection = CynjaCloudChat.connectionService.findConnection(fromChild, toChild);
+			Connection connection = CynjaCloudChat.connectionService.findConnection(child1, child1SecretToken, child2);
 
 			if (connection == null) {
 
@@ -130,16 +131,16 @@ public class WebSocketEndpoint extends javax.websocket.Endpoint {
 
 			// add session to connection
 
-			connection.addSession(session);
+			CynjaCloudChat.sessionService.addSession(connection, session);
 
 			// create message handler
 
-			WebSocketMessageHandler webSocketMessageHandler = new WebSocketMessageHandler(session, fromChild, toChild, connection);
+			WebSocketMessageHandler webSocketMessageHandler = new WebSocketMessageHandler(session, child1, child2, connection);
 
 			session.addMessageHandler(webSocketMessageHandler);
 			WEBSOCKETMESSAGEHANDLERS.add(webSocketMessageHandler);
 
-			log.info("WebSocket session " + session.getId() + " opened (" + serverEndpointConfig.getPath() + ") between " + fromChild + " and " + toChild);
+			log.info("WebSocket session " + session.getId() + " opened (" + serverEndpointConfig.getPath() + ") between " + child1 + " and " + child2);
 		} catch (Exception ex) {
 
 			try {
@@ -162,7 +163,7 @@ public class WebSocketEndpoint extends javax.websocket.Endpoint {
 
 		// remove session from connection
 
-		connection.removeSession(session);
+		CynjaCloudChat.sessionService.removeSession(connection, session);
 
 		// remove message handler
 

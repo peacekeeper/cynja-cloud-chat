@@ -8,29 +8,30 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import xdi2.core.syntax.XDIAddress;
-import biz.neustar.clouds.chat.model.Log;
+import biz.neustar.clouds.chat.model.Connection;
 import biz.neustar.clouds.chat.util.JsonUtil;
 
 import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
 
-public class LogServlet extends HttpServlet {
+public class ViewAsParentServlet extends HttpServlet {
 
-	private static final long serialVersionUID = 2806072987404647289L;
+	private static final long serialVersionUID = 2049298539409005496L;
 
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
 		XDIAddress parent = XDIAddress.create(req.getParameter("parent"));
-		XDIAddress child1 = XDIAddress.create(req.getParameter("child1"));
-		XDIAddress child2 = XDIAddress.create(req.getParameter("child2"));
+		String parentSecretToken = req.getParameter("parentSecretToken");
 
-		Log[] logs = CynjaCloudChat.connectionService.viewConnectionLogs(parent, child1, child2);
+		Connection[] connections = CynjaCloudChat.connectionService.viewConnectionsAsParent(parent, parentSecretToken);
 
 		JsonArray jsonArray = new JsonArray();
 
-		for (Log log : logs) {
+		for (Connection connection : connections) {
 
-			jsonArray.add(JsonUtil.logToJson(log));
+			JsonObject connectionJsonObject = JsonUtil.connectionToJson(connection);
+			jsonArray.add(connectionJsonObject);
 		}
 
 		resp.setContentType("appliction/json");

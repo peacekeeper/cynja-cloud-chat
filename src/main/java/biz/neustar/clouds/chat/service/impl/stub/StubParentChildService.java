@@ -1,4 +1,4 @@
-package biz.neustar.clouds.chat.service.stub;
+package biz.neustar.clouds.chat.service.impl.stub;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -9,6 +9,8 @@ import xdi2.core.syntax.XDIAddress;
 import biz.neustar.clouds.chat.service.ParentChildService;
 
 public class StubParentChildService implements ParentChildService {
+
+	private static final String STUB_SECRET_TOKEN = "abcd";
 
 	private Map<XDIAddress, List<XDIAddress>> parentsChildren;
 
@@ -24,8 +26,10 @@ public class StubParentChildService implements ParentChildService {
 	 *   [=]!:uuid:5555 and [=]!:uuid:6666
 	 * have the following children
 	 *   [=]!:uuid:7777, [=]!:uuid:8888, [=]!:uuid:9999
+	 *   
+	 * Secret token for all parents and children: test@123
 	 */
-	
+
 	public StubParentChildService() {
 
 		this.parentsChildren = new HashMap<XDIAddress, List<XDIAddress>> ();
@@ -46,11 +50,24 @@ public class StubParentChildService implements ParentChildService {
 	}
 
 	@Override
-	public boolean isParent(XDIAddress parent, XDIAddress child) {
+	public boolean isParent(XDIAddress parent, String parentSecretToken, XDIAddress child) {
+
+		if (! STUB_SECRET_TOKEN.equals(parentSecretToken)) throw new RuntimeException("Invalid parent secret token for " + parent);
 
 		List<XDIAddress> parentChildren = this.parentsChildren.get(parent);
 		if (parentChildren == null) return false;
 
 		return parentChildren.contains(child);
+	}
+
+	@Override
+	public XDIAddress[] getChildren(XDIAddress parent, String parentSecretToken) {
+
+		if (! STUB_SECRET_TOKEN.equals(parentSecretToken)) throw new RuntimeException("Invalid parent secret token for " + parent);
+
+		List<XDIAddress> parentChildren = this.parentsChildren.get(parent);
+		if (parentChildren == null) return new XDIAddress[0];
+
+		return parentChildren.toArray(new XDIAddress[parentChildren.size()]);
 	}
 }

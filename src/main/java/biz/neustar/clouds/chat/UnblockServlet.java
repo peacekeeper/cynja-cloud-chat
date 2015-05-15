@@ -17,9 +17,10 @@ public class UnblockServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
 		XDIAddress parent = XDIAddress.create(req.getParameter("parent"));
+		String parentSecretToken = req.getParameter("parentSecretToken");
 		XDIAddress child1 = XDIAddress.create(req.getParameter("child1"));
 		XDIAddress child2 = XDIAddress.create(req.getParameter("child2"));
 
-		CynjaCloudChat.connectionService.unblockConnection(parent, child1, child2);
+		CynjaCloudChat.connectionService.unblockConnection(parent, parentSecretToken, child1, child2);
 	}
 }

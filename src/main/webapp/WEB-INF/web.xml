@@ -31,20 +31,29 @@
 	</servlet-mapping>
 
 	<servlet>
-		<servlet-name>view</servlet-name>
-		<servlet-class>biz.neustar.clouds.chat.ViewServlet</servlet-class>
+		<servlet-name>viewasparent</servlet-name>
+		<servlet-class>biz.neustar.clouds.chat.ViewAsParentServlet</servlet-class>
 	</servlet>
 	<servlet-mapping>
-		<servlet-name>view</servlet-name>
-		<url-pattern>/1/view</url-pattern>
+		<servlet-name>viewasparent</servlet-name>
+		<url-pattern>/1/viewasparent</url-pattern>
 	</servlet-mapping>
 
 	<servlet>
-		<servlet-name>log</servlet-name>
-		<servlet-class>biz.neustar.clouds.chat.LogServlet</servlet-class>
+		<servlet-name>viewaschild</servlet-name>
+		<servlet-class>biz.neustar.clouds.chat.ViewAsChildServlet</servlet-class>
 	</servlet>
 	<servlet-mapping>
-		<servlet-name>log</servlet-name>
+		<servlet-name>viewaschild</servlet-name>
+		<url-pattern>/1/viewaschild</url-pattern>
+	</servlet-mapping>
+
+	<servlet>
+		<servlet-name>logs</servlet-name>
+		<servlet-class>biz.neustar.clouds.chat.LogsServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>logs</servlet-name>
 		<url-pattern>/1/log</url-pattern>
 	</servlet-mapping>
 

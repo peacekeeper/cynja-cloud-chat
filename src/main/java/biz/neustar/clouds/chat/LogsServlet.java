@@ -8,10 +8,14 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import xdi2.core.syntax.XDIAddress;
+import biz.neustar.clouds.chat.model.Log;
+import biz.neustar.clouds.chat.util.JsonUtil;
 
-public class DeleteServlet extends HttpServlet {
+import com.google.gson.JsonArray;
 
-	private static final long serialVersionUID = 2524699264338535286L;
+public class LogsServlet extends HttpServlet {
+
+	private static final long serialVersionUID = 2806072987404647289L;
 
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -21,11 +25,16 @@ public class DeleteServlet extends HttpServlet {
 		XDIAddress child1 = XDIAddress.create(req.getParameter("child1"));
 		XDIAddress child2 = XDIAddress.create(req.getParameter("child2"));
 
-		CynjaCloudChat.connectionService.deleteConnection(parent, parentSecretToken, child1, child2);
+		Log[] logs = CynjaCloudChat.connectionService.logsConnection(parent, parentSecretToken, child1, child2);
 
-/*		for (Session session : connection.getSessions()) { 
+		JsonArray jsonArray = new JsonArray();
 
-			session.close(new CloseReason(CloseCodes.VIOLATED_POLICY, "Connection has been deleted."));
-		}*/
+		for (Log log : logs) {
+
+			jsonArray.add(JsonUtil.logToJson(log));
+		}
+
+		resp.setContentType("appliction/json");
+		JsonUtil.write(resp.getWriter(), jsonArray);
 	}
 }
