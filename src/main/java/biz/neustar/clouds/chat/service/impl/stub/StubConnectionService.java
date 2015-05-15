@@ -7,6 +7,7 @@ import xdi2.core.syntax.XDIAddress;
 import biz.neustar.clouds.chat.CynjaCloudChat;
 import biz.neustar.clouds.chat.exceptions.ConnectionNotFoundException;
 import biz.neustar.clouds.chat.exceptions.NotParentOfChildException;
+import biz.neustar.clouds.chat.model.Connection;
 import biz.neustar.clouds.chat.model.Log;
 import biz.neustar.clouds.chat.service.ConnectionService;
 
@@ -26,16 +27,18 @@ public class StubConnectionService implements ConnectionService {
 	 */
 
 	@Override
-	public void requestConnection(XDIAddress child1, String child1SecretToken, XDIAddress child2) {
+	public Connection requestConnection(XDIAddress child1, String child1SecretToken, XDIAddress child2) {
 
 		if (! STUB_SECRET_TOKEN.equals(child1SecretToken)) throw new RuntimeException("Invalid child1 secret token for " + child1);
 
 		StubConnection connection = new StubConnection(child1, child2);
 		this.connections.add(connection);
+
+		return connection;
 	}
 
 	@Override
-	public void approveConnection(XDIAddress parent, String parentSecretToken, XDIAddress child1, XDIAddress child2) {
+	public Connection approveConnection(XDIAddress parent, String parentSecretToken, XDIAddress child1, XDIAddress child2) {
 
 		if (! STUB_SECRET_TOKEN.equals(parentSecretToken)) throw new RuntimeException("Invalid parent secret token for " + parent);
 
@@ -49,6 +52,8 @@ public class StubConnectionService implements ConnectionService {
 
 		if (isParent1) connection.setApproved1(true);
 		if (isParent2) connection.setApproved2(true);
+
+		return connection;
 	}
 
 	@Override
@@ -56,14 +61,19 @@ public class StubConnectionService implements ConnectionService {
 
 		if (! STUB_SECRET_TOKEN.equals(parentSecretToken)) throw new RuntimeException("Invalid parent secret token for " + parent);
 
+		XDIAddress[] children = CynjaCloudChat.parentChildService.getChildren(parent, parentSecretToken);
+
 		List<StubConnection> connections = new ArrayList<StubConnection> ();
 
-		for (StubConnection connection : this.connections) {
+		for (XDIAddress child : children) {
 
-			if (CynjaCloudChat.parentChildService.isParent(parent, parentSecretToken, connection.getChild1()) ||
-					CynjaCloudChat.parentChildService.isParent(parent, parentSecretToken, connection.getChild2())) {
+			for (StubConnection connection : this.connections) {
 
-				connections.add(connection);
+				if (child.equals(connection.getChild1()) ||
+						child.equals(connection.getChild2())) {
+
+					connections.add(connection);
+				}
 			}
 		}
 
@@ -106,7 +116,7 @@ public class StubConnectionService implements ConnectionService {
 	}
 
 	@Override
-	public void blockConnection(XDIAddress parent, String parentSecretToken, XDIAddress child1, XDIAddress child2) {
+	public Connection blockConnection(XDIAddress parent, String parentSecretToken, XDIAddress child1, XDIAddress child2) {
 
 		if (! STUB_SECRET_TOKEN.equals(parentSecretToken)) throw new RuntimeException("Invalid parent secret token for " + parent);
 
@@ -120,10 +130,12 @@ public class StubConnectionService implements ConnectionService {
 
 		if (isParent1) connection.setBlocked1(true);
 		if (isParent2) connection.setBlocked2(true);
+
+		return connection;
 	}
 
 	@Override
-	public void unblockConnection(XDIAddress parent, String parentSecretToken, XDIAddress child1, XDIAddress child2) {
+	public Connection unblockConnection(XDIAddress parent, String parentSecretToken, XDIAddress child1, XDIAddress child2) {
 
 		if (! STUB_SECRET_TOKEN.equals(parentSecretToken)) throw new RuntimeException("Invalid parent secret token for " + parent);
 
@@ -137,10 +149,12 @@ public class StubConnectionService implements ConnectionService {
 
 		if (isParent1) connection.setBlocked1(false);
 		if (isParent2) connection.setBlocked2(false);
+
+		return connection;
 	}
 
 	@Override
-	public void deleteConnection(XDIAddress parent, String parentSecretToken, XDIAddress child1, XDIAddress child2) {
+	public Connection deleteConnection(XDIAddress parent, String parentSecretToken, XDIAddress child1, XDIAddress child2) {
 
 		if (! STUB_SECRET_TOKEN.equals(parentSecretToken)) throw new RuntimeException("Invalid parent secret token for " + parent);
 
@@ -153,6 +167,8 @@ public class StubConnectionService implements ConnectionService {
 		if (! isParent1 && ! isParent2) throw new NotParentOfChildException("" + parent + " is not a parent of either " + child1 + " or " + child2);
 
 		this.connections.remove(connection);
+
+		return connection;
 	}
 
 	@Override

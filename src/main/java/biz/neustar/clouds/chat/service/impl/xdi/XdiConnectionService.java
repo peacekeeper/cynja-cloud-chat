@@ -45,7 +45,7 @@ public class XdiConnectionService implements ConnectionService {
 	public static final XDIAddress XDI_ADD_BLOCKED = XDIAddress.create("<#blocked>");
 
 	@Override
-	public void requestConnection(XDIAddress child1, String child1SecretToken, XDIAddress child2) {
+	public Connection requestConnection(XDIAddress child1, String child1SecretToken, XDIAddress child2) {
 
 		XDIDiscoveryResult child1Discovery;
 		XDIDiscoveryResult child2Discovery;
@@ -63,19 +63,16 @@ public class XdiConnectionService implements ConnectionService {
 
 		try {
 
-			// create chat link contract
+			// create chat link contract 1
 
-			Graph tempGraph = MemoryGraphFactory.getInstance().openGraph();
+			Graph tempGraph1 = MemoryGraphFactory.getInstance().openGraph();
 
 			GenericLinkContract linkContract1 = GenericLinkContract.findGenericLinkContract(
-					tempGraph, 
+					tempGraph1, 
 					child1Discovery.getCloudNumber().getXDIAddress(), 
 					child2Discovery.getCloudNumber().getXDIAddress(), 
 					XDI_ADD_CHAT, 
 					true);
-
-			linkContract1.getXdiEntity().getXdiAttribute(XDI_ADD_APPROVED, true).getXdiValue(true).setLiteralBoolean(Boolean.FALSE);
-			linkContract1.getXdiEntity().getXdiAttribute(XDI_ADD_BLOCKED, true).getXdiValue(true).setLiteralBoolean(Boolean.FALSE);
 
 			linkContract1.setPermissionTargetXDIAddress(
 					XDILinkContractConstants.XDI_ADD_GET, 
@@ -84,7 +81,7 @@ public class XdiConnectionService implements ConnectionService {
 			// create a $ref equivalence link from a #chat[$do] collection member to the chat link contract
 			// this way, it becomes possible later to easily list all chat link contracts
 
-			XdiEntityCollection linkContract1XdiEntityCollection = XdiCommonRoot.findCommonRoot(tempGraph).
+			XdiEntityCollection linkContract1XdiEntityCollection = XdiCommonRoot.findCommonRoot(tempGraph1).
 					getXdiEntityCollection(
 							XDIAddressUtil.concatXDIAddresses(
 									child1Discovery.getCloudNumber().getXDIAddress(),
@@ -102,13 +99,34 @@ public class XdiConnectionService implements ConnectionService {
 
 			MessageEnvelope me = new MessageEnvelope();
 			Message m = me.createMessage(child1Discovery.getCloudNumber().getXDIAddress());
-			m.createSetOperation(tempGraph);
+			m.createSetOperation(tempGraph1);
 			m.setToXDIAddress(child1Discovery.getCloudNumber().getXDIAddress());
 			m.setLinkContract(RootLinkContract.class);
 			m.setSecretToken(child1SecretToken);
 
 			XDIClient childClient = new XDIHttpClient(child1Discovery.getXdiEndpointUrl());
 			childClient.send(me, null);
+
+			// create chat link contract 2
+
+			Graph tempGraph2 = MemoryGraphFactory.getInstance().openGraph();
+
+			GenericLinkContract linkContract2 = GenericLinkContract.findGenericLinkContract(
+					tempGraph2, 
+					child2Discovery.getCloudNumber().getXDIAddress(), 
+					child1Discovery.getCloudNumber().getXDIAddress(), 
+					XDI_ADD_CHAT, 
+					true);
+
+			linkContract2.setPermissionTargetXDIAddress(
+					XDILinkContractConstants.XDI_ADD_GET, 
+					linkContract2.getXdiEntity().getXDIAddress());
+
+			// done
+
+			Connection connection = new XdiConnection(linkContract1);
+
+			return connection;
 		} catch (Exception ex) {
 
 			throw new ConnectionNotFoundException("Cannot request connection as child1 " + child1 + " to child2 " + child2 + ": " + ex.getMessage(), ex);
@@ -174,11 +192,11 @@ public class XdiConnectionService implements ConnectionService {
 				for (XdiEntityMember xdiEntityMember : linkContractXdiEntityCollection.getXdiMembersUnordered()) {
 
 					XdiEntity xdiEntity = xdiEntityMember.dereference();
-					GenericLinkContract genericLinkContract = GenericLinkContract.fromXdiEntity(xdiEntity);
-					
-					if (genericLinkContract == null) continue;
+					GenericLinkContract linkContract = GenericLinkContract.fromXdiEntity(xdiEntity);
 
-					connections.add(new XdiConnection(genericLinkContract, null));
+					if (linkContract == null) continue;
+
+					connections.add(new XdiConnection(linkContract));
 				}
 			}
 
@@ -232,17 +250,17 @@ public class XdiConnectionService implements ConnectionService {
 									false);
 
 			if (linkContractXdiEntityCollection == null) return new Connection[0];
-			
+
 			List<Connection> connections = new ArrayList<Connection> ();
 
 			for (XdiEntityMember xdiEntityMember : linkContractXdiEntityCollection.getXdiMembersUnordered()) {
 
 				XdiEntity xdiEntity = xdiEntityMember.dereference();
-				GenericLinkContract genericLinkContract = GenericLinkContract.fromXdiEntity(xdiEntity);
-				
-				if (genericLinkContract == null) continue;
+				GenericLinkContract linkContract = GenericLinkContract.fromXdiEntity(xdiEntity);
 
-				connections.add(new XdiConnection(genericLinkContract, null));
+				if (linkContract == null) continue;
+
+				connections.add(new XdiConnection(linkContract));
 			}
 
 			// done
@@ -257,11 +275,68 @@ public class XdiConnectionService implements ConnectionService {
 	@Override
 	public Log[] logsConnection(XDIAddress parent, String parentSecretToken, XDIAddress child1, XDIAddress child2) {
 
-		return null;
+		XDIDiscoveryResult parentDiscovery;
+		XDIDiscoveryResult child1Discovery;
+		XDIDiscoveryResult child2Discovery;
+		PrivateKey parentPrivateKey;
+
+		// discovery
+
+		try {
+
+			parentDiscovery = XDIDiscoveryClient.NEUSTAR_OTE_DISCOVERY_CLIENT.discoverFromRegistry(parent, null);
+			child1Discovery = XDIDiscoveryClient.NEUSTAR_OTE_DISCOVERY_CLIENT.discoverFromRegistry(child1, null);
+			child2Discovery = XDIDiscoveryClient.NEUSTAR_OTE_DISCOVERY_CLIENT.discoverFromRegistry(child2, null);
+			parentPrivateKey = XDIClientUtil.retrieveSignaturePrivateKey(parentDiscovery.getCloudNumber(), parentDiscovery.getXdiEndpointUrl(), parentSecretToken);
+		} catch (Exception ex) {
+
+			throw new ConnectionNotFoundException("Cannot find discovery information for parent " + parent + " or child1 " + child1 + " or child2 " + child2 + ": " + ex.getMessage(), ex);
+		}
+
+		try {
+
+			// message
+
+			MessageEnvelope me = new MessageEnvelope();
+			Message m = me.createMessage(child1Discovery.getCloudNumber().getXDIAddress());	// TODO: use parent cloud number instead
+			m.createGetOperation(chatLinkContractXDIAddress(child1Discovery.getCloudNumber().getXDIAddress(), child2Discovery.getCloudNumber().getXDIAddress()));
+			m.setToXDIAddress(child1Discovery.getCloudNumber().getXDIAddress());
+			m.setLinkContract(RootLinkContract.class);
+			m.setSecretToken(parentSecretToken);	// TODO: use signature and guardian link contract instead
+
+			XDIClient childClient = new XDIHttpClient(child1Discovery.getXdiEndpointUrl());
+			childClient.send(me, null);
+
+			// result
+
+			XDIClient child1Client = new XDIHttpClient(child1Discovery.getXdiEndpointUrl());
+			MessageResult mr = child1Client.send(me, null);
+
+			GenericLinkContract linkContract1 = GenericLinkContract.findGenericLinkContract(
+					mr.getGraph(), 
+					child1Discovery.getCloudNumber().getXDIAddress(), 
+					child2Discovery.getCloudNumber().getXDIAddress(), 
+					XDI_ADD_CHAT, 
+					false);
+
+			if (linkContract1 == null) throw new ConnectionNotFoundException("Connection not found.");
+
+			// done
+
+			Connection connection = new XdiConnection(linkContract1);
+
+			return CynjaCloudChat.logService.getLogs(connection);
+		} catch (ConnectionNotFoundException ex) {
+
+			throw ex;
+		} catch (Exception ex) {
+
+			throw new ConnectionNotFoundException("Cannot view logs of connection as parent " + parent + " with child1 " + child1 + " an child2 " + child2 + ": " + ex.getMessage(), ex);
+		}
 	}
 
 	@Override
-	public void approveConnection(XDIAddress parent, String parentSecretToken, XDIAddress child1, XDIAddress child2) {
+	public Connection approveConnection(XDIAddress parent, String parentSecretToken, XDIAddress child1, XDIAddress child2) {
 
 		XDIDiscoveryResult parentDiscovery;
 		XDIDiscoveryResult child1Discovery;
@@ -294,7 +369,28 @@ public class XdiConnectionService implements ConnectionService {
 					XDI_ADD_CHAT, 
 					true);
 
+			linkContract1.setPermissionTargetXDIAddress(
+					XDILinkContractConstants.XDI_ADD_GET, 
+					linkContract1.getXdiEntity().getXDIAddress());
+
 			linkContract1.getXdiEntity().getXdiAttribute(XDI_ADD_APPROVED, true).getXdiValue(true).setLiteralBoolean(Boolean.TRUE);
+
+			// create a $ref equivalence link from a #chat[$do] collection member to the chat link contract
+			// this way, it becomes possible later to easily list all chat link contracts
+
+			XdiEntityCollection linkContract1XdiEntityCollection = XdiCommonRoot.findCommonRoot(tempGraph).
+					getXdiEntityCollection(
+							XDIAddressUtil.concatXDIAddresses(
+									child1Discovery.getCloudNumber().getXDIAddress(),
+									XDI_ADD_CHAT_DO_EC),
+									true);
+
+			XdiEntityMemberUnordered linkContract1XdiEntityMember = linkContract1XdiEntityCollection
+					.setXdiMemberUnordered(XdiAbstractMemberUnordered.createDigestXDIArc(
+							linkContract1.getContextNode().getXDIAddress().toString(),
+							XdiEntityCollection.class));
+
+			Equivalence.setReferenceContextNode(linkContract1XdiEntityMember.getContextNode(), linkContract1.getContextNode());
 
 			// message
 
@@ -307,6 +403,10 @@ public class XdiConnectionService implements ConnectionService {
 
 			XDIClient childClient = new XDIHttpClient(child1Discovery.getXdiEndpointUrl());
 			childClient.send(me, null);
+
+			// done
+
+			return new XdiConnection(linkContract1);
 		} catch (Exception ex) {
 
 			throw new ConnectionNotFoundException("Cannot approve connection as parent " + parent + " with child1 " + child1 + " an child2 " + child2 + ": " + ex.getMessage(), ex);
@@ -314,7 +414,7 @@ public class XdiConnectionService implements ConnectionService {
 	}
 
 	@Override
-	public void blockConnection(XDIAddress parent, String parentSecretToken, XDIAddress child1, XDIAddress child2) {
+	public Connection blockConnection(XDIAddress parent, String parentSecretToken, XDIAddress child1, XDIAddress child2) {
 
 		XDIDiscoveryResult parentDiscovery;
 		XDIDiscoveryResult child1Discovery;
@@ -360,6 +460,10 @@ public class XdiConnectionService implements ConnectionService {
 
 			XDIClient childClient = new XDIHttpClient(child1Discovery.getXdiEndpointUrl());
 			childClient.send(me, null);
+
+			// done
+
+			return new XdiConnection(linkContract1);
 		} catch (Exception ex) {
 
 			throw new ConnectionNotFoundException("Cannot block connection as parent " + parent + " with child1 " + child1 + " an child2 " + child2 + ": " + ex.getMessage(), ex);
@@ -367,7 +471,7 @@ public class XdiConnectionService implements ConnectionService {
 	}
 
 	@Override
-	public void unblockConnection(XDIAddress parent, String parentSecretToken, XDIAddress child1, XDIAddress child2) {
+	public Connection unblockConnection(XDIAddress parent, String parentSecretToken, XDIAddress child1, XDIAddress child2) {
 
 		XDIDiscoveryResult parentDiscovery;
 		XDIDiscoveryResult child1Discovery;
@@ -413,6 +517,10 @@ public class XdiConnectionService implements ConnectionService {
 
 			XDIClient childClient = new XDIHttpClient(child1Discovery.getXdiEndpointUrl());
 			childClient.send(me, null);
+
+			// done
+
+			return new XdiConnection(linkContract1);
 		} catch (Exception ex) {
 
 			throw new ConnectionNotFoundException("Cannot unblock connection as parent " + parent + " with child1 " + child1 + " an child2 " + child2 + ": " + ex.getMessage(), ex);
@@ -420,7 +528,7 @@ public class XdiConnectionService implements ConnectionService {
 	}
 
 	@Override
-	public void deleteConnection(XDIAddress parent, String parentSecretToken, XDIAddress child1, XDIAddress child2) {
+	public Connection deleteConnection(XDIAddress parent, String parentSecretToken, XDIAddress child1, XDIAddress child2) {
 
 		XDIDiscoveryResult parentDiscovery;
 		XDIDiscoveryResult child1Discovery;
@@ -453,6 +561,10 @@ public class XdiConnectionService implements ConnectionService {
 
 			XDIClient childClient = new XDIHttpClient(child1Discovery.getXdiEndpointUrl());
 			childClient.send(me, null);
+
+			// done
+
+			return new XdiConnection(child1Discovery.getCloudNumber().getXDIAddress(), child2Discovery.getCloudNumber().getXDIAddress());
 		} catch (Exception ex) {
 
 			throw new ConnectionNotFoundException("Cannot delete connection as parent " + parent + " with child1 " + child1 + " an child2 " + child2 + ": " + ex.getMessage(), ex);
@@ -485,7 +597,7 @@ public class XdiConnectionService implements ConnectionService {
 
 		try {
 
-			XDIClient child1Client = new XDIHttpClient(child1Discovery.getXdiEndpointUrl());
+			// message
 
 			MessageEnvelope me = new MessageEnvelope();
 			Message m = me.createMessage(child1Discovery.getCloudNumber().getXDIAddress());
@@ -494,6 +606,9 @@ public class XdiConnectionService implements ConnectionService {
 			m.setLinkContract(RootLinkContract.class);
 			m.setSecretToken(child1SecretToken);
 
+			// result
+
+			XDIClient child1Client = new XDIHttpClient(child1Discovery.getXdiEndpointUrl());
 			MessageResult mr = child1Client.send(me, null);
 
 			linkContract1 = GenericLinkContract.findGenericLinkContract(
@@ -503,10 +618,7 @@ public class XdiConnectionService implements ConnectionService {
 					XDI_ADD_CHAT, 
 					false);
 
-			if (linkContract1 == null) throw new ConnectionNotFoundException("Link contract for child1 " + child1 + " not found.");
-		} catch (ConnectionNotFoundException ex) {
-
-			throw ex;
+			if (linkContract1 == null) return null;
 		} catch (Exception ex) {
 
 			throw new ConnectionNotFoundException("Cannot retrieve link contract of child1 " + child1 + ": " + ex.getMessage(), ex);
@@ -516,7 +628,7 @@ public class XdiConnectionService implements ConnectionService {
 
 		try {
 
-			XDIClient child2Client = new XDIHttpClient(child2Discovery.getXdiEndpointUrl());
+			// message
 
 			MessageEnvelope me = new MessageEnvelope();
 			Message m = me.createMessage(child1Discovery.getCloudNumber().getXDIAddress());
@@ -526,6 +638,9 @@ public class XdiConnectionService implements ConnectionService {
 			KeyPairSignature signature = (KeyPairSignature) m.createSignature(KeyPairSignature.DIGEST_ALGORITHM_SHA, 256, KeyPairSignature.KEY_ALGORITHM_RSA, 2048, true);
 			signature.sign(child1PrivateKey);
 
+			// result
+
+			XDIClient child2Client = new XDIHttpClient(child2Discovery.getXdiEndpointUrl());
 			MessageResult mr = child2Client.send(me, null);
 
 			linkContract2 = GenericLinkContract.findGenericLinkContract(
@@ -535,12 +650,10 @@ public class XdiConnectionService implements ConnectionService {
 					XDI_ADD_CHAT, 
 					false);
 
-		} catch (ConnectionNotFoundException ex) {
-
-			throw ex;
+			if (linkContract2 == null) return null;
 		} catch (Exception ex) {
 
-			throw new ConnectionNotFoundException("Cannot retrieve link contract of child2 " + child2 + ": " + ex.getMessage(), ex);
+			return null;
 		}
 
 		// done

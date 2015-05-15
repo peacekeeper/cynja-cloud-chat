@@ -221,7 +221,7 @@ function chatMessage() {
  *   =cynja1 / [=]!:uuid:24909bdb-8f22-4abe-a244-b042adb32b5d         *   =cynja2 / [=]!:uuid:090fba09-cb57-4822-a1c7-b7987e7d62e5
  * have the following children                                        * have the following children
  *   =cynja1-dep1 / [=]!:uuid:3d80d15d-b22b-4ebd-8f80-dd1fa7fdb858    *   =cynja2-dep1 / [=]!:uuid:960162ce-5fed-481b-878f-f3b4da86a31b
- *   =cynja1-dep2 / [=]!:uuid:1a8c8b52-eeb2-403c-8211-8f2924afff1c    *   =cynja2-dep1 / [=]!:uuid:49a806d8-529a-43ca-96ec-4656e8c7f907
+ *   =cynja1-dep2 / [=]!:uuid:1a8c8b52-eeb2-403c-8211-8f2924afff1c    *   =cynja2-dep2 / [=]!:uuid:49a806d8-529a-43ca-96ec-4656e8c7f907
  
  * Secret token for all parents and children: test@123
 </pre>
@@ -290,7 +290,7 @@ function chatMessage() {
 <tr><td>Child 1</td><td><input type="text" id="logsChild1"></td></tr>
 <tr><td>Child 2</td><td><input type="text" id="logsChild2"></td></tr>
 </table>
-<button onclick="log();">View Log</button>
+<button onclick="logs();">View Log</button>
 </div>
 
 <div>

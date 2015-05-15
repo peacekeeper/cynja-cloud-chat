@@ -49,7 +49,7 @@ public class JsonUtil {
 		childrenJsonArray.add(child2JsonObject);
 
 		Session[] sessions = CynjaCloudChat.sessionService.getSessions(connection);
-		
+
 		JsonArray sessionsJsonArray = new JsonArray();
 
 		for (Session session : sessions) {

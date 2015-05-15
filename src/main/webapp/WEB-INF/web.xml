@@ -54,7 +54,7 @@
 	</servlet>
 	<servlet-mapping>
 		<servlet-name>logs</servlet-name>
-		<url-pattern>/1/log</url-pattern>
+		<url-pattern>/1/logs</url-pattern>
 	</servlet-mapping>
 
 	<servlet>
