@@ -23,6 +23,16 @@ public class XdiConnection implements Connection {
 		this.linkContract2 = linkContract2;
 	}
 
+	public GenericLinkContract getLinkContract1() {
+
+		return this.linkContract1;
+	}
+
+	public GenericLinkContract getLinkContract2() {
+
+		return this.linkContract2;
+	}
+
 	@Override
 	public XDIAddress getChild1() {
 
@@ -49,7 +59,7 @@ public class XdiConnection implements Connection {
 	public Boolean isApproved2() {
 
 		if (this.linkContract2 == null) return null;
-		
+
 		XdiAttribute xdiAttribute = this.linkContract2.getXdiEntity().getXdiAttribute(XDI_ADD_APPROVED, false);
 		XdiValue xdiValue = xdiAttribute == null ? null : xdiAttribute.getXdiValue(false);
 		Literal literal = xdiValue == null ? null : xdiValue.getLiteral();

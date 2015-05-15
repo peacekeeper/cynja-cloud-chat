@@ -12,6 +12,7 @@ import xdi2.core.constants.XDILinkContractConstants;
 import xdi2.core.features.equivalence.Equivalence;
 import xdi2.core.features.linkcontracts.instance.GenericLinkContract;
 import xdi2.core.features.linkcontracts.instance.RootLinkContract;
+import xdi2.core.features.nodetypes.XdiAbstractMemberUnordered;
 import xdi2.core.features.nodetypes.XdiCommonRoot;
 import xdi2.core.features.nodetypes.XdiEntity;
 import xdi2.core.features.nodetypes.XdiEntityCollection;
@@ -91,7 +92,9 @@ public class XdiConnectionService implements ConnectionService {
 									true);
 
 			XdiEntityMemberUnordered linkContract1XdiEntityMember = linkContract1XdiEntityCollection
-					.setXdiMemberUnordered(null);
+					.setXdiMemberUnordered(XdiAbstractMemberUnordered.createDigestXDIArc(
+							linkContract1.getContextNode().getXDIAddress().toString(),
+							XdiEntityCollection.class));
 
 			Equivalence.setReferenceContextNode(linkContract1XdiEntityMember.getContextNode(), linkContract1.getContextNode());
 
@@ -166,10 +169,14 @@ public class XdiConnectionService implements ConnectionService {
 										XDI_ADD_CHAT_DO_EC),
 										false);
 
+				if (linkContractXdiEntityCollection == null) continue;
+
 				for (XdiEntityMember xdiEntityMember : linkContractXdiEntityCollection.getXdiMembersUnordered()) {
 
 					XdiEntity xdiEntity = xdiEntityMember.dereference();
 					GenericLinkContract genericLinkContract = GenericLinkContract.fromXdiEntity(xdiEntity);
+					
+					if (genericLinkContract == null) continue;
 
 					connections.add(new XdiConnection(genericLinkContract, null));
 				}
@@ -224,12 +231,16 @@ public class XdiConnectionService implements ConnectionService {
 									XDI_ADD_CHAT_DO_EC),
 									false);
 
+			if (linkContractXdiEntityCollection == null) return new Connection[0];
+			
 			List<Connection> connections = new ArrayList<Connection> ();
 
 			for (XdiEntityMember xdiEntityMember : linkContractXdiEntityCollection.getXdiMembersUnordered()) {
 
 				XdiEntity xdiEntity = xdiEntityMember.dereference();
 				GenericLinkContract genericLinkContract = GenericLinkContract.fromXdiEntity(xdiEntity);
+				
+				if (genericLinkContract == null) continue;
 
 				connections.add(new XdiConnection(genericLinkContract, null));
 			}
@@ -435,7 +446,7 @@ public class XdiConnectionService implements ConnectionService {
 
 			MessageEnvelope me = new MessageEnvelope();
 			Message m = me.createMessage(child1Discovery.getCloudNumber().getXDIAddress());	// TODO: use parent cloud number instead
-			m.createDelOperation(chatLinkContractXDIAddress(child1, child2));
+			m.createDelOperation(chatLinkContractXDIAddress(child1Discovery.getCloudNumber().getXDIAddress(), child2Discovery.getCloudNumber().getXDIAddress()));
 			m.setToXDIAddress(child1Discovery.getCloudNumber().getXDIAddress());
 			m.setLinkContract(RootLinkContract.class);
 			m.setSecretToken(parentSecretToken);	// TODO: use signature and guardian link contract instead
@@ -485,7 +496,13 @@ public class XdiConnectionService implements ConnectionService {
 
 			MessageResult mr = child1Client.send(me, null);
 
-			linkContract1 = GenericLinkContract.findGenericLinkContract(mr.getGraph(), child1, child2, XDI_ADD_CHAT, false);
+			linkContract1 = GenericLinkContract.findGenericLinkContract(
+					mr.getGraph(), 
+					child1Discovery.getCloudNumber().getXDIAddress(), 
+					child2Discovery.getCloudNumber().getXDIAddress(), 
+					XDI_ADD_CHAT, 
+					false);
+
 			if (linkContract1 == null) throw new ConnectionNotFoundException("Link contract for child1 " + child1 + " not found.");
 		} catch (ConnectionNotFoundException ex) {
 
@@ -502,7 +519,7 @@ public class XdiConnectionService implements ConnectionService {
 			XDIClient child2Client = new XDIHttpClient(child2Discovery.getXdiEndpointUrl());
 
 			MessageEnvelope me = new MessageEnvelope();
-			Message m = me.createMessage(child2Discovery.getCloudNumber().getXDIAddress());
+			Message m = me.createMessage(child1Discovery.getCloudNumber().getXDIAddress());
 			m.createGetOperation(chatLinkContractXDIAddress(child2Discovery.getCloudNumber().getXDIAddress(), child1Discovery.getCloudNumber().getXDIAddress())); 
 			m.setToXDIAddress(child2Discovery.getCloudNumber().getXDIAddress());
 			m.setLinkContractXDIAddress(chatLinkContractXDIAddress(child2Discovery.getCloudNumber().getXDIAddress(), child1Discovery.getCloudNumber().getXDIAddress()));
@@ -511,7 +528,13 @@ public class XdiConnectionService implements ConnectionService {
 
 			MessageResult mr = child2Client.send(me, null);
 
-			linkContract2 = GenericLinkContract.findGenericLinkContract(mr.getGraph(), child2, child1, XDI_ADD_CHAT, false);
+			linkContract2 = GenericLinkContract.findGenericLinkContract(
+					mr.getGraph(), 
+					child2Discovery.getCloudNumber().getXDIAddress(), 
+					child1Discovery.getCloudNumber().getXDIAddress(), 
+					XDI_ADD_CHAT, 
+					false);
+
 		} catch (ConnectionNotFoundException ex) {
 
 			throw ex;

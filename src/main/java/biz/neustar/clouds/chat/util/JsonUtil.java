@@ -5,6 +5,7 @@ import java.text.DateFormat;
 
 import javax.websocket.Session;
 
+import biz.neustar.clouds.chat.CynjaCloudChat;
 import biz.neustar.clouds.chat.model.Connection;
 import biz.neustar.clouds.chat.model.Log;
 
@@ -13,7 +14,6 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import com.google.gson.JsonPrimitive;
 import com.google.gson.stream.JsonWriter;
 
 public class JsonUtil {
@@ -48,20 +48,22 @@ public class JsonUtil {
 		childrenJsonArray.add(child1JsonObject);
 		childrenJsonArray.add(child2JsonObject);
 
-/*		JsonArray sessionsJsonArray = new JsonArray();
+		Session[] sessions = CynjaCloudChat.sessionService.getSessions(connection);
+		
+		JsonArray sessionsJsonArray = new JsonArray();
 
-		for (Session session : connection.getSessions()) {
+		for (Session session : sessions) {
 
 			JsonObject sessionJsonObject = new JsonObject();
 			sessionJsonObject.add("id", gson.toJsonTree(session.getId()));
 			sessionJsonObject.add("open", gson.toJsonTree(session.isOpen()));
 
 			sessionsJsonArray.add(sessionJsonObject);
-		}*/
+		}
 
 		JsonObject jsonObject = new JsonObject();
 		jsonObject.add("children", childrenJsonArray);
-		//jsonObject.add("sessions", sessionsJsonArray);
+		jsonObject.add("sessions", sessionsJsonArray);
 
 		return jsonObject;
 	}

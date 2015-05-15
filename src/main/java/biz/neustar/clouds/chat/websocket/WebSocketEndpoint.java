@@ -24,6 +24,7 @@ import org.slf4j.LoggerFactory;
 import xdi2.core.syntax.XDIAddress;
 import biz.neustar.clouds.chat.CynjaCloudChat;
 import biz.neustar.clouds.chat.model.Connection;
+import biz.neustar.clouds.chat.service.impl.xdi.XdiConnection;
 
 public class WebSocketEndpoint extends javax.websocket.Endpoint {
 
@@ -117,13 +118,16 @@ public class WebSocketEndpoint extends javax.websocket.Endpoint {
 				return;
 			}
 
-			if (! connection.isApproved1() || ! connection.isApproved2()) {
+			System.out.println(((XdiConnection) connection).getLinkContract1().getContextNode().getGraph().toString("XDI/JSON/QUAD", null));
+			System.out.println(((XdiConnection) connection).getLinkContract2().getContextNode().getGraph().toString("XDI/JSON/QUAD", null));
+
+			if (! Boolean.TRUE.equals(connection.isApproved1()) || ! Boolean.TRUE.equals(connection.isApproved2())) {
 
 				session.close(new CloseReason(CloseCodes.VIOLATED_POLICY, "Connection is not approved yet."));
 				return;
 			}
 
-			if (connection.isBlocked1() || connection.isBlocked2()) {
+			if (Boolean.TRUE.equals(connection.isBlocked1()) || Boolean.TRUE.equals(connection.isBlocked2())) {
 
 				session.close(new CloseReason(CloseCodes.VIOLATED_POLICY, "Connection is temporarily blocked."));
 				return;
@@ -145,7 +149,12 @@ public class WebSocketEndpoint extends javax.websocket.Endpoint {
 
 			try {
 
-				session.close(new CloseReason(CloseCodes.PROTOCOL_ERROR, "Cannot add message handler: " + ex.getMessage()));
+				String reason = "Cannot add message handler: " + ex.getMessage();
+				log.error(reason, ex);
+
+				if (reason.length() > 120) reason = reason.substring(0, 120);
+
+				session.close(new CloseReason(CloseCodes.PROTOCOL_ERROR, reason));
 			} catch (IOException ex2) {
 
 				throw new RuntimeException(ex2.getMessage(), ex2);
