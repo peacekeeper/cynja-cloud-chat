@@ -167,13 +167,13 @@ public class XdiConnectionService implements ConnectionService {
 				// message
 
 				MessageEnvelope me = new MessageEnvelope();
-				Message m = me.createMessage(childDiscovery.getCloudNumber().getXDIAddress());	// TODO: use parent cloud number instead
+				Message m = me.createMessage(parentDiscovery.getCloudNumber().getXDIAddress());
 				m.createGetOperation(XDIAddressUtil.concatXDIAddresses(
 						childDiscovery.getCloudNumber().getXDIAddress(),
 						XDI_ADD_CHAT_DO_EC));
 				m.setToXDIAddress(childDiscovery.getCloudNumber().getXDIAddress());
-				m.setLinkContract(RootLinkContract.class);
-				m.setSecretToken(parentSecretToken);	// TODO: use signature and guardian link contract instead
+				m.setLinkContractXDIAddress(dependentLinkContractXDIAddress(parentDiscovery.getCloudNumber().getXDIAddress(), childDiscovery.getCloudNumber().getXDIAddress()));
+				((KeyPairSignature) m.createSignature(KeyPairSignature.DIGEST_ALGORITHM_SHA, 256, KeyPairSignature.KEY_ALGORITHM_RSA, 2048, true)).sign(parentPrivateKey);
 
 				XDIClient childClient = new XDIHttpClient(childDiscovery.getXdiEndpointUrl());
 				MessageResult mr = childClient.send(me, null);
@@ -298,11 +298,11 @@ public class XdiConnectionService implements ConnectionService {
 			// message
 
 			MessageEnvelope me = new MessageEnvelope();
-			Message m = me.createMessage(child1Discovery.getCloudNumber().getXDIAddress());	// TODO: use parent cloud number instead
+			Message m = me.createMessage(parentDiscovery.getCloudNumber().getXDIAddress());
 			m.createGetOperation(chatLinkContractXDIAddress(child1Discovery.getCloudNumber().getXDIAddress(), child2Discovery.getCloudNumber().getXDIAddress()));
 			m.setToXDIAddress(child1Discovery.getCloudNumber().getXDIAddress());
-			m.setLinkContract(RootLinkContract.class);
-			m.setSecretToken(parentSecretToken);	// TODO: use signature and guardian link contract instead
+			m.setLinkContractXDIAddress(dependentLinkContractXDIAddress(parentDiscovery.getCloudNumber().getXDIAddress(), child1Discovery.getCloudNumber().getXDIAddress()));
+			((KeyPairSignature) m.createSignature(KeyPairSignature.DIGEST_ALGORITHM_SHA, 256, KeyPairSignature.KEY_ALGORITHM_RSA, 2048, true)).sign(parentPrivateKey);
 
 			XDIClient childClient = new XDIHttpClient(child1Discovery.getXdiEndpointUrl());
 			childClient.send(me, null);
@@ -395,11 +395,11 @@ public class XdiConnectionService implements ConnectionService {
 			// message
 
 			MessageEnvelope me = new MessageEnvelope();
-			Message m = me.createMessage(child1Discovery.getCloudNumber().getXDIAddress());	// TODO: use parent cloud number instead
+			Message m = me.createMessage(parentDiscovery.getCloudNumber().getXDIAddress());
 			m.createSetOperation(tempGraph);
 			m.setToXDIAddress(child1Discovery.getCloudNumber().getXDIAddress());
-			m.setLinkContract(RootLinkContract.class);
-			m.setSecretToken(parentSecretToken);	// TODO: use signature and guardian link contract instead
+			m.setLinkContractXDIAddress(dependentLinkContractXDIAddress(parentDiscovery.getCloudNumber().getXDIAddress(), child1Discovery.getCloudNumber().getXDIAddress()));
+			((KeyPairSignature) m.createSignature(KeyPairSignature.DIGEST_ALGORITHM_SHA, 256, KeyPairSignature.KEY_ALGORITHM_RSA, 2048, true)).sign(parentPrivateKey);
 
 			XDIClient childClient = new XDIHttpClient(child1Discovery.getXdiEndpointUrl());
 			childClient.send(me, null);
@@ -452,11 +452,11 @@ public class XdiConnectionService implements ConnectionService {
 			// message
 
 			MessageEnvelope me = new MessageEnvelope();
-			Message m = me.createMessage(child1Discovery.getCloudNumber().getXDIAddress());	// TODO: use parent cloud number instead
+			Message m = me.createMessage(parentDiscovery.getCloudNumber().getXDIAddress());
 			m.createSetOperation(tempGraph);
 			m.setToXDIAddress(child1Discovery.getCloudNumber().getXDIAddress());
-			m.setLinkContract(RootLinkContract.class);
-			m.setSecretToken(parentSecretToken);	// TODO: use signature and guardian link contract instead
+			m.setLinkContractXDIAddress(dependentLinkContractXDIAddress(parentDiscovery.getCloudNumber().getXDIAddress(), child1Discovery.getCloudNumber().getXDIAddress()));
+			((KeyPairSignature) m.createSignature(KeyPairSignature.DIGEST_ALGORITHM_SHA, 256, KeyPairSignature.KEY_ALGORITHM_RSA, 2048, true)).sign(parentPrivateKey);
 
 			XDIClient childClient = new XDIHttpClient(child1Discovery.getXdiEndpointUrl());
 			childClient.send(me, null);
@@ -509,11 +509,11 @@ public class XdiConnectionService implements ConnectionService {
 			// message
 
 			MessageEnvelope me = new MessageEnvelope();
-			Message m = me.createMessage(child1Discovery.getCloudNumber().getXDIAddress());	// TODO: use parent cloud number instead
+			Message m = me.createMessage(parentDiscovery.getCloudNumber().getXDIAddress());
 			m.createSetOperation(tempGraph);
 			m.setToXDIAddress(child1Discovery.getCloudNumber().getXDIAddress());
-			m.setLinkContract(RootLinkContract.class);
-			m.setSecretToken(parentSecretToken);	// TODO: use signature and guardian link contract instead
+			m.setLinkContractXDIAddress(dependentLinkContractXDIAddress(parentDiscovery.getCloudNumber().getXDIAddress(), child1Discovery.getCloudNumber().getXDIAddress()));
+			((KeyPairSignature) m.createSignature(KeyPairSignature.DIGEST_ALGORITHM_SHA, 256, KeyPairSignature.KEY_ALGORITHM_RSA, 2048, true)).sign(parentPrivateKey);
 
 			XDIClient childClient = new XDIHttpClient(child1Discovery.getXdiEndpointUrl());
 			childClient.send(me, null);
@@ -553,11 +553,11 @@ public class XdiConnectionService implements ConnectionService {
 			// message
 
 			MessageEnvelope me = new MessageEnvelope();
-			Message m = me.createMessage(child1Discovery.getCloudNumber().getXDIAddress());	// TODO: use parent cloud number instead
+			Message m = me.createMessage(parentDiscovery.getCloudNumber().getXDIAddress());
 			m.createDelOperation(chatLinkContractXDIAddress(child1Discovery.getCloudNumber().getXDIAddress(), child2Discovery.getCloudNumber().getXDIAddress()));
 			m.setToXDIAddress(child1Discovery.getCloudNumber().getXDIAddress());
-			m.setLinkContract(RootLinkContract.class);
-			m.setSecretToken(parentSecretToken);	// TODO: use signature and guardian link contract instead
+			m.setLinkContractXDIAddress(dependentLinkContractXDIAddress(parentDiscovery.getCloudNumber().getXDIAddress(), child1Discovery.getCloudNumber().getXDIAddress()));
+			((KeyPairSignature) m.createSignature(KeyPairSignature.DIGEST_ALGORITHM_SHA, 256, KeyPairSignature.KEY_ALGORITHM_RSA, 2048, true)).sign(parentPrivateKey);
 
 			XDIClient childClient = new XDIHttpClient(child1Discovery.getXdiEndpointUrl());
 			childClient.send(me, null);
@@ -635,8 +635,7 @@ public class XdiConnectionService implements ConnectionService {
 			m.createGetOperation(chatLinkContractXDIAddress(child2Discovery.getCloudNumber().getXDIAddress(), child1Discovery.getCloudNumber().getXDIAddress())); 
 			m.setToXDIAddress(child2Discovery.getCloudNumber().getXDIAddress());
 			m.setLinkContractXDIAddress(chatLinkContractXDIAddress(child2Discovery.getCloudNumber().getXDIAddress(), child1Discovery.getCloudNumber().getXDIAddress()));
-			KeyPairSignature signature = (KeyPairSignature) m.createSignature(KeyPairSignature.DIGEST_ALGORITHM_SHA, 256, KeyPairSignature.KEY_ALGORITHM_RSA, 2048, true);
-			signature.sign(child1PrivateKey);
+			((KeyPairSignature) m.createSignature(KeyPairSignature.DIGEST_ALGORITHM_SHA, 256, KeyPairSignature.KEY_ALGORITHM_RSA, 2048, true)).sign(child1PrivateKey);
 
 			// result
 
@@ -668,5 +667,10 @@ public class XdiConnectionService implements ConnectionService {
 	private static XDIAddress chatLinkContractXDIAddress(XDIAddress child1, XDIAddress child2) {
 
 		return GenericLinkContract.createGenericLinkContractXDIAddress(child1, child2, XDI_ADD_CHAT);
+	}
+
+	private static XDIAddress dependentLinkContractXDIAddress(XDIAddress child, XDIAddress parent) {
+
+		return GenericLinkContract.createGenericLinkContractXDIAddress(child, parent, null);
 	}
 }
