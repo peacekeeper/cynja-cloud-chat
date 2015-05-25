@@ -172,7 +172,7 @@ public class XdiConnectionService implements ConnectionService {
 						childDiscovery.getCloudNumber().getXDIAddress(),
 						XDI_ADD_CHAT_DO_EC));
 				m.setToXDIAddress(childDiscovery.getCloudNumber().getXDIAddress());
-				m.setLinkContractXDIAddress(dependentLinkContractXDIAddress(parentDiscovery.getCloudNumber().getXDIAddress(), childDiscovery.getCloudNumber().getXDIAddress()));
+				m.setLinkContractXDIAddress(dependentLinkContractXDIAddress(childDiscovery.getCloudNumber().getXDIAddress(), parentDiscovery.getCloudNumber().getXDIAddress()));
 				((KeyPairSignature) m.createSignature(KeyPairSignature.DIGEST_ALGORITHM_SHA, 256, KeyPairSignature.KEY_ALGORITHM_RSA, 2048, true)).sign(parentPrivateKey);
 
 				XDIClient childClient = new XDIHttpClient(childDiscovery.getXdiEndpointUrl());
@@ -301,7 +301,7 @@ public class XdiConnectionService implements ConnectionService {
 			Message m = me.createMessage(parentDiscovery.getCloudNumber().getXDIAddress());
 			m.createGetOperation(chatLinkContractXDIAddress(child1Discovery.getCloudNumber().getXDIAddress(), child2Discovery.getCloudNumber().getXDIAddress()));
 			m.setToXDIAddress(child1Discovery.getCloudNumber().getXDIAddress());
-			m.setLinkContractXDIAddress(dependentLinkContractXDIAddress(parentDiscovery.getCloudNumber().getXDIAddress(), child1Discovery.getCloudNumber().getXDIAddress()));
+			m.setLinkContractXDIAddress(dependentLinkContractXDIAddress(child1Discovery.getCloudNumber().getXDIAddress(), parentDiscovery.getCloudNumber().getXDIAddress()));
 			((KeyPairSignature) m.createSignature(KeyPairSignature.DIGEST_ALGORITHM_SHA, 256, KeyPairSignature.KEY_ALGORITHM_RSA, 2048, true)).sign(parentPrivateKey);
 
 			XDIClient childClient = new XDIHttpClient(child1Discovery.getXdiEndpointUrl());
@@ -398,7 +398,7 @@ public class XdiConnectionService implements ConnectionService {
 			Message m = me.createMessage(parentDiscovery.getCloudNumber().getXDIAddress());
 			m.createSetOperation(tempGraph);
 			m.setToXDIAddress(child1Discovery.getCloudNumber().getXDIAddress());
-			m.setLinkContractXDIAddress(dependentLinkContractXDIAddress(parentDiscovery.getCloudNumber().getXDIAddress(), child1Discovery.getCloudNumber().getXDIAddress()));
+			m.setLinkContractXDIAddress(dependentLinkContractXDIAddress(child1Discovery.getCloudNumber().getXDIAddress(), parentDiscovery.getCloudNumber().getXDIAddress()));
 			((KeyPairSignature) m.createSignature(KeyPairSignature.DIGEST_ALGORITHM_SHA, 256, KeyPairSignature.KEY_ALGORITHM_RSA, 2048, true)).sign(parentPrivateKey);
 
 			XDIClient childClient = new XDIHttpClient(child1Discovery.getXdiEndpointUrl());
@@ -455,7 +455,7 @@ public class XdiConnectionService implements ConnectionService {
 			Message m = me.createMessage(parentDiscovery.getCloudNumber().getXDIAddress());
 			m.createSetOperation(tempGraph);
 			m.setToXDIAddress(child1Discovery.getCloudNumber().getXDIAddress());
-			m.setLinkContractXDIAddress(dependentLinkContractXDIAddress(parentDiscovery.getCloudNumber().getXDIAddress(), child1Discovery.getCloudNumber().getXDIAddress()));
+			m.setLinkContractXDIAddress(dependentLinkContractXDIAddress(child1Discovery.getCloudNumber().getXDIAddress(), parentDiscovery.getCloudNumber().getXDIAddress()));
 			((KeyPairSignature) m.createSignature(KeyPairSignature.DIGEST_ALGORITHM_SHA, 256, KeyPairSignature.KEY_ALGORITHM_RSA, 2048, true)).sign(parentPrivateKey);
 
 			XDIClient childClient = new XDIHttpClient(child1Discovery.getXdiEndpointUrl());
@@ -512,7 +512,7 @@ public class XdiConnectionService implements ConnectionService {
 			Message m = me.createMessage(parentDiscovery.getCloudNumber().getXDIAddress());
 			m.createSetOperation(tempGraph);
 			m.setToXDIAddress(child1Discovery.getCloudNumber().getXDIAddress());
-			m.setLinkContractXDIAddress(dependentLinkContractXDIAddress(parentDiscovery.getCloudNumber().getXDIAddress(), child1Discovery.getCloudNumber().getXDIAddress()));
+			m.setLinkContractXDIAddress(dependentLinkContractXDIAddress(child1Discovery.getCloudNumber().getXDIAddress(), parentDiscovery.getCloudNumber().getXDIAddress()));
 			((KeyPairSignature) m.createSignature(KeyPairSignature.DIGEST_ALGORITHM_SHA, 256, KeyPairSignature.KEY_ALGORITHM_RSA, 2048, true)).sign(parentPrivateKey);
 
 			XDIClient childClient = new XDIHttpClient(child1Discovery.getXdiEndpointUrl());
@@ -556,7 +556,7 @@ public class XdiConnectionService implements ConnectionService {
 			Message m = me.createMessage(parentDiscovery.getCloudNumber().getXDIAddress());
 			m.createDelOperation(chatLinkContractXDIAddress(child1Discovery.getCloudNumber().getXDIAddress(), child2Discovery.getCloudNumber().getXDIAddress()));
 			m.setToXDIAddress(child1Discovery.getCloudNumber().getXDIAddress());
-			m.setLinkContractXDIAddress(dependentLinkContractXDIAddress(parentDiscovery.getCloudNumber().getXDIAddress(), child1Discovery.getCloudNumber().getXDIAddress()));
+			m.setLinkContractXDIAddress(dependentLinkContractXDIAddress(child1Discovery.getCloudNumber().getXDIAddress(), parentDiscovery.getCloudNumber().getXDIAddress()));
 			((KeyPairSignature) m.createSignature(KeyPairSignature.DIGEST_ALGORITHM_SHA, 256, KeyPairSignature.KEY_ALGORITHM_RSA, 2048, true)).sign(parentPrivateKey);
 
 			XDIClient childClient = new XDIHttpClient(child1Discovery.getXdiEndpointUrl());
