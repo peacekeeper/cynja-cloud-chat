@@ -222,8 +222,15 @@ function chatMessage() {
  * have the following children                                        * have the following children
  *   =cynja1-dep1 / [=]!:uuid:3d80d15d-b22b-4ebd-8f80-dd1fa7fdb858    *   =cynja2-dep1 / [=]!:uuid:960162ce-5fed-481b-878f-f3b4da86a31b
  *   =cynja1-dep2 / [=]!:uuid:1a8c8b52-eeb2-403c-8211-8f2924afff1c    *   =cynja2-dep2 / [=]!:uuid:49a806d8-529a-43ca-96ec-4656e8c7f907
- 
  * Secret token for all parents and children: test@123
+
+ * Parents                                                            * Parents
+ *   =cynja3 / [=]!:uuid:cb1f5cc8-53de-4c3c-a942-a4a14c0cb998         *   =cynja4 / [=]!:uuid:fb0d8ee8-fee0-4179-8ba8-059e855ac6dc
+ * have the following children                                        * have the following children
+ *   =cynja3child1 / [=]!:uuid:3e7a53c8-2b84-4737-bd7b-ee6196efda88   *   =cynja4child1 / [=]!:uuid:371c1bf8-d228-4f34-9750-f848c39120e3
+ *   =cynja3child2 / [=]!:uuid:295516cf-e89f-4221-ac0b-668c0fb41d1a   *   =cynja4child2 / [=]!:uuid:4af1a56b-f996-4051-bd93-17cb84b24d2f
+ * Secret token for all parents and children: Test@123
+
 </pre>
 
 <div id="chat">
