@@ -40,41 +40,44 @@ public class JsonUtil {
 		gson.toJson(jsonElement, jsonWriter);
 	}
 
-	public static JsonObject connectionToJson(Connection connection) {
+	public static JsonObject connectionsToJson(Connection[] connections) {
 
-		JsonArray childrenJsonArray = new JsonArray();
+		JsonObject childrenJsonObject = new JsonObject();
 
-		JsonObject child1JsonObject = new JsonObject();
-		child1JsonObject.add("child", gson.toJsonTree(connection.getChild1().toString()));
-		child1JsonObject.add("approved", gson.toJsonTree(connection.isApproved1()));
-		child1JsonObject.add("blocked", gson.toJsonTree(connection.isBlocked1()));
+		for (Connection connection : connections) {
 
-		JsonObject child2JsonObject = new JsonObject();
-		child2JsonObject.add("child", gson.toJsonTree(connection.getChild2().toString()));
-		child2JsonObject.add("approved", gson.toJsonTree(connection.isApproved2()));
-		child2JsonObject.add("blocked", gson.toJsonTree(connection.isBlocked2()));
+			JsonArray childJsonArray = childrenJsonObject.getAsJsonArray(connection.getChild1().toString());
 
-		childrenJsonArray.add(child1JsonObject);
-		childrenJsonArray.add(child2JsonObject);
+			if (childJsonArray == null) {
 
-		Session[] sessions = CynjaCloudChat.sessionService.getSessions(connection);
+				childJsonArray = new JsonArray();
+				childrenJsonObject.add(connection.getChild1().toString(), childJsonArray);
+			}
 
-		JsonArray sessionsJsonArray = new JsonArray();
+			JsonObject child1JsonObject = new JsonObject();
+			child1JsonObject.add("child", gson.toJsonTree(connection.getChild2().toString()));
+			child1JsonObject.add("approved", gson.toJsonTree(connection.isApproved1()));
+			child1JsonObject.add("blocked", gson.toJsonTree(connection.isBlocked1()));
 
-		for (Session session : sessions) {
+			Session[] sessions = CynjaCloudChat.sessionService.getSessions(connection);
 
-			JsonObject sessionJsonObject = new JsonObject();
-			sessionJsonObject.add("id", gson.toJsonTree(session.getId()));
-			sessionJsonObject.add("open", gson.toJsonTree(session.isOpen()));
+			JsonArray sessionsJsonArray = new JsonArray();
 
-			sessionsJsonArray.add(sessionJsonObject);
+			for (Session session : sessions) {
+
+				JsonObject sessionJsonObject = new JsonObject();
+				sessionJsonObject.add("id", gson.toJsonTree(session.getId()));
+				sessionJsonObject.add("open", gson.toJsonTree(session.isOpen()));
+
+				sessionsJsonArray.add(sessionJsonObject);
+			}
+
+			child1JsonObject.add("sessions", sessionsJsonArray);
+
+			childJsonArray.add(child1JsonObject);
 		}
 
-		JsonObject jsonObject = new JsonObject();
-		jsonObject.add("children", childrenJsonArray);
-		jsonObject.add("sessions", sessionsJsonArray);
-
-		return jsonObject;
+		return childrenJsonObject;
 	}
 
 	public static JsonObject logToJson(Log log) {
