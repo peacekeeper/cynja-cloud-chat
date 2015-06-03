@@ -12,6 +12,10 @@ import org.slf4j.LoggerFactory;
 import xdi2.core.syntax.XDIAddress;
 import biz.neustar.clouds.chat.CynjaCloudChat;
 import biz.neustar.clouds.chat.model.Connection;
+import biz.neustar.clouds.chat.util.JsonUtil;
+
+import com.google.gson.JsonObject;
+import com.google.gson.JsonPrimitive;
 
 public class WebSocketMessageHandler implements javax.websocket.MessageHandler.Whole<Reader> {
 
@@ -41,7 +45,6 @@ public class WebSocketMessageHandler implements javax.websocket.MessageHandler.W
 		try {
 
 			line = bufferedReader.readLine();
-			line = this.getChild1().toString() + "> " + line;
 		} catch (IOException ex) {
 
 			throw new RuntimeException(ex.getMessage(), ex);
@@ -58,11 +61,17 @@ public class WebSocketMessageHandler implements javax.websocket.MessageHandler.W
 		WebSocketEndpoint.send(this, line);
 	}
 
-	public void send(String line) {
+	public void send(WebSocketMessageHandler fromWebSocketMessageHandler, String line) {
 
-		this.session.getAsyncRemote().sendText(line);
+		JsonObject jsonObject = new JsonObject();
+		jsonObject.add("child", new JsonPrimitive(fromWebSocketMessageHandler.getChild1().toString()));
+		jsonObject.add("message", new JsonPrimitive(line));
 
-		log.info("Sent line " + line + " to session " + this.session.getId());
+		String string = JsonUtil.toString(jsonObject);
+
+		this.session.getAsyncRemote().sendText(string);
+
+		log.info("Sent JSON object " + string + " to session " + this.session.getId());
 	}
 
 	/*

@@ -80,7 +80,7 @@ public class WebSocketEndpoint extends javax.websocket.Endpoint {
 							fromWebSocketMessageHandler.getChild1().equals(webSocketMessageHandler.getChild1()) &&
 							fromWebSocketMessageHandler.getChild2().equals(webSocketMessageHandler.getChild2()))) {
 
-				webSocketMessageHandler.send(line);
+				webSocketMessageHandler.send(fromWebSocketMessageHandler, line);
 			}
 		}
 	}
