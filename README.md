@@ -23,7 +23,7 @@ To build all components.
 
 Then go to:
 
-	http://localhost:3080/1/
+	http://localhost:3080/
 
 ### Documentation
 
