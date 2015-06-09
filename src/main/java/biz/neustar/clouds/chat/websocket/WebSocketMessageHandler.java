@@ -64,7 +64,10 @@ public class WebSocketMessageHandler implements javax.websocket.MessageHandler.W
 	public void send(WebSocketMessageHandler fromWebSocketMessageHandler, String line) {
 
 		JsonObject jsonObject = new JsonObject();
-		jsonObject.add("child", new JsonPrimitive(fromWebSocketMessageHandler.getChild1().toString()));
+		jsonObject.add("chatChild1", new JsonPrimitive(fromWebSocketMessageHandler.getChild1().toString()));
+		jsonObject.add("chatChild2", new JsonPrimitive(fromWebSocketMessageHandler.getChild2().toString()));
+		jsonObject.add("connectionChild1", new JsonPrimitive(fromWebSocketMessageHandler.getConnection().getChild1().toString()));
+		jsonObject.add("connectionChild2", new JsonPrimitive(fromWebSocketMessageHandler.getConnection().getChild2().toString()));
 		jsonObject.add("message", new JsonPrimitive(line));
 
 		String string = JsonUtil.toString(jsonObject);
