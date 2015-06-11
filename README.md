@@ -3,7 +3,7 @@
 This is a simple chat server that integrates with XDI personal clouds.
 It allows parents to manage chat connections of their children.
 
-Sample deployment: http://52.7.194.93:3080/
+Sample deployment: http://registry.respectnetwork.net:3080/
 
 ### How to build
 
