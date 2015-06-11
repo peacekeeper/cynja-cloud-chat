@@ -23,12 +23,12 @@ import xdi2.core.impl.memory.MemoryGraphFactory;
 import xdi2.core.syntax.XDIAddress;
 import xdi2.core.syntax.XDIArc;
 import xdi2.core.util.XDIAddressUtil;
-import xdi2.discovery.XDIDiscoveryClient;
 import xdi2.discovery.XDIDiscoveryResult;
 import xdi2.messaging.Message;
 import xdi2.messaging.MessageEnvelope;
 import xdi2.messaging.MessageResult;
 import biz.neustar.clouds.chat.CynjaCloudChat;
+import biz.neustar.clouds.chat.InitFilter;
 import biz.neustar.clouds.chat.exceptions.ConnectionNotFoundException;
 import biz.neustar.clouds.chat.model.Connection;
 import biz.neustar.clouds.chat.model.Log;
@@ -54,10 +54,10 @@ public class XdiConnectionService implements ConnectionService {
 
 		try {
 
-			child1Discovery = XDIDiscoveryClient.NEUSTAR_OTE_DISCOVERY_CLIENT.discoverFromRegistry(child1, null);
+			child1Discovery = InitFilter.XDI_DISCOVERY_CLIENT.discoverFromRegistry(child1, null);
 			if (child1Discovery == null) throw new NullPointerException("Child 1 not found.");
 
-			child2Discovery = XDIDiscoveryClient.NEUSTAR_OTE_DISCOVERY_CLIENT.discoverFromRegistry(child2, null);
+			child2Discovery = InitFilter.XDI_DISCOVERY_CLIENT.discoverFromRegistry(child2, null);
 			if (child2Discovery == null) throw new NullPointerException("Child 2 not found.");
 		} catch (Exception ex) {
 
@@ -146,7 +146,7 @@ public class XdiConnectionService implements ConnectionService {
 
 		try {
 
-			parentDiscovery = XDIDiscoveryClient.NEUSTAR_OTE_DISCOVERY_CLIENT.discoverFromRegistry(parent, null);
+			parentDiscovery = InitFilter.XDI_DISCOVERY_CLIENT.discoverFromRegistry(parent, null);
 			if (parentDiscovery == null) throw new NullPointerException("Parent not found.");
 
 			parentPrivateKey = XDIClientUtil.retrieveSignaturePrivateKey(parentDiscovery.getCloudNumber(), parentDiscovery.getXdiEndpointUrl(), parentSecretToken);
@@ -168,7 +168,7 @@ public class XdiConnectionService implements ConnectionService {
 
 				// discovery
 
-				childDiscovery = XDIDiscoveryClient.NEUSTAR_OTE_DISCOVERY_CLIENT.discoverFromRegistry(child, null);
+				childDiscovery = InitFilter.XDI_DISCOVERY_CLIENT.discoverFromRegistry(child, null);
 
 				// message
 
@@ -224,7 +224,7 @@ public class XdiConnectionService implements ConnectionService {
 
 		try {
 
-			childDiscovery = XDIDiscoveryClient.NEUSTAR_OTE_DISCOVERY_CLIENT.discoverFromRegistry(child, null);
+			childDiscovery = InitFilter.XDI_DISCOVERY_CLIENT.discoverFromRegistry(child, null);
 			if (childDiscovery == null) throw new NullPointerException("Child not found.");
 		} catch (Exception ex) {
 
@@ -291,13 +291,13 @@ public class XdiConnectionService implements ConnectionService {
 
 		try {
 
-			parentDiscovery = XDIDiscoveryClient.NEUSTAR_OTE_DISCOVERY_CLIENT.discoverFromRegistry(parent, null);
+			parentDiscovery = InitFilter.XDI_DISCOVERY_CLIENT.discoverFromRegistry(parent, null);
 			if (parentDiscovery == null) throw new NullPointerException("Parent not found.");
 			
-			child1Discovery = XDIDiscoveryClient.NEUSTAR_OTE_DISCOVERY_CLIENT.discoverFromRegistry(child1, null);
+			child1Discovery = InitFilter.XDI_DISCOVERY_CLIENT.discoverFromRegistry(child1, null);
 			if (child1Discovery == null) throw new NullPointerException("Child 1 not found.");
 			
-			child2Discovery = XDIDiscoveryClient.NEUSTAR_OTE_DISCOVERY_CLIENT.discoverFromRegistry(child2, null);
+			child2Discovery = InitFilter.XDI_DISCOVERY_CLIENT.discoverFromRegistry(child2, null);
 			if (child2Discovery == null) throw new NullPointerException("Child 2 not found.");
 
 			parentPrivateKey = XDIClientUtil.retrieveSignaturePrivateKey(parentDiscovery.getCloudNumber(), parentDiscovery.getXdiEndpointUrl(), parentSecretToken);
@@ -361,13 +361,13 @@ public class XdiConnectionService implements ConnectionService {
 
 		try {
 
-			parentDiscovery = XDIDiscoveryClient.NEUSTAR_OTE_DISCOVERY_CLIENT.discoverFromRegistry(parent, null);
+			parentDiscovery = InitFilter.XDI_DISCOVERY_CLIENT.discoverFromRegistry(parent, null);
 			if (parentDiscovery == null) throw new NullPointerException("Parent not found.");
 			
-			child1Discovery = XDIDiscoveryClient.NEUSTAR_OTE_DISCOVERY_CLIENT.discoverFromRegistry(child1, null);
+			child1Discovery = InitFilter.XDI_DISCOVERY_CLIENT.discoverFromRegistry(child1, null);
 			if (child1Discovery == null) throw new NullPointerException("Child 1 not found.");
 			
-			child2Discovery = XDIDiscoveryClient.NEUSTAR_OTE_DISCOVERY_CLIENT.discoverFromRegistry(child2, null);
+			child2Discovery = InitFilter.XDI_DISCOVERY_CLIENT.discoverFromRegistry(child2, null);
 			if (child2Discovery == null) throw new NullPointerException("Child 2 not found.");
 
 			parentPrivateKey = XDIClientUtil.retrieveSignaturePrivateKey(parentDiscovery.getCloudNumber(), parentDiscovery.getXdiEndpointUrl(), parentSecretToken);
@@ -446,13 +446,13 @@ public class XdiConnectionService implements ConnectionService {
 
 		try {
 
-			parentDiscovery = XDIDiscoveryClient.NEUSTAR_OTE_DISCOVERY_CLIENT.discoverFromRegistry(parent, null);
+			parentDiscovery = InitFilter.XDI_DISCOVERY_CLIENT.discoverFromRegistry(parent, null);
 			if (parentDiscovery == null) throw new NullPointerException("Parent not found.");
 			
-			child1Discovery = XDIDiscoveryClient.NEUSTAR_OTE_DISCOVERY_CLIENT.discoverFromRegistry(child1, null);
+			child1Discovery = InitFilter.XDI_DISCOVERY_CLIENT.discoverFromRegistry(child1, null);
 			if (child1Discovery == null) throw new NullPointerException("Child 1 not found.");
 			
-			child2Discovery = XDIDiscoveryClient.NEUSTAR_OTE_DISCOVERY_CLIENT.discoverFromRegistry(child2, null);
+			child2Discovery = InitFilter.XDI_DISCOVERY_CLIENT.discoverFromRegistry(child2, null);
 			if (child2Discovery == null) throw new NullPointerException("Child 2 not found.");
 
 			parentPrivateKey = XDIClientUtil.retrieveSignaturePrivateKey(parentDiscovery.getCloudNumber(), parentDiscovery.getXdiEndpointUrl(), parentSecretToken);
@@ -510,13 +510,13 @@ public class XdiConnectionService implements ConnectionService {
 
 		try {
 
-			parentDiscovery = XDIDiscoveryClient.NEUSTAR_OTE_DISCOVERY_CLIENT.discoverFromRegistry(parent, null);
+			parentDiscovery = InitFilter.XDI_DISCOVERY_CLIENT.discoverFromRegistry(parent, null);
 			if (parentDiscovery == null) throw new NullPointerException("Parent not found.");
 			
-			child1Discovery = XDIDiscoveryClient.NEUSTAR_OTE_DISCOVERY_CLIENT.discoverFromRegistry(child1, null);
+			child1Discovery = InitFilter.XDI_DISCOVERY_CLIENT.discoverFromRegistry(child1, null);
 			if (child1Discovery == null) throw new NullPointerException("Child 1 not found.");
 			
-			child2Discovery = XDIDiscoveryClient.NEUSTAR_OTE_DISCOVERY_CLIENT.discoverFromRegistry(child2, null);
+			child2Discovery = InitFilter.XDI_DISCOVERY_CLIENT.discoverFromRegistry(child2, null);
 			if (child2Discovery == null) throw new NullPointerException("Child 2 not found.");
 
 			parentPrivateKey = XDIClientUtil.retrieveSignaturePrivateKey(parentDiscovery.getCloudNumber(), parentDiscovery.getXdiEndpointUrl(), parentSecretToken);
@@ -574,13 +574,13 @@ public class XdiConnectionService implements ConnectionService {
 
 		try {
 
-			parentDiscovery = XDIDiscoveryClient.NEUSTAR_OTE_DISCOVERY_CLIENT.discoverFromRegistry(parent, null);
+			parentDiscovery = InitFilter.XDI_DISCOVERY_CLIENT.discoverFromRegistry(parent, null);
 			if (parentDiscovery == null) throw new NullPointerException("Parent not found.");
 			
-			child1Discovery = XDIDiscoveryClient.NEUSTAR_OTE_DISCOVERY_CLIENT.discoverFromRegistry(child1, null);
+			child1Discovery = InitFilter.XDI_DISCOVERY_CLIENT.discoverFromRegistry(child1, null);
 			if (child1Discovery == null) throw new NullPointerException("Child 1 not found.");
 			
-			child2Discovery = XDIDiscoveryClient.NEUSTAR_OTE_DISCOVERY_CLIENT.discoverFromRegistry(child2, null);
+			child2Discovery = InitFilter.XDI_DISCOVERY_CLIENT.discoverFromRegistry(child2, null);
 			if (child2Discovery == null) throw new NullPointerException("Child 2 not found.");
 
 			parentPrivateKey = XDIClientUtil.retrieveSignaturePrivateKey(parentDiscovery.getCloudNumber(), parentDiscovery.getXdiEndpointUrl(), parentSecretToken);
@@ -627,10 +627,10 @@ public class XdiConnectionService implements ConnectionService {
 
 		try {
 			
-			child1Discovery = XDIDiscoveryClient.NEUSTAR_OTE_DISCOVERY_CLIENT.discoverFromRegistry(child1, null);
+			child1Discovery = InitFilter.XDI_DISCOVERY_CLIENT.discoverFromRegistry(child1, null);
 			if (child1Discovery == null) throw new NullPointerException("Child 1 not found.");
 			
-			child2Discovery = XDIDiscoveryClient.NEUSTAR_OTE_DISCOVERY_CLIENT.discoverFromRegistry(child2, null);
+			child2Discovery = InitFilter.XDI_DISCOVERY_CLIENT.discoverFromRegistry(child2, null);
 			if (child2Discovery == null) throw new NullPointerException("Child 2 not found.");
 
 			child1PrivateKey = XDIClientUtil.retrieveSignaturePrivateKey(child1Discovery.getCloudNumber(), child1Discovery.getXdiEndpointUrl(), child1SecretToken);

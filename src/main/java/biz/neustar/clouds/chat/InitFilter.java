@@ -10,10 +10,18 @@ import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.websocket.DeploymentException;
 
+import xdi2.discovery.XDIDiscoveryClient;
 import biz.neustar.clouds.chat.websocket.WebSocketEndpoint;
 
 
 public class InitFilter implements Filter {
+
+	public static XDIDiscoveryClient XDI_DISCOVERY_CLIENT;
+
+	static {
+
+		XDI_DISCOVERY_CLIENT = new XDIDiscoveryClient("http://54.88.185.78:3081/registry");
+	}
 
 	@Override
 	public void init(FilterConfig filterConfig) throws ServletException {

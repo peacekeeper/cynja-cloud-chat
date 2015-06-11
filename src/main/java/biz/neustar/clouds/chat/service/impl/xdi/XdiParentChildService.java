@@ -9,11 +9,11 @@ import xdi2.core.syntax.XDIAddress;
 import xdi2.core.syntax.XDIStatement;
 import xdi2.core.util.iterators.IteratorArrayMaker;
 import xdi2.core.util.iterators.MappingRelationTargetContextNodeXDIAddressIterator;
-import xdi2.discovery.XDIDiscoveryClient;
 import xdi2.discovery.XDIDiscoveryResult;
 import xdi2.messaging.Message;
 import xdi2.messaging.MessageEnvelope;
 import xdi2.messaging.MessageResult;
+import biz.neustar.clouds.chat.InitFilter;
 import biz.neustar.clouds.chat.exceptions.NotParentOfChildException;
 import biz.neustar.clouds.chat.service.ParentChildService;
 
@@ -28,8 +28,8 @@ public class XdiParentChildService implements ParentChildService {
 
 			// discovery
 
-			XDIDiscoveryResult parentDiscovery = XDIDiscoveryClient.NEUSTAR_OTE_DISCOVERY_CLIENT.discoverFromRegistry(parent, null);
-			XDIDiscoveryResult childDiscovery = XDIDiscoveryClient.NEUSTAR_OTE_DISCOVERY_CLIENT.discoverFromRegistry(child, null);
+			XDIDiscoveryResult parentDiscovery = InitFilter.XDI_DISCOVERY_CLIENT.discoverFromRegistry(parent, null);
+			XDIDiscoveryResult childDiscovery = InitFilter.XDI_DISCOVERY_CLIENT.discoverFromRegistry(child, null);
 
 			// message
 
@@ -63,7 +63,7 @@ public class XdiParentChildService implements ParentChildService {
 
 			// discovery
 
-			XDIDiscoveryResult parentDiscovery = XDIDiscoveryClient.NEUSTAR_OTE_DISCOVERY_CLIENT.discoverFromRegistry(parent, null);
+			XDIDiscoveryResult parentDiscovery = InitFilter.XDI_DISCOVERY_CLIENT.discoverFromRegistry(parent, null);
 
 			// message
 
