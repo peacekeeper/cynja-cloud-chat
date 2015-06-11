@@ -32,7 +32,7 @@ public class DefaultLogService implements LogService {
 			this.logMap.put(Integer.valueOf(hashCode), logList);
 		}
 
-		logList.add(new Log(line, new Date()));
+		logList.add(new Log(connection, line, new Date()));
 		if (logList.size() > MAX_LOG_SIZE) logList.pop();
 	}
 
