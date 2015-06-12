@@ -89,6 +89,7 @@ public class JsonUtil {
 		logJsonObject.add("connectionChild1", new JsonPrimitive(log.getFromWebSocketMessageHandler().getConnection().getChild1().toString()));
 		logJsonObject.add("connectionChild2", new JsonPrimitive(log.getFromWebSocketMessageHandler().getConnection().getChild2().toString()));
 		logJsonObject.add("message", new JsonPrimitive(log.getLine()));
+		logJsonObject.add("date", gson.toJsonTree(log.getDate()));
 
 		return logJsonObject;
 	}
