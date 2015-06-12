@@ -54,7 +54,7 @@ public class WebSocketMessageHandler implements javax.websocket.MessageHandler.W
 
 		// log line
 
-		CynjaCloudChat.logService.addLog(this.connection, line);
+		CynjaCloudChat.logService.addLog(this, this.connection, line);
 
 		// send line to message handlers
 

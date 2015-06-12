@@ -9,6 +9,7 @@ import java.util.Map;
 import biz.neustar.clouds.chat.model.Connection;
 import biz.neustar.clouds.chat.model.Log;
 import biz.neustar.clouds.chat.service.LogService;
+import biz.neustar.clouds.chat.websocket.WebSocketMessageHandler;
 
 public class DefaultLogService implements LogService {
 
@@ -21,7 +22,7 @@ public class DefaultLogService implements LogService {
 		this.logMap = new HashMap<Integer, LinkedList<Log>> ();
 	}
 
-	public void addLog(Connection connection, String line) {
+	public void addLog(WebSocketMessageHandler fromWebSocketMessageHandler, Connection connection, String line) {
 
 		int hashCode = connection.getChild1().hashCode() * connection.getChild2().hashCode();
 		LinkedList<Log> logList = this.logMap.get(Integer.valueOf(hashCode));
@@ -32,7 +33,7 @@ public class DefaultLogService implements LogService {
 			this.logMap.put(Integer.valueOf(hashCode), logList);
 		}
 
-		logList.add(new Log(connection, line, new Date()));
+		logList.add(new Log(fromWebSocketMessageHandler, connection, line, new Date()));
 		if (logList.size() > MAX_LOG_SIZE) logList.pop();
 	}
 
