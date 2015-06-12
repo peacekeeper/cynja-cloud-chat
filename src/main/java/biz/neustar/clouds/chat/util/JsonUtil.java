@@ -82,6 +82,12 @@ public class JsonUtil {
 
 	public static JsonObject logToJson(Log log) {
 
-		return (JsonObject) gson.toJsonTree(log);
+		JsonObject logJsonObject = new JsonObject();
+		logJsonObject.add("child1", gson.toJsonTree(log.getConnection().getChild1().toString()));
+		logJsonObject.add("child2", gson.toJsonTree(log.getConnection().getChild2().toString()));
+		logJsonObject.add("line", gson.toJsonTree(log.getLine()));
+		logJsonObject.add("date", gson.toJsonTree(log.getDate()));
+
+		return logJsonObject;
 	}
 }
