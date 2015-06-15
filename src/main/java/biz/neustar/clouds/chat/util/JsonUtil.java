@@ -15,6 +15,7 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import com.google.gson.JsonPrimitive;
 import com.google.gson.stream.JsonWriter;
 
 public class JsonUtil {
@@ -82,6 +83,14 @@ public class JsonUtil {
 
 	public static JsonObject logToJson(Log log) {
 
-		return (JsonObject) gson.toJsonTree(log);
+		JsonObject logJsonObject = new JsonObject();
+		logJsonObject.add("chatChild1", new JsonPrimitive(log.getFromWebSocketMessageHandler().getChild1().toString()));
+		logJsonObject.add("chatChild2", new JsonPrimitive(log.getFromWebSocketMessageHandler().getChild2().toString()));
+		logJsonObject.add("connectionChild1", new JsonPrimitive(log.getFromWebSocketMessageHandler().getConnection().getChild1().toString()));
+		logJsonObject.add("connectionChild2", new JsonPrimitive(log.getFromWebSocketMessageHandler().getConnection().getChild2().toString()));
+		logJsonObject.add("message", new JsonPrimitive(log.getLine()));
+		logJsonObject.add("date", gson.toJsonTree(log.getDate()));
+
+		return logJsonObject;
 	}
 }
