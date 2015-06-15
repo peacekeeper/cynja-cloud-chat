@@ -4,21 +4,13 @@ import java.util.Date;
 
 public class Log {
 
-	private Connection connection;
 	private String line;
 	private Date date;
 
-	public Log(Connection connection, String line, Date date) {
+	public Log(String line, Date date) {
 		super();
-		this.connection = connection;
 		this.line = line;
 		this.date = date;
-	}
-	public Connection getConnection() {
-		return this.connection;
-	}
-	public void setConnection(Connection connection) {
-		this.connection = connection;
 	}
 	public String getLine() {
 		return line;
