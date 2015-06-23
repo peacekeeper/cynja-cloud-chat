@@ -34,9 +34,7 @@ The API endpoints are:
 	This is called by child1 to request a connection with child2.
 	The connection has to be approved by parents of both children,
 	before chat sessions can be started.
-
----
-
+	
 	HTTP POST:  http://localhost:3080/1/approve?parent=...&parentSecretToken=...&child1=...&child2=...
 	
 	This is called by a parent to approve the connection between child1 and child2.
