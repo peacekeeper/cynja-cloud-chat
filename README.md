@@ -34,7 +34,9 @@ The API endpoints are:
 	This is called by child1 to request a connection with child2.
 	The connection has to be approved by parents of both children,
 	before chat sessions can be started.
-	
+
+---
+
 	HTTP POST:  http://localhost:3080/1/approve?parent=...&parentSecretToken=...&child1=...&child2=...
 	
 	This is called by a parent to approve the connection between child1 and child2.
@@ -82,6 +84,14 @@ The API endpoints are:
 	ws://localhost:3080/1/chat/child1/child2?child1SecretToken=...
 	ws://localhost:3080/1/chat/child2/child1?child2SecretToken=...
 	During the WebSocket protocol handshake, the sub-protocol "cynja-chat" is used.
+
+Parameters:
+
+	child1 ... Child 1's cloud name or cloud number
+	child2 ... Child 2's cloud name or cloud number
+	parent ... The parent's cloud name or cloud number
+	child1SecretToken ... Child 1's secret token (password)
+	parentSecretToken ... The parent's secret token (password)
 
 Notes:
 
