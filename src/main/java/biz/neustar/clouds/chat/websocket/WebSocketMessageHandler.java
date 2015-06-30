@@ -2,7 +2,7 @@ package biz.neustar.clouds.chat.websocket;
 
 import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.Reader;
+import java.io.StringReader;
 
 import javax.websocket.Session;
 
@@ -17,7 +17,7 @@ import biz.neustar.clouds.chat.util.JsonUtil;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
 
-public class WebSocketMessageHandler implements javax.websocket.MessageHandler.Whole<Reader> {
+public class WebSocketMessageHandler implements javax.websocket.MessageHandler.Whole<String> {
 
 	private static final Logger log = LoggerFactory.getLogger(WebSocketMessageHandler.class);
 
@@ -35,11 +35,11 @@ public class WebSocketMessageHandler implements javax.websocket.MessageHandler.W
 	}
 
 	@Override
-	public void onMessage(Reader reader) {
+	public void onMessage(String string) {
 
 		// read line
 
-		BufferedReader bufferedReader = new BufferedReader(reader);
+		BufferedReader bufferedReader = new BufferedReader(new StringReader(string));
 		String line;
 
 		try {

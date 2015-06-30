@@ -24,7 +24,6 @@ import org.slf4j.LoggerFactory;
 import xdi2.core.syntax.XDIAddress;
 import biz.neustar.clouds.chat.CynjaCloudChat;
 import biz.neustar.clouds.chat.model.Connection;
-import biz.neustar.clouds.chat.service.impl.xdi.XdiConnection;
 
 public class WebSocketEndpoint extends javax.websocket.Endpoint {
 
@@ -117,9 +116,6 @@ public class WebSocketEndpoint extends javax.websocket.Endpoint {
 				session.close(new CloseReason(CloseCodes.VIOLATED_POLICY, "Connection not found."));
 				return;
 			}
-
-			System.out.println(((XdiConnection) connection).getLinkContract1().getContextNode().getGraph().toString("XDI/JSON/QUAD", null));
-			System.out.println(((XdiConnection) connection).getLinkContract2().getContextNode().getGraph().toString("XDI/JSON/QUAD", null));
 
 			if (! Boolean.TRUE.equals(connection.isApproved1()) || ! Boolean.TRUE.equals(connection.isApproved2())) {
 
