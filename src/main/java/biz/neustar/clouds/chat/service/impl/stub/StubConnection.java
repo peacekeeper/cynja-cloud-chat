@@ -1,5 +1,6 @@
 package biz.neustar.clouds.chat.service.impl.stub;
 
+import xdi2.core.syntax.CloudName;
 import xdi2.core.syntax.XDIAddress;
 import biz.neustar.clouds.chat.model.Connection;
 
@@ -68,4 +69,10 @@ public class StubConnection implements Connection {
 
 		return this.blocked2;
 	}
+
+    @Override
+    public CloudName getConnectionName() {
+        // TODO Auto-generated method stub
+        return null;
+    }
 }

@@ -1,5 +1,6 @@
 package biz.neustar.clouds.chat.model;
 
+import xdi2.core.syntax.CloudName;
 import xdi2.core.syntax.XDIAddress;
 
 public interface Connection {
@@ -10,4 +11,5 @@ public interface Connection {
 	public Boolean isApproved2();
 	public Boolean isBlocked1();
 	public Boolean isBlocked2();
+	public CloudName getConnectionName();
 }
