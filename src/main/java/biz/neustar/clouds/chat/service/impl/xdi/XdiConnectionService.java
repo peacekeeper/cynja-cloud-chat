@@ -110,7 +110,7 @@ public class XdiConnectionService implements ConnectionService {
 	        innerRootSet.getContextNode().setStatement(XDIStatement.fromComponents(
 	                child2Discovery.getCloudNumber().getXDIAddress(), 
 	                XDIDictionaryConstants.XDI_ADD_IS_REF, 
-	                child2.toString()));
+	                child2));
 	        //END
 	        
 			// message
