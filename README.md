@@ -62,18 +62,21 @@ Then go to:
 	    "[=]!:uuid:06dbdc63-ec66-4fab-81d9-c7c5862716c1": [
 	        {
 	            "child": "[=]!:uuid:37799d36-b79f-4e60-a42c-7a95ea407e24",
+	            "name": "=alice"
 	            "approved": true,
 	            "blocked": null,
 	            "sessions": []
 	        },
 	        {
 	            "child": "[=]!:uuid:a1453ce6-b176-4407-b4cd-ceff48954eb5",
+	            "name": "=boby"
 	            "approved": null,
 	            "blocked": null,
 	            "sessions": []
 	        },
 	        {
 	            "child": "[=]!:uuid:fd6b3063-847b-43be-9ba8-c1a910b22754",
+	            "name": "=alice.ab"
 	            "approved": true,
 	            "blocked": false,
 	            "sessions": []
@@ -82,6 +85,7 @@ Then go to:
 	    "[=]!:uuid:a827df5b-f0c7-45d0-80d6-ceb2876e789a": [
 	        {
 	            "child": "[=]!:uuid:a1453ce6-b176-4407-b4cd-ceff48954eb5",
+	            "name": "=bob.ab"
 	            "approved": true,
 	            "blocked": null,
 	            "sessions": []
@@ -101,18 +105,21 @@ Then go to:
 	    "[=]!:uuid:06dbdc63-ec66-4fab-81d9-c7c5862716c1": [
 	        {
 	            "child": "[=]!:uuid:37799d36-b79f-4e60-a42c-7a95ea407e24",
+	            "name": "=alice"
 	            "approved": true,
 	            "blocked": null,
 	            "sessions": []
 	        },
 	        {
 	            "child": "[=]!:uuid:a1453ce6-b176-4407-b4cd-ceff48954eb5",
+	            "name": "=boby"
 	            "approved": null,
 	            "blocked": null,
 	            "sessions": []
 	        },
 	        {
 	            "child": "[=]!:uuid:fd6b3063-847b-43be-9ba8-c1a910b22754",
+	            "name": "=alice.ab"
 	            "approved": true,
 	            "blocked": false,
 	            "sessions": []
