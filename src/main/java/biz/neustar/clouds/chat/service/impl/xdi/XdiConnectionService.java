@@ -94,7 +94,7 @@ public class XdiConnectionService implements ConnectionService {
 									true);
 
 			XdiEntityInstanceUnordered linkContract1XdiEntityMember = linkContract1XdiEntityCollection
-					.setXdiMemberUnordered(true, true, false, linkContract1.getContextNode().getXDIAddress().toString());
+					.setXdiMemberUnordered(false, true, false, XDIArc.literalFromDigest(linkContract1.getContextNode().getXDIAddress().toString()));
 
 			Equivalence.setReferenceContextNode(linkContract1XdiEntityMember.getContextNode(), linkContract1.getContextNode());
 			
@@ -419,7 +419,7 @@ public class XdiConnectionService implements ConnectionService {
 									true);
 
 			XdiEntityInstanceUnordered linkContract1XdiEntityMember = linkContract1XdiEntityCollection
-					.setXdiMemberUnordered(true, true, false, linkContract1.getContextNode().getXDIAddress().toString());
+					.setXdiMemberUnordered(false, true, false, XDIArc.literalFromDigest(linkContract1.getContextNode().getXDIAddress().toString()));
 
 			Equivalence.setReferenceContextNode(linkContract1XdiEntityMember.getContextNode(), linkContract1.getContextNode());
 
