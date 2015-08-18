@@ -13,12 +13,11 @@ import xdi2.core.constants.XDILinkContractConstants;
 import xdi2.core.features.equivalence.Equivalence;
 import xdi2.core.features.linkcontracts.instance.GenericLinkContract;
 import xdi2.core.features.linkcontracts.instance.RootLinkContract;
-import xdi2.core.features.nodetypes.XdiAbstractMemberUnordered;
 import xdi2.core.features.nodetypes.XdiCommonRoot;
 import xdi2.core.features.nodetypes.XdiEntity;
 import xdi2.core.features.nodetypes.XdiEntityCollection;
-import xdi2.core.features.nodetypes.XdiEntityMember;
-import xdi2.core.features.nodetypes.XdiEntityMemberUnordered;
+import xdi2.core.features.nodetypes.XdiEntityInstance;
+import xdi2.core.features.nodetypes.XdiEntityInstanceUnordered;
 import xdi2.core.features.nodetypes.XdiInnerRoot;
 import xdi2.core.features.signatures.KeyPairSignature;
 import xdi2.core.impl.memory.MemoryGraphFactory;
@@ -94,10 +93,8 @@ public class XdiConnectionService implements ConnectionService {
 									XDI_ADD_CHAT_DO_EC),
 									true);
 
-			XdiEntityMemberUnordered linkContract1XdiEntityMember = linkContract1XdiEntityCollection
-					.setXdiMemberUnordered(XdiAbstractMemberUnordered.createDigestXDIArc(
-							linkContract1.getContextNode().getXDIAddress().toString(),
-							XdiEntityCollection.class));
+			XdiEntityInstanceUnordered linkContract1XdiEntityMember = linkContract1XdiEntityCollection
+					.setXdiMemberUnordered(true, true, false, linkContract1.getContextNode().getXDIAddress().toString());
 
 			Equivalence.setReferenceContextNode(linkContract1XdiEntityMember.getContextNode(), linkContract1.getContextNode());
 			
@@ -210,7 +207,7 @@ public class XdiConnectionService implements ConnectionService {
 
 				if (linkContractXdiEntityCollection == null) continue;
 
-				for (XdiEntityMember xdiEntityMember : linkContractXdiEntityCollection.getXdiMembersUnordered()) {
+				for (XdiEntityInstance xdiEntityMember : linkContractXdiEntityCollection.getXdiMembersUnordered()) {
 
 					XdiEntity xdiEntity = xdiEntityMember.dereference();
 					GenericLinkContract linkContract = GenericLinkContract.fromXdiEntity(xdiEntity);
@@ -275,7 +272,7 @@ public class XdiConnectionService implements ConnectionService {
 
 			List<Connection> connections = new ArrayList<Connection> ();
 
-			for (XdiEntityMember xdiEntityMember : linkContractXdiEntityCollection.getXdiMembersUnordered()) {
+			for (XdiEntityInstance xdiEntityMember : linkContractXdiEntityCollection.getXdiMembersUnordered()) {
 
 				XdiEntity xdiEntity = xdiEntityMember.dereference();
 				GenericLinkContract linkContract = GenericLinkContract.fromXdiEntity(xdiEntity);
@@ -409,7 +406,7 @@ public class XdiConnectionService implements ConnectionService {
 					XDILinkContractConstants.XDI_ADD_GET, 
 					linkContract1.getXdiEntity().getXDIAddress());
 
-			linkContract1.getXdiEntity().getXdiAttribute(XDI_ADD_APPROVED, true).getXdiValue(true).setLiteralBoolean(Boolean.TRUE);
+			linkContract1.getXdiEntity().getXdiAttribute(XDI_ADD_APPROVED, true).setLiteralDataBoolean(Boolean.TRUE);
 
 			// create a $ref equivalence link from a #chat[$do] collection member to the chat link contract
 			// this way, it becomes possible later to easily list all chat link contracts
@@ -421,10 +418,8 @@ public class XdiConnectionService implements ConnectionService {
 									XDI_ADD_CHAT_DO_EC),
 									true);
 
-			XdiEntityMemberUnordered linkContract1XdiEntityMember = linkContract1XdiEntityCollection
-					.setXdiMemberUnordered(XdiAbstractMemberUnordered.createDigestXDIArc(
-							linkContract1.getContextNode().getXDIAddress().toString(),
-							XdiEntityCollection.class));
+			XdiEntityInstanceUnordered linkContract1XdiEntityMember = linkContract1XdiEntityCollection
+					.setXdiMemberUnordered(true, true, false, linkContract1.getContextNode().getXDIAddress().toString());
 
 			Equivalence.setReferenceContextNode(linkContract1XdiEntityMember.getContextNode(), linkContract1.getContextNode());
 
@@ -490,7 +485,7 @@ public class XdiConnectionService implements ConnectionService {
 					XDI_ADD_CHAT, 
 					true);
 
-			linkContract1.getXdiEntity().getXdiAttribute(XDI_ADD_BLOCKED, true).getXdiValue(true).setLiteralBoolean(Boolean.TRUE);
+			linkContract1.getXdiEntity().getXdiAttribute(XDI_ADD_BLOCKED, true).setLiteralDataBoolean(Boolean.TRUE);
 
 			// message
 
@@ -554,7 +549,7 @@ public class XdiConnectionService implements ConnectionService {
 					XDI_ADD_CHAT, 
 					true);
 
-			linkContract1.getXdiEntity().getXdiAttribute(XDI_ADD_BLOCKED, true).getXdiValue(true).setLiteralBoolean(Boolean.FALSE);
+			linkContract1.getXdiEntity().getXdiAttribute(XDI_ADD_BLOCKED, true).setLiteralDataBoolean(Boolean.FALSE);
 
 			// message
 

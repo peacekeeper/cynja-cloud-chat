@@ -1,12 +1,11 @@
 package biz.neustar.clouds.chat.service.impl.xdi;
 
 import xdi2.core.Graph;
-import xdi2.core.Literal;
+import xdi2.core.LiteralNode;
 import xdi2.core.constants.XDIDictionaryConstants;
 import xdi2.core.features.linkcontracts.instance.GenericLinkContract;
 import xdi2.core.features.nodetypes.XdiAttribute;
 import xdi2.core.features.nodetypes.XdiCommonRoot;
-import xdi2.core.features.nodetypes.XdiValue;
 import xdi2.core.impl.memory.MemoryGraphFactory;
 import xdi2.core.syntax.CloudName;
 import xdi2.core.syntax.XDIAddress;
@@ -85,46 +84,32 @@ public class XdiConnection implements Connection {
 
 	@Override
 	public Boolean isApproved1() {
-
 		XdiAttribute xdiAttribute = this.linkContract1.getXdiEntity().getXdiAttribute(XDI_ADD_APPROVED, false);
-		XdiValue xdiValue = xdiAttribute == null ? null : xdiAttribute.getXdiValue(false);
-		Literal literal = xdiValue == null ? null : xdiValue.getLiteral();
-
-		return literal == null ? null : literal.getLiteralDataBoolean();
+	    LiteralNode literal = xdiAttribute == null ? null : xdiAttribute.getLiteralNode();
+	    return literal == null ? null : literal.getLiteralDataBoolean();
 	}
 
 	@Override
 	public Boolean isApproved2() {
-
 		if (this.linkContract2 == null) return null;
-
 		XdiAttribute xdiAttribute = this.linkContract2.getXdiEntity().getXdiAttribute(XDI_ADD_APPROVED, false);
-		XdiValue xdiValue = xdiAttribute == null ? null : xdiAttribute.getXdiValue(false);
-		Literal literal = xdiValue == null ? null : xdiValue.getLiteral();
-
+		LiteralNode literal = xdiAttribute == null ? null : xdiAttribute.getLiteralNode();
 		return literal == null ? null : literal.getLiteralDataBoolean();
 	}
 
 	@Override
 	public Boolean isBlocked1() {
-
 		XdiAttribute xdiAttribute = this.linkContract1.getXdiEntity().getXdiAttribute(XDI_ADD_BLOCKED, false);
-		XdiValue xdiValue = xdiAttribute == null ? null : xdiAttribute.getXdiValue(false);
-		Literal literal = xdiValue == null ? null : xdiValue.getLiteral();
-
-		return literal == null ? null : literal.getLiteralDataBoolean();
+        LiteralNode literal = xdiAttribute == null ? null : xdiAttribute.getLiteralNode();
+        return literal == null ? null : literal.getLiteralDataBoolean();
 	}
 
 	@Override
 	public Boolean isBlocked2() {
-
 		if (this.linkContract2 == null) return null;
-
 		XdiAttribute xdiAttribute = this.linkContract2.getXdiEntity().getXdiAttribute(XDI_ADD_BLOCKED, false);
-		XdiValue xdiValue = xdiAttribute == null ? null : xdiAttribute.getXdiValue(false);
-		Literal literal = xdiValue == null ? null : xdiValue.getLiteral();
-
-		return literal == null ? null : literal.getLiteralDataBoolean();
+	    LiteralNode literal = xdiAttribute == null ? null : xdiAttribute.getLiteralNode();
+	    return literal == null ? null : literal.getLiteralDataBoolean();
 	}
 
     @Override
@@ -139,7 +124,7 @@ public class XdiConnection implements Connection {
                                         .getInnerRoot(linkContract1.getAuthorizingAuthority(),
                                                 linkContract1.getRequestingAuthority(), true).getXDIAddress(),
                                 linkContract1.getRequestingAuthority()))
-                .getRelation(XDIDictionaryConstants.XDI_ADD_IS_REF).getTargetContextNodeXDIAddress();
+                .getRelation(XDIDictionaryConstants.XDI_ADD_IS_REF).getTargetXDIAddress();
 
         return CloudName.fromXDIAddress(mrXDIAddress);
     }
