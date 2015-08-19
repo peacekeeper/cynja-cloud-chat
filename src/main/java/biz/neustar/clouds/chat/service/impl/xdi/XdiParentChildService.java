@@ -8,6 +8,7 @@ import xdi2.core.features.linkcontracts.instance.RootLinkContract;
 import xdi2.core.syntax.XDIAddress;
 import xdi2.core.syntax.XDIStatement;
 import xdi2.core.util.iterators.IteratorArrayMaker;
+import xdi2.core.util.iterators.MappingRelationTargetXDIAddressIterator;
 import xdi2.core.util.iterators.MappingRelationXDIAddressIterator;
 import xdi2.discovery.XDIDiscoveryResult;
 import xdi2.messaging.Message;
@@ -82,7 +83,7 @@ public class XdiParentChildService implements ParentChildService {
 			XDIAddress[] result;
 
 			ContextNode parentContextNode = mr.getGraph().getDeepContextNode(parentDiscovery.getCloudNumber().getXDIAddress());
-			result = parentContextNode == null ? new XDIAddress[0] : new IteratorArrayMaker<XDIAddress> (new MappingRelationXDIAddressIterator(parentContextNode.getRelations(XDI_ADD_IS_GUARDIAN))).array(XDIAddress.class);
+			result = parentContextNode == null ? new XDIAddress[0] : new IteratorArrayMaker<XDIAddress> (new MappingRelationTargetXDIAddressIterator(parentContextNode.getRelations(XDI_ADD_IS_GUARDIAN))).array(XDIAddress.class);
 
 			// done
 
