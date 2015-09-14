@@ -21,7 +21,10 @@ function getParameterByName(name) {
 }
 
 $(document).ready(function() {
-	$("#appLinkContract").val(getParameterByName('xdi'));
+	var xdi = getParameterByName('xdi');
+	if (! xdi) return;
+	alert("Received link contract!");
+	$("#appLinkContract").val(xdi);
 });
 
 function connecttocloud() {
@@ -35,7 +38,6 @@ function connecttocloud() {
 	    data: 'cloudName=' + encodeURIComponent(cloudName) + '&' + 'appCloudNumber=' + encodeURIComponent(appCloudNumber),
 	    success: function(data) { 
 	    	alert('success: ' + JSON.stringify(data)); 
-	    	$("#connectAuthService").text(data.connectAuthService);
 	    	$("#appSessionCloudNumber").val(data.appSessionCloudNumber);
 	    	$("#appSessionPrivateKey").val(data.appSessionPrivateKey);
 	    	$("#appConnectRequestUri").val(data.appConnectRequestUri);
@@ -246,11 +248,11 @@ function chatMessage() {
 </pre>
 
 <div id="connect">
+<p class="heading">Connect To Cloud</p>
 <table>
 <tr><td>Cloud Name:</td><td><input size="70" size="70" type="text" id="connectCloudName" value="=alice"> &lt;-- user types this</td></tr>
-<tr><td>App Cloud Number:</td><td><input type="text" size="70" id="connectAppCloudNumber" value="*!:uuid:7bdc5008-10d5-49dc-b8b5-05cee13a465a"> &lt;-- this is static</td></tr>
+<tr><td>App Cloud Number:</td><td><input type="text" size="70" id="connectAppCloudNumber" value="*!:uuid:7bdc5008-10d5-49dc-b8b5-05cee13a465a"> &lt;-- this is static *cynjaspace</td></tr>
 <tr><td><button onclick="connecttocloud();">connecttocloud()</button></td></tr>
-<tr><td>XDI Connect Auth Service:</td><td><span id="connectAuthService"></span></td></tr>
 <tr><td>App Session Cloud Number:</td><td><input size="70" type="text" id="appSessionCloudNumber"> &lt;-- app must remember this!</td></tr>
 <tr><td>App Session Private Key:</td><td><input size="70" type="text" id="appSessionPrivateKey"> &lt;-- app must remember this!</td></tr>
 <tr><td>App Connect Request URI:</td><td><input size="70" type="text" id="appConnectRequestUri"> &lt;-- app opens this in browser!</td></tr>
