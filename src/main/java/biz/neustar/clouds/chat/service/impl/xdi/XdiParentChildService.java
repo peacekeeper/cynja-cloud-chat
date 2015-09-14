@@ -1,21 +1,21 @@
 package biz.neustar.clouds.chat.service.impl.xdi;
 
+import biz.neustar.clouds.chat.InitFilter;
+import biz.neustar.clouds.chat.exceptions.NotParentOfChildException;
+import biz.neustar.clouds.chat.service.ParentChildService;
 import xdi2.client.XDIClient;
-import xdi2.client.http.XDIHttpClient;
+import xdi2.client.impl.http.XDIHttpClient;
 import xdi2.core.ContextNode;
 import xdi2.core.constants.XDIConstants;
 import xdi2.core.features.linkcontracts.instance.RootLinkContract;
 import xdi2.core.syntax.XDIAddress;
 import xdi2.core.syntax.XDIStatement;
 import xdi2.core.util.iterators.IteratorArrayMaker;
-import xdi2.core.util.iterators.MappingRelationTargetContextNodeXDIAddressIterator;
+import xdi2.core.util.iterators.MappingRelationTargetXDIAddressIterator;
 import xdi2.discovery.XDIDiscoveryResult;
 import xdi2.messaging.Message;
 import xdi2.messaging.MessageEnvelope;
-import xdi2.messaging.MessageResult;
-import biz.neustar.clouds.chat.InitFilter;
-import biz.neustar.clouds.chat.exceptions.NotParentOfChildException;
-import biz.neustar.clouds.chat.service.ParentChildService;
+import xdi2.messaging.response.MessagingResponse;
 
 public class XdiParentChildService implements ParentChildService {
 
@@ -28,8 +28,8 @@ public class XdiParentChildService implements ParentChildService {
 
 			// discovery
 
-			XDIDiscoveryResult parentDiscovery = InitFilter.XDI_DISCOVERY_CLIENT.discoverFromRegistry(parent, null);
-			XDIDiscoveryResult childDiscovery = InitFilter.XDI_DISCOVERY_CLIENT.discoverFromRegistry(child, null);
+			XDIDiscoveryResult parentDiscovery = InitFilter.XDI_DISCOVERY_CLIENT.discoverFromRegistry(parent);
+			XDIDiscoveryResult childDiscovery = InitFilter.XDI_DISCOVERY_CLIENT.discoverFromRegistry(child);
 
 			// message
 
@@ -37,11 +37,11 @@ public class XdiParentChildService implements ParentChildService {
 			Message m = me.createMessage(parentDiscovery.getCloudNumber().getXDIAddress());
 			m.createGetOperation(XDIStatement.fromRelationComponents(parentDiscovery.getCloudNumber().getXDIAddress(), XDI_ADD_IS_GUARDIAN, childDiscovery.getCloudNumber().getXDIAddress()));
 			m.setToXDIAddress(parentDiscovery.getCloudNumber().getXDIAddress());
-			m.setLinkContract(RootLinkContract.class);
+			m.setLinkContractClass(RootLinkContract.class);
 			m.setSecretToken(parentSecretToken);
 
-			XDIClient parentClient = new XDIHttpClient(parentDiscovery.getXdiEndpointUrl());
-			MessageResult mr = parentClient.send(me, null);
+			XDIClient parentClient = new XDIHttpClient(parentDiscovery.getXdiEndpointUri());
+			MessagingResponse mr = parentClient.send(me);
 
 			// result
 
@@ -63,7 +63,7 @@ public class XdiParentChildService implements ParentChildService {
 
 			// discovery
 
-			XDIDiscoveryResult parentDiscovery = InitFilter.XDI_DISCOVERY_CLIENT.discoverFromRegistry(parent, null);
+			XDIDiscoveryResult parentDiscovery = InitFilter.XDI_DISCOVERY_CLIENT.discoverFromRegistry(parent);
 
 			// message
 
@@ -71,18 +71,18 @@ public class XdiParentChildService implements ParentChildService {
 			Message m = me.createMessage(parentDiscovery.getCloudNumber().getXDIAddress());
 			m.createGetOperation(XDIStatement.fromRelationComponents(parentDiscovery.getCloudNumber().getXDIAddress(), XDI_ADD_IS_GUARDIAN, XDIConstants.XDI_ADD_COMMON_VARIABLE));
 			m.setToXDIAddress(parentDiscovery.getCloudNumber().getXDIAddress());
-			m.setLinkContract(RootLinkContract.class);
+			m.setLinkContractClass(RootLinkContract.class);
 			m.setSecretToken(parentSecretToken);
 
-			XDIClient parentClient = new XDIHttpClient(parentDiscovery.getXdiEndpointUrl());
-			MessageResult mr = parentClient.send(me, null);
+			XDIClient parentClient = new XDIHttpClient(parentDiscovery.getXdiEndpointUri());
+			MessagingResponse mr = parentClient.send(me);
 
 			// result
 
 			XDIAddress[] result;
 
 			ContextNode parentContextNode = mr.getGraph().getDeepContextNode(parentDiscovery.getCloudNumber().getXDIAddress());
-			result = parentContextNode == null ? new XDIAddress[0] : new IteratorArrayMaker<XDIAddress> (new MappingRelationTargetContextNodeXDIAddressIterator(parentContextNode.getRelations(XDI_ADD_IS_GUARDIAN))).array(XDIAddress.class);
+			result = parentContextNode == null ? new XDIAddress[0] : new IteratorArrayMaker<XDIAddress> (new MappingRelationTargetXDIAddressIterator(parentContextNode.getRelations(XDI_ADD_IS_GUARDIAN))).array(XDIAddress.class);
 
 			// done
 

@@ -34,7 +34,7 @@ public class LogsServlet extends HttpServlet {
 			jsonArray.add(JsonUtil.logToJson(log));
 		}
 
-		resp.setContentType("appliction/json");
+		resp.setContentType("application/json");
 		JsonUtil.write(resp.getWriter(), jsonArray);
 	}
 }

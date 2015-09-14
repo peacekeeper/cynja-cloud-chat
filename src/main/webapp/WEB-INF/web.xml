@@ -13,6 +13,15 @@
 	</filter>
 
 	<servlet>
+		<servlet-name>connecttocloud</servlet-name>
+		<servlet-class>biz.neustar.clouds.chat.ConnecttocloudServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>connecttocloud</servlet-name>
+		<url-pattern>/2/connecttocloud</url-pattern>
+	</servlet-mapping>
+
+	<servlet>
 		<servlet-name>request</servlet-name>
 		<servlet-class>biz.neustar.clouds.chat.RequestServlet</servlet-class>
 	</servlet>

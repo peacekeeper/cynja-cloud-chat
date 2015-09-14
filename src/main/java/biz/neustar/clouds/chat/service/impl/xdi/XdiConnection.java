@@ -1,14 +1,13 @@
 package biz.neustar.clouds.chat.service.impl.xdi;
 
+import biz.neustar.clouds.chat.model.Connection;
 import xdi2.core.Graph;
-import xdi2.core.Literal;
+import xdi2.core.LiteralNode;
 import xdi2.core.features.linkcontracts.instance.GenericLinkContract;
 import xdi2.core.features.nodetypes.XdiAttribute;
-import xdi2.core.features.nodetypes.XdiValue;
 import xdi2.core.impl.memory.MemoryGraphFactory;
 import xdi2.core.syntax.XDIAddress;
 import xdi2.core.syntax.XDIArc;
-import biz.neustar.clouds.chat.model.Connection;
 
 public class XdiConnection implements Connection {
 
@@ -44,6 +43,7 @@ public class XdiConnection implements Connection {
 				child1, 
 				child2, 
 				XDI_ADD_CHAT, 
+				true,
 				true);
 
 		this.linkContract1 = linkContract1;
@@ -75,8 +75,7 @@ public class XdiConnection implements Connection {
 	public Boolean isApproved1() {
 
 		XdiAttribute xdiAttribute = this.linkContract1.getXdiEntity().getXdiAttribute(XDI_ADD_APPROVED, false);
-		XdiValue xdiValue = xdiAttribute == null ? null : xdiAttribute.getXdiValue(false);
-		Literal literal = xdiValue == null ? null : xdiValue.getLiteral();
+		LiteralNode literal = xdiAttribute == null ? null : xdiAttribute.getLiteralNode();
 
 		return literal == null ? null : literal.getLiteralDataBoolean();
 	}
@@ -87,8 +86,7 @@ public class XdiConnection implements Connection {
 		if (this.linkContract2 == null) return null;
 
 		XdiAttribute xdiAttribute = this.linkContract2.getXdiEntity().getXdiAttribute(XDI_ADD_APPROVED, false);
-		XdiValue xdiValue = xdiAttribute == null ? null : xdiAttribute.getXdiValue(false);
-		Literal literal = xdiValue == null ? null : xdiValue.getLiteral();
+		LiteralNode literal = xdiAttribute == null ? null : xdiAttribute.getLiteralNode();
 
 		return literal == null ? null : literal.getLiteralDataBoolean();
 	}
@@ -97,8 +95,7 @@ public class XdiConnection implements Connection {
 	public Boolean isBlocked1() {
 
 		XdiAttribute xdiAttribute = this.linkContract1.getXdiEntity().getXdiAttribute(XDI_ADD_BLOCKED, false);
-		XdiValue xdiValue = xdiAttribute == null ? null : xdiAttribute.getXdiValue(false);
-		Literal literal = xdiValue == null ? null : xdiValue.getLiteral();
+		LiteralNode literal = xdiAttribute == null ? null : xdiAttribute.getLiteralNode();
 
 		return literal == null ? null : literal.getLiteralDataBoolean();
 	}
@@ -109,8 +106,7 @@ public class XdiConnection implements Connection {
 		if (this.linkContract2 == null) return null;
 
 		XdiAttribute xdiAttribute = this.linkContract2.getXdiEntity().getXdiAttribute(XDI_ADD_BLOCKED, false);
-		XdiValue xdiValue = xdiAttribute == null ? null : xdiAttribute.getXdiValue(false);
-		Literal literal = xdiValue == null ? null : xdiValue.getLiteral();
+		LiteralNode literal = xdiAttribute == null ? null : xdiAttribute.getLiteralNode();
 
 		return literal == null ? null : literal.getLiteralDataBoolean();
 	}

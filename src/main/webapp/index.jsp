@@ -13,6 +13,44 @@
 
 <script type="text/javascript">
 
+function getParameterByName(name) {
+    name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
+    var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),
+        results = regex.exec(location.search);
+    return results === null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
+}
+
+$(document).ready(function() {
+	$("#appLinkContract").val(getParameterByName('xdi'));
+});
+
+function connecttocloud() {
+
+	var cloudName = $("#connectCloudName").val().trim(); if (! cloudName) { alert("Please enter \"Cloud Name\""); return; }
+	var appCloudNumber = $("#connectAppCloudNumber").val().trim(); if (! appCloudNumber) { alert("Please enter \"App Cloud Number\""); return; }
+
+	$.ajax({
+	    url: '/2/connecttocloud',
+	    type: 'POST',
+	    data: 'cloudName=' + encodeURIComponent(cloudName) + '&' + 'appCloudNumber=' + encodeURIComponent(appCloudNumber),
+	    success: function(data) { 
+	    	alert('success: ' + JSON.stringify(data)); 
+	    	$("#connectAuthService").text(data.connectAuthService);
+	    	$("#appSessionCloudNumber").val(data.appSessionCloudNumber);
+	    	$("#appSessionPrivateKey").val(data.appSessionPrivateKey);
+	    	$("#appConnectRequestUri").val(data.appConnectRequestUri);
+	    	},
+	    error: function(msg) { alert('error: ' + JSON.stringify(msg)); }
+	});
+}
+
+function connectstartauth() {
+
+	var appConnectRequestUri = $("#appConnectRequestUri").val().trim(); if (! appConnectRequestUri) { alert("Please enter \"App Connect Request URI\""); return; }
+
+	window.location = appConnectRequestUri;
+}
+
 function request() {
 
 	var child1 = $("#requestChild1").val().trim(); if (! child1) { alert("Please enter \"Child 1\""); return; }
@@ -197,41 +235,31 @@ function chatMessage() {
 
 <body>
 
-<!-- examples for stub implementation
-
 <pre id="example">
- * CYNJA CLOUD CHAT - example parent/child data - <a href="https://github.com/neustarpc/cynja-cloud-chat">https://github.com/neustarpc/cynja-cloud-chat</a>
+ * CYNJA CLOUD CHAT V2 - example parent/child data - <a href="https://github.com/peacekeeper/cynja-cloud-chat">https://github.com/peacekeeper/cynja-cloud-chat</a>
  * ================
 
- * Parents                                                      * Parents
- *   [=]!:uuid:1111 and [=]!:uuid:2222                          *   [=]!:uuid:5555 and [=]!:uuid:6666
- * have the following children                                  * have the following children
- *   [=]!:uuid:3333, [=]!:uuid:4444                             *   [=]!:uuid:7777, [=]!:uuid:8888, [=]!:uuid:9999
- 
- * Secret token for all parents and children: abcd
-</pre>
-
--->
-
-<pre id="example">
- * CYNJA CLOUD CHAT - example parent/child data - <a href="https://github.com/neustarpc/cynja-cloud-chat">https://github.com/neustarpc/cynja-cloud-chat</a>
- * ================
-
- * Parents                                                            * Parents
- *   =cynja1 / [=]!:uuid:24909bdb-8f22-4abe-a244-b042adb32b5d         *   =cynja2 / [=]!:uuid:090fba09-cb57-4822-a1c7-b7987e7d62e5
- * have the following children                                        * have the following children
- *   =cynja1-dep1 / [=]!:uuid:3d80d15d-b22b-4ebd-8f80-dd1fa7fdb858    *   =cynja2-dep1 / [=]!:uuid:960162ce-5fed-481b-878f-f3b4da86a31b
- *   =cynja1-dep2 / [=]!:uuid:1a8c8b52-eeb2-403c-8211-8f2924afff1c    *   =cynja2-dep2 / [=]!:uuid:49a806d8-529a-43ca-96ec-4656e8c7f907
- * Secret token for all parents and children: test@123
-
- * Parents                                                            * Parents
- *   =cynja3 / [=]!:uuid:cb1f5cc8-53de-4c3c-a942-a4a14c0cb998         *   =cynja4 / [=]!:uuid:fb0d8ee8-fee0-4179-8ba8-059e855ac6dc
- * have the following children                                        * have the following children
- *   =cynja3child1 / [=]!:uuid:3e7a53c8-2b84-4737-bd7b-ee6196efda88   *   =cynja4child1 / [=]!:uuid:371c1bf8-d228-4f34-9750-f848c39120e3
- *   =cynja3child2 / [=]!:uuid:295516cf-e89f-4221-ac0b-668c0fb41d1a   *   =cynja4child2 / [=]!:uuid:4af1a56b-f996-4051-bd93-17cb84b24d2f
- * Secret token for all parents and children: Test@123
+ *
+ *
+ *
 
 </pre>
+
+<div id="connect">
+<table>
+<tr><td>Cloud Name:</td><td><input size="70" size="70" type="text" id="connectCloudName" value="=alice"> &lt;-- user types this</td></tr>
+<tr><td>App Cloud Number:</td><td><input type="text" size="70" id="connectAppCloudNumber" value="*!:uuid:7bdc5008-10d5-49dc-b8b5-05cee13a465a"> &lt;-- this is static</td></tr>
+<tr><td><button onclick="connecttocloud();">connecttocloud()</button></td></tr>
+<tr><td>XDI Connect Auth Service:</td><td><span id="connectAuthService"></span></td></tr>
+<tr><td>App Session Cloud Number:</td><td><input size="70" type="text" id="appSessionCloudNumber"> &lt;-- app must remember this!</td></tr>
+<tr><td>App Session Private Key:</td><td><input size="70" type="text" id="appSessionPrivateKey"> &lt;-- app must remember this!</td></tr>
+<tr><td>App Connect Request URI:</td><td><input size="70" type="text" id="appConnectRequestUri"> &lt;-- app opens this in browser!</td></tr>
+<tr><td><button onclick="connectstartauth();">Start Auth</button></td></tr>
+<tr><td>App Link Contract:</td><td><input size="70" type="text" id="appLinkContract"> &lt;-- app must remember this!</td></tr>
+</table>
+</div>
+
+<hr noshade>
 
 <div id="chat">
 <table>

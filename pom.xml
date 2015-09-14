@@ -13,6 +13,11 @@
 			<id>external</id>
 			<url>file://${project.basedir}/external</url>
 		</repository>
+        <repository>
+                <id>XDI2</id>
+                <name>XDI2-snapshots</name>
+                <url>https://artifactory.xdi2.org/xdi2-snapshot-local</url>
+        </repository>
 	</repositories>
 
 	<properties>
@@ -116,52 +121,6 @@
 
 		</plugins>
 
-		<pluginManagement>
-
-			<plugins>
-
-				<plugin>
-					<groupId>org.eclipse.m2e</groupId>
-					<artifactId>lifecycle-mapping</artifactId>
-					<version>1.0.0</version>
-					<configuration>
-						<lifecycleMappingMetadata>
-							<pluginExecutions>
-								<pluginExecution>
-									<pluginExecutionFilter>
-										<groupId>org.codehaus.mojo</groupId>
-										<artifactId>properties-maven-plugin</artifactId>
-										<versionRange>[0.0.0,)</versionRange>
-										<goals>
-											<goal>set-system-properties</goal>
-										</goals>
-									</pluginExecutionFilter>
-									<action>
-										<ignore />
-									</action>
-								</pluginExecution>
-								<pluginExecution>
-									<pluginExecutionFilter>
-										<groupId>org.apache.maven.plugins</groupId>
-										<artifactId>maven-antrun-plugin</artifactId>
-										<versionRange>[0.0.0,)</versionRange>
-										<goals>
-											<goal>run</goal>
-										</goals>
-									</pluginExecutionFilter>
-									<action>
-										<ignore />
-									</action>
-								</pluginExecution>
-							</pluginExecutions>
-						</lifecycleMappingMetadata>
-					</configuration>
-				</plugin>
-
-			</plugins>
-
-		</pluginManagement>
-
 	</build>
 
 	<dependencies>
@@ -186,9 +145,15 @@
 		<dependency>
 			<groupId>xdi2</groupId>
 			<artifactId>xdi2-client</artifactId>
-			<version>0.7-SNAPSHOT</version>
+			<version>0.8-SNAPSHOT</version>
 			<scope>compile</scope>
 		</dependency>
+        <dependency>
+			<groupId>xdi2</groupId>
+			<artifactId>xdi2-crypto-ec25519</artifactId>
+			<version>0.8-SNAPSHOT</version>
+			<scope>compile</scope>
+        </dependency>
 
 	</dependencies>
 

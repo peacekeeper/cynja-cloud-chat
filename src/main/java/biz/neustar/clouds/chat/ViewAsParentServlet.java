@@ -27,7 +27,7 @@ public class ViewAsParentServlet extends HttpServlet {
 
 		JsonObject jsonObject = JsonUtil.connectionsToJson(connections);
 
-		resp.setContentType("appliction/json");
+		resp.setContentType("application/json");
 		JsonUtil.write(resp.getWriter(), jsonObject);
 	}
 }
