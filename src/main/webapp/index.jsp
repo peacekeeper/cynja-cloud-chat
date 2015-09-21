@@ -257,7 +257,7 @@ function chatMessage() {
 <tr><td>App Session Private Key:</td><td><input size="70" type="text" id="appSessionPrivateKey"> &lt;-- app must remember this!</td></tr>
 <tr><td>App Connect Request URI:</td><td><input size="70" type="text" id="appConnectRequestUri"> &lt;-- app opens this in browser!</td></tr>
 <tr><td><button onclick="connectstartauth();">Start Auth</button></td></tr>
-<tr><td>App Link Contract:</td><td><input size="70" type="text" id="appLinkContract"> &lt;-- app must remember this!</td></tr>
+<tr><td>App Session Link Contract:</td><td><input size="70" type="text" id="appLinkContract"> &lt;-- app must remember this!</td></tr>
 </table>
 </div>
 
