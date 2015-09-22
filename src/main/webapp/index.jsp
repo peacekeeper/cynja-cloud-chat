@@ -24,7 +24,7 @@ $(document).ready(function() {
 	var xdi = getParameterByName('xdi');
 	if (! xdi) return;
 	alert("Received link contract!");
-	$("#appLinkContract").val(xdi);
+	$("#appSessionLinkContract").val(xdi);
 });
 
 function connecttocloud() {
@@ -238,7 +238,7 @@ function chatMessage() {
 <body>
 
 <pre id="example">
- * CYNJA CLOUD CHAT V2 - example parent/child data - <a href="https://github.com/peacekeeper/cynja-cloud-chat">https://github.com/peacekeeper/cynja-cloud-chat</a>
+ * CYNJA CLOUD CHAT V2 - <a href="https://github.com/peacekeeper/cynja-cloud-chat">https://github.com/peacekeeper/cynja-cloud-chat</a>
  * ================
 
  *
@@ -250,14 +250,14 @@ function chatMessage() {
 <div id="connect">
 <p class="heading">Connect To Cloud</p>
 <table>
-<tr><td>Cloud Name:</td><td><input size="70" size="70" type="text" id="connectCloudName" value="=alice"> &lt;-- user types this</td></tr>
-<tr><td>App Cloud Number:</td><td><input type="text" size="70" id="connectAppCloudNumber" value="*!:uuid:7bdc5008-10d5-49dc-b8b5-05cee13a465a"> &lt;-- this is static *cynjaspace</td></tr>
+<tr><td>Cloud Name:</td><td><input size="55" size="55" type="text" id="connectCloudName" value="=alice"> &lt;-- user types this</td></tr>
+<tr><td>App Cloud Number:</td><td><input type="text" size="55" id="connectAppCloudNumber" value="*!:uuid:7bdc5008-10d5-49dc-b8b5-05cee13a465a"> &lt;-- this is static *cynjaspace</td></tr>
 <tr><td><button onclick="connecttocloud();">connecttocloud()</button></td></tr>
-<tr><td>App Session Cloud Number:</td><td><input size="70" type="text" id="appSessionCloudNumber"> &lt;-- app must remember this!</td></tr>
-<tr><td>App Session Private Key:</td><td><input size="70" type="text" id="appSessionPrivateKey"> &lt;-- app must remember this!</td></tr>
-<tr><td>App Connect Request URI:</td><td><input size="70" type="text" id="appConnectRequestUri"> &lt;-- app opens this in browser!</td></tr>
+<tr><td>App Session Cloud Number:</td><td><input size="55" type="text" id="appSessionCloudNumber"> &lt;-- app must remember this! (ASCN)</td></tr>
+<tr><td>App Session Private Key:</td><td><input size="55" type="text" id="appSessionPrivateKey"> &lt;-- app must remember this! (ASPK)</td></tr>
+<tr><td>App Connect Request URI:</td><td><input size="55" type="text" id="appConnectRequestUri"> &lt;-- app opens this in browser!</td></tr>
 <tr><td><button onclick="connectstartauth();">Start Auth</button></td></tr>
-<tr><td>App Session Link Contract:</td><td><input size="70" type="text" id="appLinkContract"> &lt;-- app must remember this!</td></tr>
+<tr><td>App Session Link Contract:</td><td><input size="55" type="text" id="appSessionLinkContract"> &lt;-- app must remember this! (ASLC)</td></tr>
 </table>
 </div>
 
@@ -267,7 +267,7 @@ function chatMessage() {
 <table>
 <tr><td>Child 1:</td><td><input type="text" id="chatChild1"></td></tr>
 <tr><td>Child 2:</td><td><input type="text" id="chatChild2"></td></tr>
-<tr><td>Child 1 Secret Token:</td><td><input type="text" id="chatChild1SecretToken"></td></tr>
+<tr><td colspan="2">ASCN: <input type="text" id="chatASCN" size="5">&nbsp;ASPK: <input type="text" id="chatASPK" size="5">&nbsp;ASLC: <input type="text" id="chatASLC" size="5"></td></tr>
 <tr><td><button onclick="chatStart();">Start Chat</button></td><td><button onclick="chatStop();">Stop Chat</button></td></tr>
 </table>
 <textarea id="messages"></textarea>
@@ -284,8 +284,8 @@ function chatMessage() {
 <p class="heading">Request Connection</p>
 <table>
 <tr><td>Child 1</td><td><input type="text" id="requestChild1"></td></tr>
-<tr><td>Child 1 Secret Token</td><td><input type="text" id="requestChild1SecretToken"></td></tr>
 <tr><td>Child 2</td><td><input type="text" id="requestChild2"></td></tr>
+<tr><td colspan="2">ASCN: <input type="text" id="requestASCN" size="5">&nbsp;ASPK: <input type="text" id="requestASPK" size="5">&nbsp;ASLC: <input type="text" id="requestASLC" size="5"></td></tr>
 </table>
 <button onclick="request();">Request</button>
 </div>
@@ -294,9 +294,9 @@ function chatMessage() {
 <p class="heading">Approve Connection</p>
 <table>
 <tr><td>Parent</td><td><input type="text" id="approveParent"></td></tr>
-<tr><td>Parent Secret Token</td><td><input type="text" id="approveParentSecretToken"></td></tr>
 <tr><td>Child 1</td><td><input type="text" id="approveChild1"></td></tr>
 <tr><td>Child 2</td><td><input type="text" id="approveChild2"></td></tr>
+<tr><td colspan="2">ASCN: <input type="text" id="approveASCN" size="5">&nbsp;ASPK: <input type="text" id="approveASPK" size="5">&nbsp;ASLC: <input type="text" id="approveASLC" size="5"></td></tr>
 </table>
 <button onclick="approve();">Approve</button>
 </div>
@@ -305,7 +305,7 @@ function chatMessage() {
 <p class="heading">View Connections As Parent</p>
 <table>
 <tr><td>Parent</td><td><input type="text" id="viewasparentParent"></td></tr>
-<tr><td>Parent Secret Token</td><td><input type="text" id="viewasparentParentSecretToken"></td></tr>
+<tr><td colspan="2">ASCN: <input type="text" id="viewasparentASCN" size="5">&nbsp;ASPK: <input type="text" id="viewasparentASPK" size="5">&nbsp;ASLC: <input type="text" id="viewasparentASLC" size="5"></td></tr>
 </table>
 <button onclick="viewasparent();">View As Parent</button>
 </div>
@@ -314,7 +314,7 @@ function chatMessage() {
 <p class="heading">View Connections As Child</p>
 <table>
 <tr><td>Child</td><td><input type="text" id="viewaschildChild"></td></tr>
-<tr><td>Child Secret Token</td><td><input type="text" id="viewaschildChildSecretToken"></td></tr>
+<tr><td colspan="2">ASCN: <input type="text" id="viewaschildASCN" size="5">&nbsp;ASPK: <input type="text" id="viewaschildASPK" size="5">&nbsp;ASLC: <input type="text" id="viewaschildASLC" size="5"></td></tr>
 </table>
 <button onclick="viewaschild();">View As Child</button>
 </div>
@@ -323,9 +323,9 @@ function chatMessage() {
 <p class="heading">View Connection Log</p>
 <table>
 <tr><td>Parent</td><td><input type="text" id="logsParent"></td></tr>
-<tr><td>Parent Secret Token</td><td><input type="text" id="logsParentSecretToken"></td></tr>
 <tr><td>Child 1</td><td><input type="text" id="logsChild1"></td></tr>
 <tr><td>Child 2</td><td><input type="text" id="logsChild2"></td></tr>
+<tr><td colspan="2">ASCN: <input type="text" id="logsASCN" size="5">&nbsp;ASPK: <input type="text" id="logsASPK" size="5">&nbsp;ASLC: <input type="text" id="logsASLC" size="5"></td></tr>
 </table>
 <button onclick="logs();">View Log</button>
 </div>
@@ -334,9 +334,9 @@ function chatMessage() {
 <p class="heading">Block Connection</p>
 <table>
 <tr><td>Parent</td><td><input type="text" id="blockParent"></td></tr>
-<tr><td>Parent Secret Token</td><td><input type="text" id="blockParentSecretToken"></td></tr>
 <tr><td>Child 1</td><td><input type="text" id="blockChild1"></td></tr>
 <tr><td>Child 2</td><td><input type="text" id="blockChild2"></td></tr>
+<tr><td colspan="2">ASCN: <input type="text" id="blockASCN" size="5">&nbsp;ASPK: <input type="text" id="blockASPK" size="5">&nbsp;ASLC: <input type="text" id="blockASLC" size="5"></td></tr>
 </table>
 <button onclick="block();">Block</button>
 </div>
@@ -345,9 +345,9 @@ function chatMessage() {
 <p class="heading">Unblock Connection</p>
 <table>
 <tr><td>Parent</td><td><input type="text" id="unblockParent"></td></tr>
-<tr><td>Parent Secret Token</td><td><input type="text" id="unblockParentSecretToken"></td></tr>
 <tr><td>Child 1</td><td><input type="text" id="unblockChild1"></td></tr>
 <tr><td>Child 2</td><td><input type="text" id="unblockChild2"></td></tr>
+<tr><td colspan="2">ASCN: <input type="text" id="unblockASCN" size="5">&nbsp;ASPK: <input type="text" id="unblockASPK" size="5">&nbsp;ASLC: <input type="text" id="unblockASLC" size="5"></td></tr>
 </table>
 <button onclick="unblock();">Unblock</button>
 </div>
@@ -356,9 +356,9 @@ function chatMessage() {
 <p class="heading">Delete Connection</p>
 <table>
 <tr><td>Parent</td><td><input type="text" id="deleteParent"></td></tr>
-<tr><td>Parent Secret Token</td><td><input type="text" id="deleteParentSecretToken"></td></tr>
 <tr><td>Child 1</td><td><input type="text" id="deleteChild1"></td></tr>
 <tr><td>Child 2</td><td><input type="text" id="deleteChild2"></td></tr>
+<tr><td colspan="2">ASCN: <input type="text" id="deleteASCN" size="5">&nbsp;ASPK: <input type="text" id="deleteASPK" size="5">&nbsp;ASLC: <input type="text" id="deleteASLC" size="5"></td></tr>
 </table>
 <button onclick="delet();">Delete</button>
 </div>
