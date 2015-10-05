@@ -43,7 +43,7 @@ public class XdiConnection implements Connection {
 				child1, 
 				child2, 
 				XDI_ADD_CHAT, 
-				true,
+				null,
 				true);
 
 		this.linkContract1 = linkContract1;
