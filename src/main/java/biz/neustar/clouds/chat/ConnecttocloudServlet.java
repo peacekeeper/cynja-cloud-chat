@@ -54,7 +54,7 @@ public class ConnecttocloudServlet extends HttpServlet {
 			// step 1
 
 			XDIDiscoveryResult r =
-					XDIDiscoveryClient.DEFAULT_DISCOVERY_CLIENT.discover(cloudName.getXDIAddress(),
+					new XDIDiscoveryClient("http://dev-registry.respectnetwork.net:3081/registry").discover(cloudName.getXDIAddress(),
 							XDIClientConstants.CONNECT_ENDPOINT_URI_TYPE);
 			CloudNumber cloudNumber = r.getCloudNumber();
 			URI connectAuthService = r.getXdiConnectEndpointUri();
