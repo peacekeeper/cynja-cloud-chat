@@ -50,11 +50,13 @@ public class ConnecttocloudServlet extends HttpServlet {
 		CloudName cloudName = CloudName.create(req.getParameter("cloudName"));
 		CloudNumber appCloudNumber = CloudNumber.create(req.getParameter("appCloudNumber"));
 
+		XDIDiscoveryClient discoveryClient = new XDIDiscoveryClient("http://dev-registry.respectnetwork.net:3081/registry");
+		
 		try {
 			// step 1
 
 			XDIDiscoveryResult r =
-					new XDIDiscoveryClient("http://dev-registry.respectnetwork.net:3081/registry").discover(cloudName.getXDIAddress(),
+					discoveryClient.discover(cloudName.getXDIAddress(),
 							XDIClientConstants.CONNECT_ENDPOINT_URI_TYPE);
 			CloudNumber cloudNumber = r.getCloudNumber();
 			URI connectAuthService = r.getXdiConnectEndpointUri();
@@ -84,7 +86,7 @@ public class ConnecttocloudServlet extends HttpServlet {
 			appConnectRequestUri.append(connectAuthService);
 			appConnectRequestUri.append("?xdi=" + connectRequest);
 			appConnectRequestUri.append("&key=" + cloudName.toString());
-			appConnectRequestUri.append("&discovery=" + ((XDIHttpClient) XDIDiscoveryClient.DEFAULT_DISCOVERY_CLIENT.getRegistryXdiClient()).getXdiEndpointUri().toString());
+			appConnectRequestUri.append("&discovery=" + ((XDIHttpClient) discoveryClient.getRegistryXdiClient()).getXdiEndpointUri().toString());
 
 			// response
 
