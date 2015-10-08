@@ -77,7 +77,7 @@ public class ConnecttocloudServlet extends HttpServlet {
 			m.setToPeerRootXDIArc(cloudNumber.getPeerRootXDIArc());
 			m.setLinkContractClass(ConnectLinkContract.class);
 			m.setFromPeerRootXDIArc(appCloudNumber.getPeerRootXDIArc());
-			m.setParameter(XDI_ADD_RETURN_URI, "http://localhost:3080/");
+			m.setParameter(XDI_ADD_RETURN_URI, "http://dev-pcloudapi.respectnetwork.net:3080/");
 			m.createConnectOperation(
 					XDIBootstrap.ALL_LINK_CONTRACT_TEMPLATE_ADDRESS);
 			String connectRequest = URLEncoder.encode(
