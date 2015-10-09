@@ -57,6 +57,13 @@ public class JsonUtil {
 
 			JsonObject child1JsonObject = new JsonObject();
 			child1JsonObject.add("child", gson.toJsonTree(connection.getChild2().toString()));
+			if(connection.getConnectionName() != null) {
+			    child1JsonObject.add("name", gson.toJsonTree(connection.getConnectionName().toString()));
+			} else {
+			    //In case of old connections where we did not store the name of the connection, we can discovery it from discovery service.
+			    child1JsonObject.add("name", null);
+			}
+			
 			child1JsonObject.add("approved", gson.toJsonTree(connection.isApproved1()));
 			child1JsonObject.add("blocked", gson.toJsonTree(connection.isBlocked1()));
 

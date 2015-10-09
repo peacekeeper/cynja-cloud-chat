@@ -14,20 +14,22 @@ import xdi2.client.XDIClient;
 import xdi2.client.impl.http.XDIHttpClient;
 import xdi2.client.util.XDIClientUtil;
 import xdi2.core.Graph;
+import xdi2.core.constants.XDIDictionaryConstants;
 import xdi2.core.constants.XDILinkContractConstants;
 import xdi2.core.features.equivalence.Equivalence;
 import xdi2.core.features.linkcontracts.instance.GenericLinkContract;
 import xdi2.core.features.linkcontracts.instance.RootLinkContract;
-import xdi2.core.features.nodetypes.XdiAbstractInstanceUnordered;
 import xdi2.core.features.nodetypes.XdiCommonRoot;
 import xdi2.core.features.nodetypes.XdiEntity;
 import xdi2.core.features.nodetypes.XdiEntityCollection;
 import xdi2.core.features.nodetypes.XdiEntityInstance;
 import xdi2.core.features.nodetypes.XdiEntityInstanceUnordered;
+import xdi2.core.features.nodetypes.XdiInnerRoot;
 import xdi2.core.impl.memory.MemoryGraphFactory;
 import xdi2.core.security.signature.create.RSAStaticPrivateKeySignatureCreator;
 import xdi2.core.syntax.XDIAddress;
 import xdi2.core.syntax.XDIArc;
+import xdi2.core.syntax.XDIStatement;
 import xdi2.core.util.XDIAddressUtil;
 import xdi2.discovery.XDIDiscoveryResult;
 import xdi2.messaging.Message;
@@ -97,7 +99,19 @@ public class XdiConnectionService implements ConnectionService {
 							linkContract1.getContextNode().getXDIAddress().toString()));
 
 			Equivalence.setReferenceContextNode(linkContract1XdiEntityInstance.getContextNode(), linkContract1.getContextNode());
+			
+			//START: To set cloud name as part of connection
+			XdiInnerRoot innerRootSet = XdiCommonRoot.findCommonRoot(tempGraph1).getInnerRoot(
+			        child1Discovery.getCloudNumber().getXDIAddress(), 
+			        child2Discovery.getCloudNumber().getXDIAddress(), 
+	                true);
 
+	        innerRootSet.getContextNode().setStatement(XDIStatement.fromComponents(
+	                child2Discovery.getCloudNumber().getXDIAddress(), 
+	                XDIDictionaryConstants.XDI_ADD_IS_REF, 
+	                child2));
+	        //END
+	        
 			// message
 
 			MessageEnvelope me = new MessageEnvelope();
@@ -203,7 +217,7 @@ public class XdiConnectionService implements ConnectionService {
 
 					if (linkContract == null) continue;
 
-					connections.add(new XdiConnection(linkContract));
+					connections.add(new XdiConnection(linkContract, null, mr.getGraph()));
 				}
 			}
 
@@ -268,7 +282,7 @@ public class XdiConnectionService implements ConnectionService {
 
 				if (linkContract == null) continue;
 
-				connections.add(new XdiConnection(linkContract));
+				connections.add(new XdiConnection(linkContract, null, mr.getGraph()));
 			}
 
 			// done
