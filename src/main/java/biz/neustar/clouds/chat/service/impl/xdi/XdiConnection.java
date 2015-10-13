@@ -1,20 +1,20 @@
 package biz.neustar.clouds.chat.service.impl.xdi;
 
 import biz.neustar.clouds.chat.model.Connection;
+import biz.neustar.clouds.chat.model.Connection;
+import xdi2.core.ContextNode;
 import xdi2.core.Graph;
 import xdi2.core.LiteralNode;
-import xdi2.core.features.linkcontracts.instance.GenericLinkContract;
-import xdi2.core.features.nodetypes.XdiAttribute;
+import xdi2.core.Relation;
 import xdi2.core.constants.XDIDictionaryConstants;
 import xdi2.core.features.linkcontracts.instance.GenericLinkContract;
+import xdi2.core.features.linkcontracts.instance.GenericLinkContract;
 import xdi2.core.features.nodetypes.XdiAttribute;
-import xdi2.core.features.nodetypes.XdiCommonRoot;
+import xdi2.core.features.nodetypes.XdiAttribute;
 import xdi2.core.impl.memory.MemoryGraphFactory;
 import xdi2.core.syntax.CloudName;
 import xdi2.core.syntax.XDIAddress;
 import xdi2.core.syntax.XDIArc;
-import xdi2.core.util.XDIAddressUtil;
-import biz.neustar.clouds.chat.model.Connection;
 
 public class XdiConnection implements Connection {
 
@@ -28,7 +28,6 @@ public class XdiConnection implements Connection {
 
 	private GenericLinkContract linkContract1;
 	private GenericLinkContract linkContract2;
-	private Graph graph;
 
 	XdiConnection(GenericLinkContract linkContract1, GenericLinkContract linkContract2) {
 
@@ -41,14 +40,7 @@ public class XdiConnection implements Connection {
 		this.linkContract1 = linkContract1;
 		this.linkContract2 = null;
 	}
-	
-	XdiConnection(GenericLinkContract linkContract1, GenericLinkContract linkContract2, Graph graph) {
 
-        this.linkContract1 = linkContract1;
-        this.linkContract2 = linkContract2;
-        this.graph = graph;
-    }
-	
 	XdiConnection(XDIAddress child1, XDIAddress child2) {
 
 		Graph tempGraph = MemoryGraphFactory.getInstance().openGraph();
@@ -120,20 +112,15 @@ public class XdiConnection implements Connection {
 		return literal == null ? null : literal.getLiteralDataBoolean();
 	}
 
-    @Override
-    public CloudName getConnectionName() {
-        if (this.graph == null) return null;
-       
-        XDIAddress mrXDIAddress = graph
-                .getDeepContextNode(
-                        XDIAddressUtil.concatXDIAddresses(
-                                XdiCommonRoot
-                                        .findCommonRoot(graph)
-                                        .getInnerRoot(linkContract1.getAuthorizingAuthority(),
-                                                linkContract1.getRequestingAuthority(), true).getXDIAddress(),
-                                linkContract1.getRequestingAuthority()))
-                .getRelation(XDIDictionaryConstants.XDI_ADD_IS_REF).getTargetXDIAddress();
+	@Override
+	public CloudName getConnectionName() {
 
-        return CloudName.fromXDIAddress(mrXDIAddress);
-    }
+		ContextNode requestingAuthorityContextNode = linkContract1.getContextNode().getDeepContextNode(linkContract1.getRequestingAuthority());
+		if (requestingAuthorityContextNode == null) return null;
+
+		Relation requestingAuthorityRelation = requestingAuthorityContextNode.getRelation(XDIDictionaryConstants.XDI_ADD_IS_REF);
+		if (requestingAuthorityRelation == null) return null;
+
+		return CloudName.fromXDIAddress(requestingAuthorityRelation.getTargetXDIAddress());
+	}
 }
