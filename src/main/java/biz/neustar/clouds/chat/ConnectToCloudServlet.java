@@ -93,9 +93,9 @@ public class ConnectToCloudServlet extends HttpServlet {
 			// response
 
 			JsonObject jsonObject = new JsonObject();
-			jsonObject.add("appSessionCloudNumber", gson.toJsonTree(appSessionCloudNumber.toString()));
-			jsonObject.add("appSessionPrivateKey", gson.toJsonTree(appSessionPrivateKey));
-			jsonObject.add("appConnectRequestUri", gson.toJsonTree(appConnectRequestUri));
+			jsonObject.add("ascn", gson.toJsonTree(appSessionCloudNumber.toString()));
+			jsonObject.add("aspk", gson.toJsonTree(appSessionPrivateKey));
+			jsonObject.add("asuri", gson.toJsonTree(appConnectRequestUri));
 
 			resp.setContentType("application/json");
 			JsonUtil.write(resp.getWriter(), jsonObject);

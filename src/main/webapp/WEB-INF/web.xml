@@ -26,12 +26,12 @@
 	</servlet-mapping>
 
 	<servlet>
-		<servlet-name>connecttochildrenclouds</servlet-name>
-		<servlet-class>biz.neustar.clouds.chat.ConnectToChildrenCloudsServlet</servlet-class>
+		<servlet-name>connecttochildcloud</servlet-name>
+		<servlet-class>biz.neustar.clouds.chat.ConnectToChildCloudServlet</servlet-class>
 	</servlet>
 	<servlet-mapping>
-		<servlet-name>connecttochildrenclouds</servlet-name>
-		<url-pattern>/2/connecttochildrenclouds</url-pattern>
+		<servlet-name>connecttochildcloud</servlet-name>
+		<url-pattern>/2/connecttochildcloud</url-pattern>
 	</servlet-mapping>
 
 	<servlet>

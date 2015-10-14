@@ -24,7 +24,7 @@ $(document).ready(function() {
 	var xdi = getParameterByName('xdi');
 	if (! xdi) return;
 	alert("Received link contract!");
-	$("#appSessionLinkContract").val(xdi);
+	$("#aslc").val(xdi);
 });
 
 function connecttocloud() {
@@ -38,9 +38,9 @@ function connecttocloud() {
 	    data: 'cloudName=' + encodeURIComponent(cloudName) + '&' + 'appCloudNumber=' + encodeURIComponent(appCloudNumber),
 	    success: function(data) { 
 	    	alert('success: ' + JSON.stringify(data)); 
-	    	$("#appSessionCloudNumber").val(data.appSessionCloudNumber);
-	    	$("#appSessionPrivateKey").val(data.appSessionPrivateKey);
-	    	$("#appConnectRequestUri").val(data.appConnectRequestUri);
+	    	$("#ascn").val(data.ascn);
+	    	$("#aspk").val(data.aspk);
+	    	$("#asuri").val(data.asuri);
 	    	},
 	    error: function(msg) { alert('error: ' + JSON.stringify(msg)); }
 	});
@@ -53,17 +53,18 @@ function connectstartauth() {
 	window.location = appConnectRequestUri;
 }
 
-function connecttochildrenclouds() {
+function connecttochildcloud() {
 
-	var parent = $("#connecttochildrencloudsParent").val().trim(); if (! parent) { alert("Please enter \"Parent\""); return; }
-	var ascn = $("#connecttochildrencloudsASCN").val().trim(); if (! ascn) { alert("Please enter \"ASCN\""); return; }
-	var aspk = $("#connecttochildrencloudsASPK").val().trim(); if (! aspk) { alert("Please enter \"ASPK\""); return; }
-	var aslc = $("#connecttochildrencloudsASLC").val().trim(); if (! aslc) { alert("Please enter \"ASLC\""); return; }
+	var parent = $("#connecttochildcloudParent").val().trim(); if (! parent) { alert("Please enter \"Parent\""); return; }
+	var child = $("#connecttochildcloudChild").val().trim(); if (! child) { alert("Please enter \"Child\""); return; }
+	var ascn = $("#connecttochildcloudASCN").val().trim(); if (! ascn) { alert("Please enter \"ASCN\""); return; }
+	var aspk = $("#connecttochildcloudASPK").val().trim(); if (! aspk) { alert("Please enter \"ASPK\""); return; }
+	var aslc = $("#connecttochildcloudASLC").val().trim(); if (! aslc) { alert("Please enter \"ASLC\""); return; }
 
 	$.ajax({
-	    url: '/2/connecttochildrenclouds',
+	    url: '/2/connecttochildcloud',
 	    type: 'POST',
-	    data: 'parent=' + encodeURIComponent(parent) + '&' + 'ascn=' + encodeURIComponent(ascn) + '&' + 'aspk=' + encodeURIComponent(aspk) + '&' + 'aslc=' + encodeURIComponent(aslc),
+	    data: 'parent=' + encodeURIComponent(parent) + '&' + 'child=' + encodeURIComponent(child) + '&' + 'ascn=' + encodeURIComponent(ascn) + '&' + 'aspk=' + encodeURIComponent(aspk) + '&' + 'aslc=' + encodeURIComponent(aslc),
 	    success: function(data) { alert('success: ' + JSON.stringify(data)); },
 	    error: function(msg) { alert('error: ' + JSON.stringify(msg)); }
 	});
@@ -71,7 +72,6 @@ function connecttochildrenclouds() {
 
 function request() {
 
-	var parent = $("#requestParent").val().trim(); if (! parent) { alert("Please enter \"Parent\""); return; }
 	var child1 = $("#requestChild1").val().trim(); if (! child1) { alert("Please enter \"Child 1\""); return; }
 	var child2 = $("#requestChild2").val().trim(); if (! child2) { alert("Please enter \"Child 2\""); return; }
 	var ascn = $("#requestASCN").val().trim(); if (! ascn) { alert("Please enter \"ASCN\""); return; }
@@ -81,7 +81,7 @@ function request() {
 	$.ajax({
 	    url: '/1/request',
 	    type: 'POST',
-	    data: 'parent=' + encodeURIComponent(parent) + '&' + 'child1=' + encodeURIComponent(child1) + '&' + 'child2=' + encodeURIComponent(child2) + '&' + 'ascn=' + encodeURIComponent(ascn) + '&' + 'aspk=' + encodeURIComponent(aspk) + '&' + 'aslc=' + encodeURIComponent(aslc),
+	    data: 'child1=' + encodeURIComponent(child1) + '&' + 'child2=' + encodeURIComponent(child2) + '&' + 'ascn=' + encodeURIComponent(ascn) + '&' + 'aspk=' + encodeURIComponent(aspk) + '&' + 'aslc=' + encodeURIComponent(aslc),
 	    success: function(data) { alert('success: ' + JSON.stringify(data)); },
 	    error: function(msg) { alert('error: ' + JSON.stringify(msg)); }
 	});
@@ -123,7 +123,6 @@ function viewasparent() {
 
 function viewaschild() {
 
-	var parent = $("#viewaschildParent").val().trim(); if (! parent) { alert("Please enter \"Parent\""); return; }
 	var child = $("#viewaschildChild").val().trim(); if (! child) { alert("Please enter \"Child\""); return; }
 	var ascn = $("#viewaschildASCN").val().trim(); if (! ascn) { alert("Please enter \"ASCN\""); return; }
 	var aspk = $("#viewaschildASPK").val().trim(); if (! aspk) { alert("Please enter \"ASPK\""); return; }
@@ -132,7 +131,7 @@ function viewaschild() {
 	$.ajax({
 	    url: '/1/viewaschild',
 	    type: 'POST',
-	    data: 'parent=' + encodeURIComponent(parent) + '&' + 'child=' + encodeURIComponent(child) + '&' + 'ascn=' + encodeURIComponent(ascn) + '&' + 'aspk=' + encodeURIComponent(aspk) + '&' + 'aslc=' + encodeURIComponent(aslc),
+	    data: 'child=' + encodeURIComponent(child) + '&' + 'ascn=' + encodeURIComponent(ascn) + '&' + 'aspk=' + encodeURIComponent(aspk) + '&' + 'aslc=' + encodeURIComponent(aslc),
 	    success: function(data) { alert('success: ' + JSON.stringify(data)); },
 	    error: function(msg) { alert('error: ' + JSON.stringify(msg)); }
 	});
@@ -218,11 +217,15 @@ function chatStart() {
 
 	var child1 = $("#chatChild1").val().trim(); if (! child1) { alert("Please enter \"Child 1\""); return; }
 	var child2 = $("#chatChild2").val().trim(); if (! child2) { alert("Please enter \"Child 2\""); return; }
-	var child1SecretToken = $("#chatChild1SecretToken").val().trim(); if (! child1SecretToken) { alert("Please enter \"Child 1 Secret Token\""); return; }
+	var ascn = $("#chatASCN").val().trim(); if (! ascn) { alert("Please enter \"ASCN\""); return; }
+	var aspk = $("#chatASPK").val().trim(); if (! aspk) { alert("Please enter \"ASPK\""); return; }
+	var aslc = $("#chatASLC").val().trim(); if (! aslc) { alert("Please enter \"ASLC\""); return; }
 
-	var url = window.location.href.replace("http", "ws") + "1/chat/" + encodeURIComponent(child1) + '/' + encodeURIComponent(child2) + '?child1SecretToken=' + child1SecretToken;
+	var url = window.location.href.replace("http", "ws") + "1/chat/" + encodeURIComponent(child1) + '/' + encodeURIComponent(child2);
 
 	ws = new WebSocket(url, ["cynja-chat"]);
+
+	ws.send("" + ascn + " " + aspk + " " + aslc + "\n");
 
 	ws.onmessage = function(event) {
 
@@ -287,24 +290,25 @@ function chatMessage() {
 <tr><td>Cloud Name:</td><td><input size="55" size="55" type="text" id="connectCloudName" value="=parent"> &lt;-- user types this</td></tr>
 <tr><td>App Cloud Number:</td><td><input type="text" size="55" id="connectAppCloudNumber" value="*!:uuid:7bdc5008-10d5-49dc-b8b5-05cee13a465a"> &lt;-- this is static *cynjaspace</td></tr>
 <tr><td><button onclick="connecttocloud();">connecttocloud()</button></td></tr>
-<tr><td>App Session Cloud Number:</td><td><input size="55" type="text" id="appSessionCloudNumber"> &lt;-- app must remember this! (ASCN)</td></tr>
-<tr><td>App Session Private Key:</td><td><input size="55" type="text" id="appSessionPrivateKey"> &lt;-- app must remember this! (ASPK)</td></tr>
-<tr><td>App Connect Request URI:</td><td><input size="55" type="text" id="appConnectRequestUri"> &lt;-- app opens this in browser!</td></tr>
+<tr><td>App Session Cloud Number:</td><td><input size="55" type="text" id="ascn"> &lt;-- app must remember this! (ASCN)</td></tr>
+<tr><td>App Session Private Key:</td><td><input size="55" type="text" id="aspk"> &lt;-- app must remember this! (ASPK)</td></tr>
+<tr><td>App Connect Request URI:</td><td><input size="55" type="text" id="asuri"> &lt;-- app opens this in browser!</td></tr>
 <tr><td><button onclick="connectstartauth();">Start Auth</button></td></tr>
-<tr><td>App Session Link Contract:</td><td><input size="55" type="text" id="appSessionLinkContract"> &lt;-- app must remember this! (ASLC)</td></tr>
+<tr><td>App Session Link Contract:</td><td><input size="55" type="text" id="aslc"> &lt;-- app must remember this! (ASLC)</td></tr>
 </table>
 </div>
 
-<!--<hr noshade>
+<hr noshade>
 
 <div>
-<p class="heading">Connect To Children Clouds</p>
+<p class="heading">Connect To Child Cloud</p>
 <table>
-<tr><td>Parent</td><td><input type="text" id="connecttochildrencloudsParent"></td></tr>
-<tr><td colspan="2">ASCN: <input type="text" id="connecttochildrencloudsASCN" size="5">&nbsp;ASPK: <input type="text" id="connecttochildrencloudsASPK" size="5">&nbsp;ASLC: <input type="text" id="connecttochildrencloudsASLC" size="5"></td></tr>
+<tr><td>Parent</td><td><input type="text" id="connecttochildcloudParent"></td></tr>
+<tr><td>Child</td><td><input type="text" id="connecttochildcloudChild"></td></tr>
+<tr><td colspan="2">ASCN: <input type="text" id="connecttochildcloudASCN" size="5">&nbsp;ASPK: <input type="text" id="connecttochildcloudASPK" size="5">&nbsp;ASLC: <input type="text" id="connecttochildcloudASLC" size="5"></td></tr>
 </table>
-<button onclick="connecttochildrenclouds();">connecttochildrenclouds()</button>
-</div>-->
+<button onclick="connecttochildcloud();">connecttochildcloud()</button>
+</div>
 
 <hr noshade>
 
@@ -328,7 +332,6 @@ function chatMessage() {
 <div>
 <p class="heading">Request Connection</p>
 <table>
-<tr><td>Parent</td><td><input type="text" id="requestParent"></td></tr>
 <tr><td>Child 1</td><td><input type="text" id="requestChild1"></td></tr>
 <tr><td>Child 2</td><td><input type="text" id="requestChild2"></td></tr>
 <tr><td colspan="2">ASCN: <input type="text" id="requestASCN" size="5">&nbsp;ASPK: <input type="text" id="requestASPK" size="5">&nbsp;ASLC: <input type="text" id="requestASLC" size="5"></td></tr>
@@ -359,7 +362,6 @@ function chatMessage() {
 <div>
 <p class="heading">View Connections As Child</p>
 <table>
-<tr><td>Parent</td><td><input type="text" id="viewaschildParent"></td></tr>
 <tr><td>Child</td><td><input type="text" id="viewaschildChild"></td></tr>
 <tr><td colspan="2">ASCN: <input type="text" id="viewaschildASCN" size="5">&nbsp;ASPK: <input type="text" id="viewaschildASPK" size="5">&nbsp;ASLC: <input type="text" id="viewaschildASLC" size="5"></td></tr>
 </table>

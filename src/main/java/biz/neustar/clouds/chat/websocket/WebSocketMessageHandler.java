@@ -9,9 +9,11 @@ import javax.websocket.Session;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import xdi2.core.syntax.CloudNumber;
 import xdi2.core.syntax.XDIAddress;
 import biz.neustar.clouds.chat.CynjaCloudChat;
 import biz.neustar.clouds.chat.model.Connection;
+import biz.neustar.clouds.chat.util.HexUtil;
 import biz.neustar.clouds.chat.util.JsonUtil;
 
 import com.google.gson.JsonObject;
@@ -25,6 +27,9 @@ public class WebSocketMessageHandler implements javax.websocket.MessageHandler.W
 	private XDIAddress child1;
 	private XDIAddress child2;
 	private Connection connection;
+	private CloudNumber ascn;
+	private byte[] aspk;
+	private XDIAddress aslc;
 
 	public WebSocketMessageHandler(Session session, XDIAddress child1, XDIAddress child2, Connection connection) {
 
@@ -56,9 +61,21 @@ public class WebSocketMessageHandler implements javax.websocket.MessageHandler.W
 
 		CynjaCloudChat.logService.addLog(this, this.connection, line);
 
+		// ascn, aspk, aslc ?
+
+		if (! line.startsWith("{")) {
+
+			String[] parts = line.split(" ");
+			this.ascn = CloudNumber.create(parts[0]);
+			this.aspk = HexUtil.decodeHex(parts[1]);
+			this.aslc = XDIAddress.create(parts[2]);
+
+			log.info("Received ASCN, ASPK, ASLC.");
+		}
+
 		// send line to message handlers
 
-		WebSocketEndpoint.send(this, line);
+//		WebSocketEndpoint.send(this, line);
 	}
 
 	public void send(WebSocketMessageHandler fromWebSocketMessageHandler, String line) {

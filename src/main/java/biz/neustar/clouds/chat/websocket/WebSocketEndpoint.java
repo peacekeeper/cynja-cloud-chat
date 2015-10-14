@@ -104,7 +104,6 @@ public class WebSocketEndpoint extends javax.websocket.Endpoint {
 			// parse parameters
 
 			XDIAddress child1 = XDIAddress.create(URLDecoder.decode(session.getPathParameters().get("child1"), "UTF-8"));
-			String child1SecretToken = session.getRequestParameterMap().get("child1SecretToken").get(0);
 			XDIAddress child2 = XDIAddress.create(URLDecoder.decode(session.getPathParameters().get("child2"), "UTF-8"));
 
 			// check connection

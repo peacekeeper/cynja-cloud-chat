@@ -18,13 +18,12 @@ public class RequestServlet extends HttpServlet {
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
-		XDIAddress parent = XDIAddress.create(req.getParameter("parent"));
 		XDIAddress child1 = XDIAddress.create(req.getParameter("child1"));
 		XDIAddress child2 = XDIAddress.create(req.getParameter("child2"));
 		CloudNumber ascn = CloudNumber.create(req.getParameter("ascn"));
 		byte[] aspk = HexUtil.decodeHex(req.getParameter("aspk"));
 		XDIAddress aslc = XDIAddress.create(req.getParameter("aslc"));
 
-		CynjaCloudChat.connectionService.requestConnection(parent, child1, child2, ascn, aspk, aslc);
+		CynjaCloudChat.connectionService.requestConnection(child1, child2, ascn, aspk, aslc);
 	}
 }
