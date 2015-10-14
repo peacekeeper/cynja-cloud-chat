@@ -53,16 +53,35 @@ function connectstartauth() {
 	window.location = appConnectRequestUri;
 }
 
+function connecttochildrenclouds() {
+
+	var parent = $("#connecttochildrencloudsParent").val().trim(); if (! parent) { alert("Please enter \"Parent\""); return; }
+	var ascn = $("#connecttochildrencloudsASCN").val().trim(); if (! ascn) { alert("Please enter \"ASCN\""); return; }
+	var aspk = $("#connecttochildrencloudsASPK").val().trim(); if (! aspk) { alert("Please enter \"ASPK\""); return; }
+	var aslc = $("#connecttochildrencloudsASLC").val().trim(); if (! aslc) { alert("Please enter \"ASLC\""); return; }
+
+	$.ajax({
+	    url: '/2/connecttochildrenclouds',
+	    type: 'POST',
+	    data: 'parent=' + encodeURIComponent(parent) + '&' + 'ascn=' + encodeURIComponent(ascn) + '&' + 'aspk=' + encodeURIComponent(aspk) + '&' + 'aslc=' + encodeURIComponent(aslc),
+	    success: function(data) { alert('success: ' + JSON.stringify(data)); },
+	    error: function(msg) { alert('error: ' + JSON.stringify(msg)); }
+	});
+}
+
 function request() {
 
+	var parent = $("#requestParent").val().trim(); if (! parent) { alert("Please enter \"Parent\""); return; }
 	var child1 = $("#requestChild1").val().trim(); if (! child1) { alert("Please enter \"Child 1\""); return; }
-	var child1SecretToken = $("#requestChild1SecretToken").val().trim(); if (! child1SecretToken) { alert("Please enter \"Child 1 Secret Token\""); return; }
 	var child2 = $("#requestChild2").val().trim(); if (! child2) { alert("Please enter \"Child 2\""); return; }
+	var ascn = $("#requestASCN").val().trim(); if (! ascn) { alert("Please enter \"ASCN\""); return; }
+	var aspk = $("#requestASPK").val().trim(); if (! aspk) { alert("Please enter \"ASPK\""); return; }
+	var aslc = $("#requestASLC").val().trim(); if (! aslc) { alert("Please enter \"ASLC\""); return; }
 
 	$.ajax({
 	    url: '/1/request',
 	    type: 'POST',
-	    data: 'child1=' + encodeURIComponent(child1) + '&' + 'child1SecretToken=' + encodeURIComponent(child1SecretToken) + '&' + 'child2=' + encodeURIComponent(child2),
+	    data: 'parent=' + encodeURIComponent(parent) + '&' + 'child1=' + encodeURIComponent(child1) + '&' + 'child2=' + encodeURIComponent(child2) + '&' + 'ascn=' + encodeURIComponent(ascn) + '&' + 'aspk=' + encodeURIComponent(aspk) + '&' + 'aslc=' + encodeURIComponent(aslc),
 	    success: function(data) { alert('success: ' + JSON.stringify(data)); },
 	    error: function(msg) { alert('error: ' + JSON.stringify(msg)); }
 	});
@@ -71,14 +90,16 @@ function request() {
 function approve() {
 
 	var parent = $("#approveParent").val().trim(); if (! parent) { alert("Please enter \"Parent\""); return; }
-	var parentSecretToken = $("#approveParentSecretToken").val().trim(); if (! parentSecretToken) { alert("Please enter \"Parent Secret Token\""); return; }
 	var child1 = $("#approveChild1").val().trim(); if (! child1) { alert("Please enter \"Child 1\""); return; }
 	var child2 = $("#approveChild2").val().trim(); if (! child2) { alert("Please enter \"Child 2\""); return; }
+	var ascn = $("#approveASCN").val().trim(); if (! ascn) { alert("Please enter \"ASCN\""); return; }
+	var aspk = $("#approveASPK").val().trim(); if (! aspk) { alert("Please enter \"ASPK\""); return; }
+	var aslc = $("#approveASLC").val().trim(); if (! aslc) { alert("Please enter \"ASLC\""); return; }
 
 	$.ajax({
 	    url: '/1/approve',
 	    type: 'POST',
-	    data: 'parent=' + encodeURIComponent(parent) + '&' + 'parentSecretToken=' + encodeURIComponent(parentSecretToken) + '&' + 'child1=' + encodeURIComponent(child1) + '&' + 'child2=' + encodeURIComponent(child2),
+	    data: 'parent=' + encodeURIComponent(parent) + '&' + 'child1=' + encodeURIComponent(child1) + '&' + 'child2=' + encodeURIComponent(child2) + '&' + 'ascn=' + encodeURIComponent(ascn) + '&' + 'aspk=' + encodeURIComponent(aspk) + '&' + 'aslc=' + encodeURIComponent(aslc),
 	    success: function(data) { alert('success: ' + JSON.stringify(data)); },
 	    error: function(msg) { alert('error: ' + JSON.stringify(msg)); }
 	});
@@ -87,12 +108,14 @@ function approve() {
 function viewasparent() {
 
 	var parent = $("#viewasparentParent").val().trim(); if (! parent) { alert("Please enter \"Parent\""); return; }
-	var parentSecretToken = $("#viewasparentParentSecretToken").val().trim(); if (! parentSecretToken) { alert("Please enter \"Parent Secret Token\""); return; }
+	var ascn = $("#viewasparentASCN").val().trim(); if (! ascn) { alert("Please enter \"ASCN\""); return; }
+	var aspk = $("#viewasparentASPK").val().trim(); if (! aspk) { alert("Please enter \"ASPK\""); return; }
+	var aslc = $("#viewasparentASLC").val().trim(); if (! aslc) { alert("Please enter \"ASLC\""); return; }
 
 	$.ajax({
 	    url: '/1/viewasparent',
 	    type: 'POST',
-	    data: 'parent=' + encodeURIComponent(parent) + '&' + 'parentSecretToken=' + encodeURIComponent(parentSecretToken),
+	    data: 'parent=' + encodeURIComponent(parent) + '&' + 'ascn=' + encodeURIComponent(ascn) + '&' + 'aspk=' + encodeURIComponent(aspk) + '&' + 'aslc=' + encodeURIComponent(aslc),
 	    success: function(data) { alert('success: ' + JSON.stringify(data)); },
 	    error: function(msg) { alert('error: ' + JSON.stringify(msg)); }
 	});
@@ -100,13 +123,16 @@ function viewasparent() {
 
 function viewaschild() {
 
+	var parent = $("#viewaschildParent").val().trim(); if (! parent) { alert("Please enter \"Parent\""); return; }
 	var child = $("#viewaschildChild").val().trim(); if (! child) { alert("Please enter \"Child\""); return; }
-	var childSecretToken = $("#viewaschildChildSecretToken").val().trim(); if (! childSecretToken) { alert("Please enter \"Child Secret Token\""); return; }
+	var ascn = $("#viewaschildASCN").val().trim(); if (! ascn) { alert("Please enter \"ASCN\""); return; }
+	var aspk = $("#viewaschildASPK").val().trim(); if (! aspk) { alert("Please enter \"ASPK\""); return; }
+	var aslc = $("#viewaschildASLC").val().trim(); if (! aslc) { alert("Please enter \"ASLC\""); return; }
 
 	$.ajax({
 	    url: '/1/viewaschild',
 	    type: 'POST',
-	    data: 'child=' + encodeURIComponent(child) + '&' + 'childSecretToken=' + encodeURIComponent(childSecretToken),
+	    data: 'parent=' + encodeURIComponent(parent) + '&' + 'child=' + encodeURIComponent(child) + '&' + 'ascn=' + encodeURIComponent(ascn) + '&' + 'aspk=' + encodeURIComponent(aspk) + '&' + 'aslc=' + encodeURIComponent(aslc),
 	    success: function(data) { alert('success: ' + JSON.stringify(data)); },
 	    error: function(msg) { alert('error: ' + JSON.stringify(msg)); }
 	});
@@ -115,14 +141,16 @@ function viewaschild() {
 function logs() {
 
 	var parent = $("#logsParent").val().trim(); if (! parent) { alert("Please enter \"Parent\""); return; }
-	var parentSecretToken = $("#logsParentSecretToken").val().trim(); if (! parentSecretToken) { alert("Please enter \"Parent Secret Token\""); return; }
 	var child1 = $("#logsChild1").val().trim(); if (! child1) { alert("Please enter \"Child 1\""); return; }
 	var child2 = $("#logsChild2").val().trim(); if (! child2) { alert("Please enter \"Child 2\""); return; }
+	var ascn = $("#logsASCN").val().trim(); if (! ascn) { alert("Please enter \"ASCN\""); return; }
+	var aspk = $("#logsASPK").val().trim(); if (! aspk) { alert("Please enter \"ASPK\""); return; }
+	var aslc = $("#logsASLC").val().trim(); if (! aslc) { alert("Please enter \"ASLC\""); return; }
 
 	$.ajax({
 	    url: '/1/logs',
 	    type: 'POST',
-	    data: 'parent=' + encodeURIComponent(parent) + '&' + 'parentSecretToken=' + encodeURIComponent(parentSecretToken) + '&' + 'child1=' + encodeURIComponent(child1) + '&' + 'child2=' + encodeURIComponent(child2),
+	    data: 'parent=' + encodeURIComponent(parent) + '&' + 'child1=' + encodeURIComponent(child1) + '&' + 'child2=' + encodeURIComponent(child2) + '&' + 'ascn=' + encodeURIComponent(ascn) + '&' + 'aspk=' + encodeURIComponent(aspk) + '&' + 'aslc=' + encodeURIComponent(aslc),
 	    success: function(data) { alert('success: ' + JSON.stringify(data)); },
 	    error: function(msg) { alert('error: ' + JSON.stringify(msg)); }
 	});
@@ -131,14 +159,16 @@ function logs() {
 function block() {
 
 	var parent = $("#blockParent").val().trim(); if (! parent) { alert("Please enter \"Parent\""); return; }
-	var parentSecretToken = $("#blockParentSecretToken").val().trim(); if (! parentSecretToken) { alert("Please enter \"Parent Secret Token\""); return; }
 	var child1 = $("#blockChild1").val().trim(); if (! child1) { alert("Please enter \"Child 1\""); return; }
 	var child2 = $("#blockChild2").val().trim(); if (! child2) { alert("Please enter \"Child 2\""); return; }
+	var ascn = $("#blockASCN").val().trim(); if (! ascn) { alert("Please enter \"ASCN\""); return; }
+	var aspk = $("#blockASPK").val().trim(); if (! aspk) { alert("Please enter \"ASPK\""); return; }
+	var aslc = $("#blockASLC").val().trim(); if (! aslc) { alert("Please enter \"ASLC\""); return; }
 
 	$.ajax({
 	    url: '/1/block',
 	    type: 'POST',
-	    data: 'parent=' + encodeURIComponent(parent) + '&' + 'parentSecretToken=' + encodeURIComponent(parentSecretToken) + '&' + 'child1=' + encodeURIComponent(child1) + '&' + 'child2=' + encodeURIComponent(child2),
+	    data: 'parent=' + encodeURIComponent(parent) + '&' + 'child1=' + encodeURIComponent(child1) + '&' + 'child2=' + encodeURIComponent(child2) + '&' + 'ascn=' + encodeURIComponent(ascn) + '&' + 'aspk=' + encodeURIComponent(aspk) + '&' + 'aslc=' + encodeURIComponent(aslc),
 	    success: function(data) { alert('success: ' + JSON.stringify(data)); },
 	    error: function(msg) { alert('error: ' + JSON.stringify(msg)); }
 	});
@@ -147,14 +177,16 @@ function block() {
 function unblock() {
 
 	var parent = $("#unblockParent").val().trim(); if (! parent) { alert("Please enter \"Parent\""); return; }
-	var parentSecretToken = $("#unblockParentSecretToken").val().trim(); if (! parentSecretToken) { alert("Please enter \"Parent Secret Token\""); return; }
 	var child1 = $("#unblockChild1").val().trim(); if (! child1) { alert("Please enter \"Child 1\""); return; }
 	var child2 = $("#unblockChild2").val().trim(); if (! child2) { alert("Please enter \"Child 2\""); return; }
+	var ascn = $("#unblockASCN").val().trim(); if (! ascn) { alert("Please enter \"ASCN\""); return; }
+	var aspk = $("#unblockASPK").val().trim(); if (! aspk) { alert("Please enter \"ASPK\""); return; }
+	var aslc = $("#unblockASLC").val().trim(); if (! aslc) { alert("Please enter \"ASLC\""); return; }
 
 	$.ajax({
 	    url: '/1/unblock',
 	    type: 'POST',
-	    data: 'parent=' + encodeURIComponent(parent) + '&' + 'parentSecretToken=' + encodeURIComponent(parentSecretToken) + '&' + 'child1=' + encodeURIComponent(child1) + '&' + 'child2=' + encodeURIComponent(child2),
+	    data: 'parent=' + encodeURIComponent(parent) + '&' + 'child1=' + encodeURIComponent(child1) + '&' + 'child2=' + encodeURIComponent(child2) + '&' + 'ascn=' + encodeURIComponent(ascn) + '&' + 'aspk=' + encodeURIComponent(aspk) + '&' + 'aslc=' + encodeURIComponent(aslc),
 	    success: function(data) { alert('success: ' + JSON.stringify(data)); },
 	    error: function(msg) { alert('error: ' + JSON.stringify(msg)); }
 	});
@@ -163,14 +195,16 @@ function unblock() {
 function delet() {
 
 	var parent = $("#deleteParent").val().trim(); if (! parent) { alert("Please enter \"Parent\""); return; }
-	var parentSecretToken = $("#deleteParentSecretToken").val().trim(); if (! parentSecretToken) { alert("Please enter \"Parent Secret Token\""); return; }
 	var child1 = $("#deleteChild1").val().trim(); if (! child1) { alert("Please enter \"Child 1\""); return; }
 	var child2 = $("#deleteChild2").val().trim(); if (! child2) { alert("Please enter \"Child 2\""); return; }
+	var ascn = $("#deleteASCN").val().trim(); if (! ascn) { alert("Please enter \"ASCN\""); return; }
+	var aspk = $("#deleteASPK").val().trim(); if (! aspk) { alert("Please enter \"ASPK\""); return; }
+	var aslc = $("#deleteASLC").val().trim(); if (! aslc) { alert("Please enter \"ASLC\""); return; }
 
 	$.ajax({
 	    url: '/1/delete',
 	    type: 'POST',
-	    data: 'parent=' + encodeURIComponent(parent) + '&' + 'parentSecretToken=' + encodeURIComponent(parentSecretToken) + '&' + 'child1=' + encodeURIComponent(child1) + '&' + 'child2=' + encodeURIComponent(child2),
+	    data: 'parent=' + encodeURIComponent(parent) + '&' + 'child1=' + encodeURIComponent(child1) + '&' + 'child2=' + encodeURIComponent(child2) + '&' + 'ascn=' + encodeURIComponent(ascn) + '&' + 'aspk=' + encodeURIComponent(aspk) + '&' + 'aslc=' + encodeURIComponent(aslc),
 	    success: function(data) { alert('success: ' + JSON.stringify(data)); },
 	    error: function(msg) { alert('error: ' + JSON.stringify(msg)); }
 	});
@@ -250,7 +284,7 @@ function chatMessage() {
 <div id="connect">
 <p class="heading">Connect To Cloud</p>
 <table>
-<tr><td>Cloud Name:</td><td><input size="55" size="55" type="text" id="connectCloudName" value="=alice"> &lt;-- user types this</td></tr>
+<tr><td>Cloud Name:</td><td><input size="55" size="55" type="text" id="connectCloudName" value="=parent"> &lt;-- user types this</td></tr>
 <tr><td>App Cloud Number:</td><td><input type="text" size="55" id="connectAppCloudNumber" value="*!:uuid:7bdc5008-10d5-49dc-b8b5-05cee13a465a"> &lt;-- this is static *cynjaspace</td></tr>
 <tr><td><button onclick="connecttocloud();">connecttocloud()</button></td></tr>
 <tr><td>App Session Cloud Number:</td><td><input size="55" type="text" id="appSessionCloudNumber"> &lt;-- app must remember this! (ASCN)</td></tr>
@@ -260,6 +294,17 @@ function chatMessage() {
 <tr><td>App Session Link Contract:</td><td><input size="55" type="text" id="appSessionLinkContract"> &lt;-- app must remember this! (ASLC)</td></tr>
 </table>
 </div>
+
+<!--<hr noshade>
+
+<div>
+<p class="heading">Connect To Children Clouds</p>
+<table>
+<tr><td>Parent</td><td><input type="text" id="connecttochildrencloudsParent"></td></tr>
+<tr><td colspan="2">ASCN: <input type="text" id="connecttochildrencloudsASCN" size="5">&nbsp;ASPK: <input type="text" id="connecttochildrencloudsASPK" size="5">&nbsp;ASLC: <input type="text" id="connecttochildrencloudsASLC" size="5"></td></tr>
+</table>
+<button onclick="connecttochildrenclouds();">connecttochildrenclouds()</button>
+</div>-->
 
 <hr noshade>
 
@@ -283,6 +328,7 @@ function chatMessage() {
 <div>
 <p class="heading">Request Connection</p>
 <table>
+<tr><td>Parent</td><td><input type="text" id="requestParent"></td></tr>
 <tr><td>Child 1</td><td><input type="text" id="requestChild1"></td></tr>
 <tr><td>Child 2</td><td><input type="text" id="requestChild2"></td></tr>
 <tr><td colspan="2">ASCN: <input type="text" id="requestASCN" size="5">&nbsp;ASPK: <input type="text" id="requestASPK" size="5">&nbsp;ASLC: <input type="text" id="requestASLC" size="5"></td></tr>

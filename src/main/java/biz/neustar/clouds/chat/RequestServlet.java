@@ -7,6 +7,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import biz.neustar.clouds.chat.util.HexUtil;
+import xdi2.core.syntax.CloudNumber;
 import xdi2.core.syntax.XDIAddress;
 
 public class RequestServlet extends HttpServlet {
@@ -16,10 +18,13 @@ public class RequestServlet extends HttpServlet {
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
+		XDIAddress parent = XDIAddress.create(req.getParameter("parent"));
 		XDIAddress child1 = XDIAddress.create(req.getParameter("child1"));
-		String child1SecretToken = req.getParameter("child1SecretToken");
 		XDIAddress child2 = XDIAddress.create(req.getParameter("child2"));
+		CloudNumber ascn = CloudNumber.create(req.getParameter("ascn"));
+		byte[] aspk = HexUtil.decodeHex(req.getParameter("aspk"));
+		XDIAddress aslc = XDIAddress.create(req.getParameter("aslc"));
 
-		CynjaCloudChat.connectionService.requestConnection(child1, child1SecretToken, child2);
+		CynjaCloudChat.connectionService.requestConnection(parent, child1, child2, ascn, aspk, aslc);
 	}
 }

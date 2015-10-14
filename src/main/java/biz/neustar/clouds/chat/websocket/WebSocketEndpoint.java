@@ -109,7 +109,7 @@ public class WebSocketEndpoint extends javax.websocket.Endpoint {
 
 			// check connection
 
-			Connection connection = CynjaCloudChat.connectionService.findConnection(child1, child1SecretToken, child2);
+			Connection connection = CynjaCloudChat.connectionService.findConnection(child1, child2, null, null, null);
 
 			if (connection == null) {
 

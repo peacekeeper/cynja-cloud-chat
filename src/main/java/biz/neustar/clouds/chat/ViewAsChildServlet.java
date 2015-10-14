@@ -7,8 +7,10 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import xdi2.core.syntax.CloudNumber;
 import xdi2.core.syntax.XDIAddress;
 import biz.neustar.clouds.chat.model.Connection;
+import biz.neustar.clouds.chat.util.HexUtil;
 import biz.neustar.clouds.chat.util.JsonUtil;
 
 import com.google.gson.JsonObject;
@@ -21,9 +23,11 @@ public class ViewAsChildServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
 		XDIAddress parent = XDIAddress.create(req.getParameter("child"));
-		String parentSecretToken = req.getParameter("childSecretToken");
+		CloudNumber ascn = CloudNumber.create(req.getParameter("ascn"));
+		byte[] aspk = HexUtil.decodeHex(req.getParameter("aspk"));
+		XDIAddress aslc = XDIAddress.create(req.getParameter("aslc"));
 
-		Connection[] connections = CynjaCloudChat.connectionService.viewConnectionsAsChild(parent, parentSecretToken);
+		Connection[] connections = CynjaCloudChat.connectionService.viewConnectionsAsChild(parent, ascn, aspk, aslc);
 
 		JsonObject jsonObject = JsonUtil.connectionsToJson(connections);
 

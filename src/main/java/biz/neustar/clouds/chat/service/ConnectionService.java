@@ -7,7 +7,8 @@ import xdi2.core.syntax.XDIAddress;
 
 public interface ConnectionService {
 
-	public Connection requestConnection(XDIAddress child1, XDIAddress child2, CloudNumber ascn, byte[] aspk, XDIAddress aslc);
+	public void connectToChildrenClouds(XDIAddress parent, CloudNumber ascn, byte[] aspk, XDIAddress aslc);
+	public void requestConnection(XDIAddress parent, XDIAddress child1, XDIAddress child2, CloudNumber ascn, byte[] aspk, XDIAddress aslc);
 	public Connection approveConnection(XDIAddress parent, XDIAddress child1, XDIAddress child2, CloudNumber ascn, byte[] aspk, XDIAddress aslc);
 	public Connection[] viewConnectionsAsParent(XDIAddress parent, CloudNumber ascn, byte[] aspk, XDIAddress aslc);
 	public Connection[] viewConnectionsAsChild(XDIAddress child, CloudNumber ascn, byte[] aspk, XDIAddress aslc);

@@ -10,15 +10,28 @@
 		<filter-name>init</filter-name>
 		<filter-class>biz.neustar.clouds.chat.InitFilter</filter-class>
 		<load-on-startup>1</load-on-startup>
+		<init-param>
+			<param-name>discovery</param-name>
+			<param-value>http://dev-registry.respectnetwork.net:3081/registry</param-value>
+		</init-param>
 	</filter>
 
 	<servlet>
 		<servlet-name>connecttocloud</servlet-name>
-		<servlet-class>biz.neustar.clouds.chat.ConnecttocloudServlet</servlet-class>
+		<servlet-class>biz.neustar.clouds.chat.ConnectToCloudServlet</servlet-class>
 	</servlet>
 	<servlet-mapping>
 		<servlet-name>connecttocloud</servlet-name>
 		<url-pattern>/2/connecttocloud</url-pattern>
+	</servlet-mapping>
+
+	<servlet>
+		<servlet-name>connecttochildrenclouds</servlet-name>
+		<servlet-class>biz.neustar.clouds.chat.ConnectToChildrenCloudsServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>connecttochildrenclouds</servlet-name>
+		<url-pattern>/2/connecttochildrenclouds</url-pattern>
 	</servlet-mapping>
 
 	<servlet>

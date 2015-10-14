@@ -7,10 +7,12 @@ import xdi2.client.XDIClient;
 import xdi2.client.impl.http.XDIHttpClient;
 import xdi2.core.ContextNode;
 import xdi2.core.constants.XDIConstants;
-import xdi2.core.features.linkcontracts.instance.RootLinkContract;
+import xdi2.core.security.ec25519.signature.create.EC25519StaticPrivateKeySignatureCreator;
+import xdi2.core.syntax.CloudNumber;
 import xdi2.core.syntax.XDIAddress;
 import xdi2.core.syntax.XDIStatement;
 import xdi2.core.util.iterators.IteratorArrayMaker;
+import xdi2.core.util.iterators.MappingCloudNumberIterator;
 import xdi2.core.util.iterators.MappingRelationTargetXDIAddressIterator;
 import xdi2.discovery.XDIDiscoveryResult;
 import xdi2.messaging.Message;
@@ -22,7 +24,7 @@ public class XdiParentChildService implements ParentChildService {
 	public static final XDIAddress XDI_ADD_IS_GUARDIAN = XDIAddress.create("$is#guardian");
 
 	@Override
-	public boolean isParent(XDIAddress parent, String parentSecretToken, XDIAddress child) {
+	public boolean isParent(XDIAddress parent, XDIAddress child, CloudNumber ascn, byte[] aspk, XDIAddress aslc) {
 
 		try {
 
@@ -34,14 +36,15 @@ public class XdiParentChildService implements ParentChildService {
 			// message
 
 			MessageEnvelope me = new MessageEnvelope();
-			Message m = me.createMessage(parentDiscovery.getCloudNumber().getXDIAddress());
+			Message m = me.createMessage(ascn.getXDIAddress());
 			m.createGetOperation(XDIStatement.fromRelationComponents(parentDiscovery.getCloudNumber().getXDIAddress(), XDI_ADD_IS_GUARDIAN, childDiscovery.getCloudNumber().getXDIAddress()));
 			m.setToXDIAddress(parentDiscovery.getCloudNumber().getXDIAddress());
-			m.setLinkContractClass(RootLinkContract.class);
-			m.setSecretToken(parentSecretToken);
+			m.setLinkContractXDIAddress(aslc);
+			new EC25519StaticPrivateKeySignatureCreator(aspk).createSignature(m.getContextNode());
 
-			XDIClient parentClient = new XDIHttpClient(parentDiscovery.getXdiEndpointUri());
+			XDIClient<?> parentClient = new XDIHttpClient(parentDiscovery.getXdiEndpointUri());
 			MessagingResponse mr = parentClient.send(me);
+			parentClient.close();
 
 			// result
 
@@ -57,32 +60,39 @@ public class XdiParentChildService implements ParentChildService {
 	}
 
 	@Override
-	public XDIAddress[] getChildren(XDIAddress parent, String parentSecretToken) {
+	public CloudNumber[] getChildren(XDIAddress parent, CloudNumber ascn, byte[] aspk, XDIAddress aslc) {
 
 		try {
 
 			// discovery
 
 			XDIDiscoveryResult parentDiscovery = InitFilter.XDI_DISCOVERY_CLIENT.discoverFromRegistry(parent);
+			System.err.println(parentDiscovery);
 
 			// message
 
 			MessageEnvelope me = new MessageEnvelope();
-			Message m = me.createMessage(parentDiscovery.getCloudNumber().getXDIAddress());
+			Message m = me.createMessage(ascn.getXDIAddress());
 			m.createGetOperation(XDIStatement.fromRelationComponents(parentDiscovery.getCloudNumber().getXDIAddress(), XDI_ADD_IS_GUARDIAN, XDIConstants.XDI_ADD_COMMON_VARIABLE));
 			m.setToXDIAddress(parentDiscovery.getCloudNumber().getXDIAddress());
-			m.setLinkContractClass(RootLinkContract.class);
-			m.setSecretToken(parentSecretToken);
+			m.setLinkContractXDIAddress(aslc);
+			new EC25519StaticPrivateKeySignatureCreator(aspk).createSignature(m.getContextNode());
 
-			XDIClient parentClient = new XDIHttpClient(parentDiscovery.getXdiEndpointUri());
+			XDIClient<?> parentClient = new XDIHttpClient(parentDiscovery.getXdiEndpointUri());
 			MessagingResponse mr = parentClient.send(me);
+			parentClient.close();
 
 			// result
 
-			XDIAddress[] result;
+			CloudNumber[] result;
 
 			ContextNode parentContextNode = mr.getGraph().getDeepContextNode(parentDiscovery.getCloudNumber().getXDIAddress());
-			result = parentContextNode == null ? new XDIAddress[0] : new IteratorArrayMaker<XDIAddress> (new MappingRelationTargetXDIAddressIterator(parentContextNode.getRelations(XDI_ADD_IS_GUARDIAN))).array(XDIAddress.class);
+			result = parentContextNode == null ? 
+					new CloudNumber[0] : 
+						new IteratorArrayMaker<CloudNumber> (
+								new MappingCloudNumberIterator(
+								new MappingRelationTargetXDIAddressIterator(
+										parentContextNode.getRelations(XDI_ADD_IS_GUARDIAN)))).array(CloudNumber.class);
 
 			// done
 

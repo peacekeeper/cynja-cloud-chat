@@ -32,13 +32,14 @@ import xdi2.discovery.XDIDiscoveryResult;
 import xdi2.messaging.Message;
 import xdi2.messaging.MessageEnvelope;
 
-public class ConnecttocloudServlet extends HttpServlet {
+public class ConnectToCloudServlet extends HttpServlet {
 
 	private static final long serialVersionUID = 8396021897147651818L;
 
 	private static final XDIAddress XDI_ADD_RETURN_URI = XDIAddress.create("<#return><$uri>");
+	private static final XDIAddress XDI_ADD_SHORT = XDIAddress.create("<#short>");
 
-			private static final Gson gson = new GsonBuilder()
+	private static final Gson gson = new GsonBuilder()
 			.setDateFormat(DateFormat.FULL, DateFormat.FULL)
 			.disableHtmlEscaping()
 			.serializeNulls()
@@ -51,7 +52,7 @@ public class ConnecttocloudServlet extends HttpServlet {
 		CloudNumber appCloudNumber = CloudNumber.create(req.getParameter("appCloudNumber"));
 
 		XDIDiscoveryClient discoveryClient = new XDIDiscoveryClient("http://dev-registry.respectnetwork.net:3081/registry");
-		
+
 		try {
 			// step 1
 
@@ -63,7 +64,7 @@ public class ConnecttocloudServlet extends HttpServlet {
 
 			// step 2
 
-			byte[] publicKey = new byte[32], privateKey = new byte[32];
+			byte[] publicKey = new byte[32], privateKey = new byte[64];
 			EC25519KeyPairGenerator.generateEC25519KeyPair(
 					publicKey, privateKey);
 
@@ -78,6 +79,7 @@ public class ConnecttocloudServlet extends HttpServlet {
 			m.setLinkContractClass(ConnectLinkContract.class);
 			m.setFromPeerRootXDIArc(appCloudNumber.getPeerRootXDIArc());
 			m.setParameter(XDI_ADD_RETURN_URI, "http://dev-pcloudapi.respectnetwork.net:3080/");
+			m.setParameter(XDI_ADD_SHORT, Boolean.TRUE);
 			m.createConnectOperation(
 					XDIBootstrap.ALL_LINK_CONTRACT_TEMPLATE_ADDRESS);
 			String connectRequest = URLEncoder.encode(
