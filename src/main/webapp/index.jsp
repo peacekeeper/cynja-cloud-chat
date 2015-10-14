@@ -359,6 +359,7 @@ function chatMessage() {
 <div>
 <p class="heading">View Connections As Child</p>
 <table>
+<tr><td>Parent</td><td><input type="text" id="viewaschildParent"></td></tr>
 <tr><td>Child</td><td><input type="text" id="viewaschildChild"></td></tr>
 <tr><td colspan="2">ASCN: <input type="text" id="viewaschildASCN" size="5">&nbsp;ASPK: <input type="text" id="viewaschildASPK" size="5">&nbsp;ASLC: <input type="text" id="viewaschildASLC" size="5"></td></tr>
 </table>

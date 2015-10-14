@@ -14,10 +14,10 @@ public class DefaultSessionService implements SessionService {
 	private Map<Integer, LinkedList<Session>> sessionMap;
 
 	public DefaultSessionService() {
-		
+
 		this.sessionMap = new HashMap<Integer, LinkedList<Session>> ();
 	}
-	
+
 	public void addSession(Connection connection, Session session) {
 
 		int hashCode = connection.getChild1().hashCode() * connection.getChild2().hashCode();
@@ -38,7 +38,7 @@ public class DefaultSessionService implements SessionService {
 		LinkedList<Session> sessionList = this.sessionMap.get(Integer.valueOf(hashCode));
 
 		if (sessionList == null) return;
-		
+
 		sessionList.remove(session);
 	}
 

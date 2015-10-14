@@ -23,6 +23,6 @@ public class ConnectToChildrenCloudsServlet extends HttpServlet {
 		byte[] aspk = HexUtil.decodeHex(req.getParameter("aspk"));
 		XDIAddress aslc = XDIAddress.create(req.getParameter("aslc"));
 
-		CynjaCloudChat.connectionService.connectToChildrenClouds(parent, ascn, aspk, aslc);
+//		CynjaCloudChat.connectionService.connectToChildrenClouds(parent, ascn, aspk, aslc);
 	}
 }

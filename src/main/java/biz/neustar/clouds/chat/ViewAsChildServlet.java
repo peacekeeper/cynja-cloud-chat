@@ -22,12 +22,13 @@ public class ViewAsChildServlet extends HttpServlet {
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
-		XDIAddress parent = XDIAddress.create(req.getParameter("child"));
+		XDIAddress parent = XDIAddress.create(req.getParameter("parent"));
+		XDIAddress child = XDIAddress.create(req.getParameter("child"));
 		CloudNumber ascn = CloudNumber.create(req.getParameter("ascn"));
 		byte[] aspk = HexUtil.decodeHex(req.getParameter("aspk"));
 		XDIAddress aslc = XDIAddress.create(req.getParameter("aslc"));
 
-		Connection[] connections = CynjaCloudChat.connectionService.viewConnectionsAsChild(parent, ascn, aspk, aslc);
+		Connection[] connections = CynjaCloudChat.connectionService.viewConnectionsAsChild(parent, child, ascn, aspk, aslc);
 
 		JsonObject jsonObject = JsonUtil.connectionsToJson(connections);
 
