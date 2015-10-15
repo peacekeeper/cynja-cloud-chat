@@ -23,6 +23,7 @@
 
 ==================
 
+
 PW for all: test11!!
 
 =markus.parent1				=!:uuid:9f74ddcc-3e0b-475f-b6ae-93bff9b167d3
@@ -42,25 +43,32 @@ PW for all: test11!!
 =markus.parent3
 
 
-
 =============
-
-*!:cid-1:x2gN5zbaqq1pYUDd28fDt7BaCBu8UfYXZQSwkDs8TppsKMdUomr
-
-9cc2ecb85d1aa017080a9449999ac5fca2e423b28a11fc9ca0ebf999c5b09adf8fdd0320d67cf29881bac2c48640f06c3e886fcc367c73d274855f9ec51063fc
-
-(=!:uuid:9f74ddcc-3e0b-475f-b6ae-93bff9b167d3/*!:cid-1:x2gN5zbaqq1pYUDd28fDt7BaCBu8UfYXZQSwkDs8TppsKMdUomr)$all$do
-
-
 
 
 =markus.parent1.child7		=!:uuid:f76d4fea-a5c0-462c-81d8-e185b2c3d881
 =markus.parent1.child8		=!:uuid:59cbe4bc-9287-445e-846e-bbf76d34021d
 
+----------------
 
+DEVICE 1:
 
+*!:cid-1:x2gN5zbaqq1pYUDd28fDt7BaCBu8UfYXZQSwkDs8TppsKMdUomr
+9cc2ecb85d1aa017080a9449999ac5fca2e423b28a11fc9ca0ebf999c5b09adf8fdd0320d67cf29881bac2c48640f06c3e886fcc367c73d274855f9ec51063fc
+(=!:uuid:9f74ddcc-3e0b-475f-b6ae-93bff9b167d3/*!:cid-1:x2gN5zbaqq1pYUDd28fDt7BaCBu8UfYXZQSwkDs8TppsKMdUomr)$all$do
 
 
 (=!:uuid:f76d4fea-a5c0-462c-81d8-e185b2c3d881/*!:cid-1:x2gN5zbaqq1pYUDd28fDt7BaCBu8UfYXZQSwkDs8TppsKMdUomr)$all$do
 (=!:uuid:59cbe4bc-9287-445e-846e-bbf76d34021d/*!:cid-1:x2gN5zbaqq1pYUDd28fDt7BaCBu8UfYXZQSwkDs8TppsKMdUomr)$all$do
+
+----------------
+
+DEVICE 2:
+
+*!:cid-1:x3YK6fWgTNrJvifWbxzRyb7UEq71G4AykdbFLr42XtiKmJNZ6qa
+8048f5c5b2a4cac112eaffc0aabb7296e1d51e1aed46ca1e0f08cccf876b9f9e4de591e5664096c3c511bd6502b6ffff712bfb09ffbc9ba05dcc984985bcf061
+(=!:uuid:9f74ddcc-3e0b-475f-b6ae-93bff9b167d3/*!:cid-1:x3YK6fWgTNrJvifWbxzRyb7UEq71G4AykdbFLr42XtiKmJNZ6qa)$all$do
+
+
+(=!:uuid:59cbe4bc-9287-445e-846e-bbf76d34021d/*!:cid-1:x3YK6fWgTNrJvifWbxzRyb7UEq71G4AykdbFLr42XtiKmJNZ6qa)$all$do
 

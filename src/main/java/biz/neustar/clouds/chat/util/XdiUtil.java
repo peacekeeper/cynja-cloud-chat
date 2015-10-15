@@ -6,7 +6,6 @@ import java.util.Iterator;
 import xdi2.core.features.linkcontracts.instance.ConnectLinkContract;
 import xdi2.core.features.linkcontracts.instance.GenericLinkContract;
 import xdi2.core.features.linkcontracts.instance.LinkContract;
-import xdi2.core.features.linkcontracts.instance.SendLinkContract;
 import xdi2.core.security.ec25519.signature.create.EC25519StaticPrivateKeySignatureCreator;
 import xdi2.core.syntax.CloudNumber;
 import xdi2.core.syntax.XDIAddress;
@@ -80,7 +79,7 @@ public class XdiUtil {
 		Message m = me.createMessage(child1.getXDIAddress());
 		m.setFromPeerRootXDIArc(child1.getPeerRootXDIArc());
 		m.setToPeerRootXDIArc(child2.getPeerRootXDIArc());
-		m.setLinkContractClass(SendLinkContract.class);
+		m.setLinkContractXDIAddress(GenericLinkContract.createGenericLinkContractXDIAddress(m.getToXDIAddress(), XDIAddress.create("*cynjaspace$send"), null, null));
 
 		return m;
 	}

@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.StringReader;
 import java.security.GeneralSecurityException;
 import java.text.DateFormat;
+import java.util.Iterator;
 
 import javax.websocket.CloseReason;
 import javax.websocket.CloseReason.CloseCodes;
@@ -38,6 +39,7 @@ import xdi2.discovery.XDIDiscoveryResult;
 import xdi2.messaging.Message;
 import xdi2.messaging.MessageEnvelope;
 import xdi2.messaging.operations.Operation;
+import xdi2.messaging.operations.SetOperation;
 import xdi2.messaging.response.TransportMessagingResponse;
 
 public class WebSocketMessageHandler implements javax.websocket.MessageHandler.Whole<String>, XDIWebSocketClient.Callback {
@@ -275,7 +277,15 @@ public class WebSocketMessageHandler implements javax.websocket.MessageHandler.W
 
 		log.debug("Received XDI message envelope: " + messageEnvelope);
 
-		this.sendToClient(this, messageEnvelope.toString());
+		Message message = messageEnvelope.getMessages().next();
+		Iterator<SetOperation> operations = message.getSetOperations();
+		if (! operations.hasNext()) return;
+		SetOperation operation = operations.next();
+		Iterator<XDIStatement> statements = operation.getTargetXDIStatements();
+		if (statements.hasNext()) return;
+		XDIStatement statement = statements.next();
+
+		this.sendToClient(this, statement.getLiteralData().toString());
 	}
 
 	@Override
