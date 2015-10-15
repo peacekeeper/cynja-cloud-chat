@@ -25,9 +25,9 @@ public class ViewAsChildServlet extends HttpServlet {
 		XDIAddress child = XDIAddress.create(req.getParameter("child"));
 		CloudNumber ascn = CloudNumber.create(req.getParameter("ascn"));
 		byte[] aspk = HexUtil.decodeHex(req.getParameter("aspk"));
-		XDIAddress aslc = XDIAddress.create(req.getParameter("aslc"));
+		XDIAddress caslc = XDIAddress.create(req.getParameter("caslc"));
 
-		Connection[] connections = CynjaCloudChat.connectionService.viewConnectionsAsChild(child, ascn, aspk, aslc);
+		Connection[] connections = CynjaCloudChat.connectionService.viewConnectionsAsChild(child, ascn, aspk, caslc);
 
 		JsonObject jsonObject = JsonUtil.connectionsToJson(connections);
 

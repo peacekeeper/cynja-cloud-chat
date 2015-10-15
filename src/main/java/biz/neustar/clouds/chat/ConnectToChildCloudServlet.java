@@ -41,7 +41,7 @@ public class ConnectToChildCloudServlet extends HttpServlet {
 		// response
 
 		JsonObject jsonObject = new JsonObject();
-		jsonObject.add("aslc", gson.toJsonTree(caslc.toString()));
+		jsonObject.add("caslc", gson.toJsonTree(caslc.toString()));
 
 		resp.setContentType("application/json");
 		JsonUtil.write(resp.getWriter(), jsonObject);

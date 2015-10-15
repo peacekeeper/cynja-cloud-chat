@@ -21,15 +21,15 @@ import javax.websocket.server.ServerEndpointConfig;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import xdi2.core.syntax.XDIAddress;
 import biz.neustar.clouds.chat.CynjaCloudChat;
 import biz.neustar.clouds.chat.model.Connection;
+import xdi2.core.syntax.XDIAddress;
 
 public class WebSocketEndpoint extends javax.websocket.Endpoint {
 
 	private static final Logger log = LoggerFactory.getLogger(WebSocketEndpoint.class);
 
-	private static final String PATH = "/1/chat/{child1}/{child2}";
+	private static final String PATH = "/2/chat/{child1}/{child2}";
 
 	public static final List<WebSocketMessageHandler> WEBSOCKETMESSAGEHANDLERS = new ArrayList<WebSocketMessageHandler> ();
 
@@ -70,20 +70,6 @@ public class WebSocketEndpoint extends javax.websocket.Endpoint {
 		log.info("Installed WebSocket endpoint at " + PATH + " with subprotocols " + subprotocols);
 	}
 
-	public static void send(WebSocketMessageHandler fromWebSocketMessageHandler, String line) {
-
-		for (WebSocketMessageHandler webSocketMessageHandler : WEBSOCKETMESSAGEHANDLERS) {
-
-			if ((fromWebSocketMessageHandler.getChild1().equals(webSocketMessageHandler.getChild2()) &&
-					fromWebSocketMessageHandler.getChild2().equals(webSocketMessageHandler.getChild1())) || (
-							fromWebSocketMessageHandler.getChild1().equals(webSocketMessageHandler.getChild1()) &&
-							fromWebSocketMessageHandler.getChild2().equals(webSocketMessageHandler.getChild2()))) {
-
-				webSocketMessageHandler.send(fromWebSocketMessageHandler, line);
-			}
-		}
-	}
-
 	@Override
 	public void onOpen(Session session, EndpointConfig endpointConfig) {
 
@@ -106,35 +92,9 @@ public class WebSocketEndpoint extends javax.websocket.Endpoint {
 			XDIAddress child1 = XDIAddress.create(URLDecoder.decode(session.getPathParameters().get("child1"), "UTF-8"));
 			XDIAddress child2 = XDIAddress.create(URLDecoder.decode(session.getPathParameters().get("child2"), "UTF-8"));
 
-			// check connection
-
-			Connection connection = CynjaCloudChat.connectionService.findConnection(null, child1, child2, null, null, null);
-
-			if (connection == null) {
-
-				session.close(new CloseReason(CloseCodes.VIOLATED_POLICY, "Connection not found."));
-				return;
-			}
-
-			if (! Boolean.TRUE.equals(connection.isApproved1()) || ! Boolean.TRUE.equals(connection.isApproved2())) {
-
-				session.close(new CloseReason(CloseCodes.VIOLATED_POLICY, "Connection is not approved yet."));
-				return;
-			}
-
-			if (Boolean.TRUE.equals(connection.isBlocked1()) || Boolean.TRUE.equals(connection.isBlocked2())) {
-
-				session.close(new CloseReason(CloseCodes.VIOLATED_POLICY, "Connection is temporarily blocked."));
-				return;
-			}
-
-			// add session to connection
-
-			CynjaCloudChat.sessionService.addSession(connection, session);
-
 			// create message handler
 
-			WebSocketMessageHandler webSocketMessageHandler = new WebSocketMessageHandler(session, child1, child2, connection);
+			WebSocketMessageHandler webSocketMessageHandler = new WebSocketMessageHandler(session, child1, child2);
 
 			session.addMessageHandler(webSocketMessageHandler);
 			WEBSOCKETMESSAGEHANDLERS.add(webSocketMessageHandler);

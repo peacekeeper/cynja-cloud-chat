@@ -128,6 +128,12 @@
 			<version>0.8-SNAPSHOT</version>
 			<scope>compile</scope>
 		</dependency>
+		<dependency>
+			<groupId>xdi2</groupId>
+			<artifactId>xdi2-client-websocket</artifactId>
+			<version>0.8-SNAPSHOT</version>
+			<scope>compile</scope>
+		</dependency>
         <dependency>
 			<groupId>xdi2</groupId>
 			<artifactId>xdi2-crypto-ec25519</artifactId>

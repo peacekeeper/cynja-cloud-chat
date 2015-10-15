@@ -1,6 +1,5 @@
 package biz.neustar.clouds.chat.service.impl.xdi;
 
-import java.security.GeneralSecurityException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -11,19 +10,17 @@ import biz.neustar.clouds.chat.exceptions.ConnectionNotFoundException;
 import biz.neustar.clouds.chat.model.Connection;
 import biz.neustar.clouds.chat.model.Log;
 import biz.neustar.clouds.chat.service.ConnectionService;
+import biz.neustar.clouds.chat.util.XdiUtil;
 import xdi2.client.XDIClient;
 import xdi2.client.impl.http.XDIHttpClient;
 import xdi2.core.ContextNode;
 import xdi2.core.Graph;
 import xdi2.core.bootstrap.XDIBootstrap;
 import xdi2.core.features.linkcontracts.LinkContracts;
-import xdi2.core.features.linkcontracts.instance.ConnectLinkContract;
 import xdi2.core.features.linkcontracts.instance.GenericLinkContract;
 import xdi2.core.features.linkcontracts.instance.LinkContract;
-import xdi2.core.features.linkcontracts.instance.SendLinkContract;
 import xdi2.core.features.nodetypes.XdiAbstractEntity;
 import xdi2.core.impl.memory.MemoryGraphFactory;
-import xdi2.core.security.ec25519.signature.create.EC25519StaticPrivateKeySignatureCreator;
 import xdi2.core.syntax.CloudNumber;
 import xdi2.core.syntax.XDIAddress;
 import xdi2.discovery.XDIDiscoveryResult;
@@ -65,20 +62,20 @@ public class XdiConnectionService implements ConnectionService {
 
 			// create ME from app to child
 
-			Message mAppToChild = mAppToChild(childDiscovery.getCloudNumber(), ascn, aslc);
+			Message mAppToChild = XdiUtil.mAppToChild(childDiscovery.getCloudNumber(), ascn, aslc);
 			mAppToChild.createConnectOperation(XDIBootstrap.ALL_LINK_CONTRACT_TEMPLATE_ADDRESS);
 
 			// create ME from parent to child
 
-			Message mParentToChild = mParentToChild(parentDiscovery.getCloudNumber(), childDiscovery.getCloudNumber());
+			Message mParentToChild = XdiUtil.mParentToChild(parentDiscovery.getCloudNumber(), childDiscovery.getCloudNumber());
 			mParentToChild.createSendOperation(mAppToChild.getMessageEnvelope().getGraph());
 
 			// create ME from app to parent
 
-			Message mAppToParent = mAppToParent(parentDiscovery.getCloudNumber(), ascn, aslc);
+			Message mAppToParent = XdiUtil.mAppToParent(parentDiscovery.getCloudNumber(), ascn, aslc);
 			mAppToParent.createSendOperation(mParentToChild.getMessageEnvelope().getGraph());
 
-			mSign(mAppToParent, aspk);
+			XdiUtil.mSign(mAppToParent, aspk);
 
 			// send
 
@@ -98,7 +95,7 @@ public class XdiConnectionService implements ConnectionService {
 	}
 
 	@Override
-	public Connection requestConnection(XDIAddress child1, XDIAddress child2, CloudNumber ascn, byte[] aspk, XDIAddress aslc) {
+	public Connection requestConnection(XDIAddress child1, XDIAddress child2, CloudNumber ascn, byte[] aspk, XDIAddress caslc) {
 
 		XDIDiscoveryResult child1Discovery;
 		XDIDiscoveryResult child2Discovery;
@@ -123,23 +120,23 @@ public class XdiConnectionService implements ConnectionService {
 
 			// create ME from child2 to child1
 
-			Message mChild1ToChild2 = mChildToChildConnect(child2Discovery.getCloudNumber(), child1Discovery.getCloudNumber());
+			Message mChild1ToChild2 = XdiUtil.mChildToChildConnect(child2Discovery.getCloudNumber(), child1Discovery.getCloudNumber());
 			mChild1ToChild2.createConnectOperation(XDI_ADD_CYNJA_CHAT_LINK_CONTRACT_TEMPLATE_DO);
 
 			// create ME from child1 to child2
 
-			Message mAppToChild2a = mChildToChildConnect(child1Discovery.getCloudNumber(), child2Discovery.getCloudNumber());
+			Message mAppToChild2a = XdiUtil.mChildToChildConnect(child1Discovery.getCloudNumber(), child2Discovery.getCloudNumber());
 			mAppToChild2a.createConnectOperation(XDI_ADD_CYNJA_CHAT_LINK_CONTRACT_TEMPLATE_DO);
-			Message mAppToChild2b = mChildToChildSend(child1Discovery.getCloudNumber(), child2Discovery.getCloudNumber());
+			Message mAppToChild2b = XdiUtil.mChildToChildSend(child1Discovery.getCloudNumber(), child2Discovery.getCloudNumber());
 			mAppToChild2b.createSendOperation(mChild1ToChild2.getMessageEnvelope().getGraph());
 
 			// create ME from app to child1
 
-			Message mAppToChild1 = mAppToChild(child1Discovery.getCloudNumber(), ascn, aslc);
+			Message mAppToChild1 = XdiUtil.mAppToChild(child1Discovery.getCloudNumber(), ascn, caslc);
 			mAppToChild1.createSendOperation(mAppToChild2a.getMessageEnvelope().getGraph());
 			mAppToChild1.createSendOperation(mAppToChild2b.getMessageEnvelope().getGraph());
 
-			mSign(mAppToChild1, aspk);
+			XdiUtil.mSign(mAppToChild1, aspk);
 
 			// send
 
@@ -200,16 +197,16 @@ public class XdiConnectionService implements ConnectionService {
 
 			// create ME from parent to child1
 
-			Message mParentToChild = mParentToChild(parentDiscovery.getCloudNumber(), child1Discovery.getCloudNumber());
+			Message mParentToChild = XdiUtil.mParentToChild(parentDiscovery.getCloudNumber(), child1Discovery.getCloudNumber());
 			Operation oParentToChild1 = mParentToChild.createGetOperation(XDIAddress.create("[$msg]"));
 			oParentToChild1.setParameter(XDIMessagingConstants.XDI_ADD_OPERATION_PARAMETER_DEHAS, Boolean.TRUE);
 
 			// create ME from app to parent
 
-			Message mAppToParent = mAppToParent(parentDiscovery.getCloudNumber(), ascn, aslc);
+			Message mAppToParent = XdiUtil.mAppToParent(parentDiscovery.getCloudNumber(), ascn, aslc);
 			mAppToParent.createSendOperation(mParentToChild.getMessageEnvelope().getGraph());
 
-			mSign(mAppToParent, aspk);
+			XdiUtil.mSign(mAppToParent, aspk);
 
 			// send
 
@@ -225,7 +222,7 @@ public class XdiConnectionService implements ConnectionService {
 
 			for (Message m : me.getMessages()) {
 
-				if (! isCynjaChatConnectM(m)) continue;
+				if (! XdiUtil.isCynjaChatConnectM(m)) continue;
 
 				if (! child1Discovery.getCloudNumber().getXDIAddress().equals(m.getToXDIAddress())) continue;
 				if (! child2Discovery.getCloudNumber().getXDIAddress().equals(m.getSenderXDIAddress())) continue;
@@ -249,16 +246,16 @@ public class XdiConnectionService implements ConnectionService {
 
 			// create ME from parent to child1
 
-			Message mParentToChild = mParentToChild(parentDiscovery.getCloudNumber(), child1Discovery.getCloudNumber());
+			Message mParentToChild = XdiUtil.mParentToChild(parentDiscovery.getCloudNumber(), child1Discovery.getCloudNumber());
 			mParentToChild.createSendOperation(mClonedRequest.getMessageEnvelope().getGraph());
 			for (Message mRequest : msRequest) mParentToChild.createDelOperation(mRequest.getContextNode().getXDIAddress());
 
 			// create ME from app to parent
 
-			Message mAppToParent = mAppToParent(parentDiscovery.getCloudNumber(), ascn, aslc);
+			Message mAppToParent = XdiUtil.mAppToParent(parentDiscovery.getCloudNumber(), ascn, aslc);
 			mAppToParent.createSendOperation(mParentToChild.getMessageEnvelope().getGraph());
 
-			mSign(mAppToParent, aspk);
+			XdiUtil.mSign(mAppToParent, aspk);
 
 			// send
 
@@ -303,7 +300,7 @@ public class XdiConnectionService implements ConnectionService {
 
 				// create ME from parent to child1
 
-				Message mParentToChild = mParentToChild(parentDiscovery.getCloudNumber(), child);
+				Message mParentToChild = XdiUtil.mParentToChild(parentDiscovery.getCloudNumber(), child);
 				Operation oParentToChild1 = mParentToChild.createGetOperation(XDIAddress.create("[$msg]"));
 				oParentToChild1.setParameter(XDIMessagingConstants.XDI_ADD_OPERATION_PARAMETER_DEHAS, Boolean.TRUE);
 				Operation oParentToChild2 = mParentToChild.createGetOperation(XDIAddress.create("[$do]"));
@@ -311,10 +308,10 @@ public class XdiConnectionService implements ConnectionService {
 
 				// create ME from app to parent
 
-				Message mAppToParent = mAppToParent(parentDiscovery.getCloudNumber(), ascn, aslc);
+				Message mAppToParent = XdiUtil.mAppToParent(parentDiscovery.getCloudNumber(), ascn, aslc);
 				mAppToParent.createSendOperation(mParentToChild.getMessageEnvelope().getGraph());
 
-				mSign(mAppToParent, aspk);
+				XdiUtil.mSign(mAppToParent, aspk);
 
 				// send
 
@@ -355,7 +352,7 @@ public class XdiConnectionService implements ConnectionService {
 	}
 
 	@Override
-	public Connection[] viewConnectionsAsChild(XDIAddress child, CloudNumber ascn, byte[] aspk, XDIAddress aslc) {
+	public Connection[] viewConnectionsAsChild(XDIAddress child, CloudNumber ascn, byte[] aspk, XDIAddress caslc) {
 
 		XDIDiscoveryResult childDiscovery;
 
@@ -376,13 +373,13 @@ public class XdiConnectionService implements ConnectionService {
 
 			// create ME from app to child
 
-			Message mAppToChild = mAppToChild(childDiscovery.getCloudNumber(), ascn, aslc);
+			Message mAppToChild = XdiUtil.mAppToChild(childDiscovery.getCloudNumber(), ascn, caslc);
 			Operation oParentToChild1 = mAppToChild.createGetOperation(XDIAddress.create("[$msg]"));
 			oParentToChild1.setParameter(XDIMessagingConstants.XDI_ADD_OPERATION_PARAMETER_DEHAS, Boolean.TRUE);
 			Operation oParentToChild2 = mAppToChild.createGetOperation(XDIAddress.create("[$do]"));
 			oParentToChild2.setParameter(XDIMessagingConstants.XDI_ADD_OPERATION_PARAMETER_DEHAS, Boolean.TRUE);
 
-			mSign(mAppToChild, aspk);
+			XdiUtil.mSign(mAppToChild, aspk);
 
 			// send
 
@@ -399,7 +396,7 @@ public class XdiConnectionService implements ConnectionService {
 
 			for (Message m : me.getMessages()) {
 
-				if (! isCynjaChatConnectM(m)) continue;
+				if (! XdiUtil.isCynjaChatConnectM(m)) continue;
 
 				if (! childDiscovery.getCloudNumber().getXDIAddress().equals(m.getToXDIAddress())) continue;
 
@@ -408,7 +405,7 @@ public class XdiConnectionService implements ConnectionService {
 
 			for (LinkContract lc : LinkContracts.getAllLinkContracts(resultGraph)) {
 
-				if (! isCynjaChatLC(lc)) continue;
+				if (! XdiUtil.isCynjaChatLC(lc)) continue;
 
 				if (! childDiscovery.getCloudNumber().getXDIAddress().equals(((GenericLinkContract) lc).getAuthorizingAuthority())) continue;
 
@@ -454,8 +451,8 @@ public class XdiConnectionService implements ConnectionService {
 
 
 			/*			MessageEnvelope me = new MessageEnvelope();
-			Message m = me.createMessage(parentDiscovery.getCloudNumber().getXDIAddress());
-			m.createGetOperation(chatLinkContractXDIAddress(child1Discovery.getCloudNumber().getXDIAddress(), child2Discovery.getCloudNumber().getXDIAddress()));
+			Message m = XdiUtil.me.createMessage(parentDiscovery.getCloudNumber().getXDIAddress());
+			m.createGetOperation(XdiUtil.chatLinkContractXDIAddress(child1Discovery.getCloudNumber().getXDIAddress(), child2Discovery.getCloudNumber().getXDIAddress()));
 			m.setToXDIAddress(child1Discovery.getCloudNumber().getXDIAddress());
 			m.setLinkContractXDIAddress(dependentLinkContractXDIAddress(child1Discovery.getCloudNumber().getXDIAddress(), parentDiscovery.getCloudNumber().getXDIAddress()));
 			new RSAStaticPrivateKeySignatureCreator(parentPrivateKey).createSignature(m.getContextNode());
@@ -526,20 +523,20 @@ public class XdiConnectionService implements ConnectionService {
 
 			Graph targetGraph = MemoryGraphFactory.getInstance().openGraph();
 
-			ContextNode linkContractContextNode = targetGraph.setDeepContextNode(chatLinkContractXDIAddress(child1Discovery.getCloudNumber().getXDIAddress(), child2Discovery.getCloudNumber().getXDIAddress()));
+			ContextNode linkContractContextNode = targetGraph.setDeepContextNode(XdiUtil.chatLinkContractXDIAddress(child1Discovery.getCloudNumber().getXDIAddress(), child2Discovery.getCloudNumber().getXDIAddress()));
 			linkContractContextNode.setDeepContextNode(XDI_ADD_BLOCKED).setLiteralBoolean(Boolean.TRUE);
 
 			// create ME from parent to child1
 
-			Message mParentToChild = mParentToChild(parentDiscovery.getCloudNumber(), child1Discovery.getCloudNumber());
+			Message mParentToChild = XdiUtil.mParentToChild(parentDiscovery.getCloudNumber(), child1Discovery.getCloudNumber());
 			mParentToChild.createSetOperation(targetGraph);
 
 			// create ME from app to parent
 
-			Message mAppToParent = mAppToParent(parentDiscovery.getCloudNumber(), ascn, aslc);
+			Message mAppToParent = XdiUtil.mAppToParent(parentDiscovery.getCloudNumber(), ascn, aslc);
 			mAppToParent.createSendOperation(mParentToChild.getMessageEnvelope().getGraph());
 
-			mSign(mAppToParent, aspk);
+			XdiUtil.mSign(mAppToParent, aspk);
 
 			// send
 
@@ -588,20 +585,20 @@ public class XdiConnectionService implements ConnectionService {
 
 			Graph targetGraph = MemoryGraphFactory.getInstance().openGraph();
 
-			ContextNode linkContractContextNode = targetGraph.setDeepContextNode(chatLinkContractXDIAddress(child1Discovery.getCloudNumber().getXDIAddress(), child2Discovery.getCloudNumber().getXDIAddress()));
+			ContextNode linkContractContextNode = targetGraph.setDeepContextNode(XdiUtil.chatLinkContractXDIAddress(child1Discovery.getCloudNumber().getXDIAddress(), child2Discovery.getCloudNumber().getXDIAddress()));
 			linkContractContextNode.setDeepContextNode(XDI_ADD_BLOCKED).setLiteralBoolean(Boolean.FALSE);
 
 			// create ME from parent to child1
 
-			Message mParentToChild = mParentToChild(parentDiscovery.getCloudNumber(), child1Discovery.getCloudNumber());
+			Message mParentToChild = XdiUtil.mParentToChild(parentDiscovery.getCloudNumber(), child1Discovery.getCloudNumber());
 			mParentToChild.createSetOperation(targetGraph);
 
 			// create ME from app to parent
 
-			Message mAppToParent = mAppToParent(parentDiscovery.getCloudNumber(), ascn, aslc);
+			Message mAppToParent = XdiUtil.mAppToParent(parentDiscovery.getCloudNumber(), ascn, aslc);
 			mAppToParent.createSendOperation(mParentToChild.getMessageEnvelope().getGraph());
 
-			mSign(mAppToParent, aspk);
+			XdiUtil.mSign(mAppToParent, aspk);
 
 			// send
 
@@ -650,16 +647,16 @@ public class XdiConnectionService implements ConnectionService {
 
 			// create ME from parent to child1
 
-			Message mParentToChild = mParentToChild(parentDiscovery.getCloudNumber(), child1Discovery.getCloudNumber());
+			Message mParentToChild = XdiUtil.mParentToChild(parentDiscovery.getCloudNumber(), child1Discovery.getCloudNumber());
 			Operation oParentToChild1 = mParentToChild.createGetOperation(XDIAddress.create("[$msg]"));
 			oParentToChild1.setParameter(XDIMessagingConstants.XDI_ADD_OPERATION_PARAMETER_DEHAS, Boolean.TRUE);
 
 			// create ME from app to parent
 
-			Message mAppToParent = mAppToParent(parentDiscovery.getCloudNumber(), ascn, aslc);
+			Message mAppToParent = XdiUtil.mAppToParent(parentDiscovery.getCloudNumber(), ascn, aslc);
 			mAppToParent.createSendOperation(mParentToChild.getMessageEnvelope().getGraph());
 
-			mSign(mAppToParent, aspk);
+			XdiUtil.mSign(mAppToParent, aspk);
 
 			// send
 
@@ -692,16 +689,16 @@ public class XdiConnectionService implements ConnectionService {
 
 			// create ME from parent to child1
 
-			Message mParentToChild = mParentToChild(parentDiscovery.getCloudNumber(), child1Discovery.getCloudNumber());
-			mParentToChild.createDelOperation(chatLinkContractXDIAddress(child1Discovery.getCloudNumber().getXDIAddress(), child2Discovery.getCloudNumber().getXDIAddress()));
+			Message mParentToChild = XdiUtil.mParentToChild(parentDiscovery.getCloudNumber(), child1Discovery.getCloudNumber());
+			mParentToChild.createDelOperation(XdiUtil.chatLinkContractXDIAddress(child1Discovery.getCloudNumber().getXDIAddress(), child2Discovery.getCloudNumber().getXDIAddress()));
 			for (Message mToDelete : msToDelete) mParentToChild.createDelOperation(mToDelete.getContextNode().getXDIAddress());
 
 			// create ME from app to parent
 
-			Message mAppToParent = mAppToParent(parentDiscovery.getCloudNumber(), ascn, aslc);
+			Message mAppToParent = XdiUtil.mAppToParent(parentDiscovery.getCloudNumber(), ascn, aslc);
 			mAppToParent.createSendOperation(mParentToChild.getMessageEnvelope().getGraph());
 
-			mSign(mAppToParent, aspk);
+			XdiUtil.mSign(mAppToParent, aspk);
 
 			// send
 
@@ -719,18 +716,14 @@ public class XdiConnectionService implements ConnectionService {
 	}
 
 	@Override
-	public Connection findConnection(XDIAddress parent, XDIAddress child1, XDIAddress child2, CloudNumber ascn, byte[] aspk, XDIAddress aslc) {
+	public Connection findConnection(XDIAddress child1, XDIAddress child2, CloudNumber ascn, byte[] aspk, XDIAddress caslc) {
 
-		XDIDiscoveryResult parentDiscovery;
 		XDIDiscoveryResult child1Discovery;
 		XDIDiscoveryResult child2Discovery;
 
 		// discovery
 
 		try {
-
-			parentDiscovery = InitFilter.XDI_DISCOVERY_CLIENT.discoverFromRegistry(parent);
-			if (parentDiscovery == null) throw new NullPointerException("Parent not found.");
 
 			child1Discovery = InitFilter.XDI_DISCOVERY_CLIENT.discoverFromRegistry(child1);
 			if (child1Discovery == null) throw new NullPointerException("Child 1 not found.");
@@ -739,34 +732,29 @@ public class XdiConnectionService implements ConnectionService {
 			if (child2Discovery == null) throw new NullPointerException("Child 2 not found.");
 		} catch (Exception ex) {
 
-			throw new ConnectionNotFoundException("Cannot find discovery information for parent " + parent + " or child1 " + child1 + " or child2 " + child2 + ": " + ex.getMessage(), ex);
+			throw new ConnectionNotFoundException("Cannot find discovery information for child1 " + child1 + " or child2 " + child2 + ": " + ex.getMessage(), ex);
 		}
 
 		// message
 
 		try {
 
-			// create ME from parent to child1
+			// create ME from app to child
 
-			Message mParentToChild = mParentToChild(parentDiscovery.getCloudNumber(), child1Discovery.getCloudNumber());
-			mParentToChild.createGetOperation(chatLinkContractXDIAddress(child1Discovery.getCloudNumber().getXDIAddress(), child2Discovery.getCloudNumber().getXDIAddress()));
+			Message mAppToChild = XdiUtil.mAppToChild(child1Discovery.getCloudNumber(), ascn, caslc);
+			mAppToChild.createGetOperation(XdiUtil.chatLinkContractXDIAddress(child1Discovery.getCloudNumber().getXDIAddress(), child2Discovery.getCloudNumber().getXDIAddress()));
 
-			// create ME from app to parent
-
-			Message mAppToParent = mAppToParent(parentDiscovery.getCloudNumber(), ascn, aslc);
-			mAppToParent.createSendOperation(mParentToChild.getMessageEnvelope().getGraph());
-
-			mSign(mAppToParent, aspk);
+			XdiUtil.mSign(mAppToChild, aspk);
 
 			// send
 
 			XDIClient<?> client = new XDIHttpClient(child1Discovery.getXdiEndpointUri());
-			MessagingResponse mr = client.send(mAppToParent.getMessageEnvelope());
+			MessagingResponse mr = client.send(mAppToChild.getMessageEnvelope());
 			client.close();
 
 			// result
 
-			ContextNode linkContractContextNode = mr.getGraph().getDeepContextNode(chatLinkContractXDIAddress(child1Discovery.getCloudNumber().getXDIAddress(), child2Discovery.getCloudNumber().getXDIAddress()));
+			ContextNode linkContractContextNode = mr.getGraph().getDeepContextNode(XdiUtil.chatLinkContractXDIAddress(child1Discovery.getCloudNumber().getXDIAddress(), child2Discovery.getCloudNumber().getXDIAddress()));
 			GenericLinkContract linkContract = GenericLinkContract.fromXdiEntity(XdiAbstractEntity.fromContextNode(linkContractContextNode));
 			if (linkContract == null) return null;
 
@@ -777,95 +765,5 @@ public class XdiConnectionService implements ConnectionService {
 
 			throw new ConnectionNotFoundException("Cannot retrieve link contract of child1 " + child1 + ": " + ex.getMessage(), ex);
 		}
-	}
-
-	/*
-	 * Helper methods
-	 */
-
-	private static Message mAppToParent(CloudNumber parent, CloudNumber ascn, XDIAddress aslc) {
-
-		MessageEnvelope me = new MessageEnvelope();
-		Message m = me.createMessage(ascn.getXDIAddress());
-		m.setFromPeerRootXDIArc(ascn.getPeerRootXDIArc());
-		m.setToPeerRootXDIArc(parent.getPeerRootXDIArc());
-		m.setLinkContractXDIAddress(aslc);
-
-		return m;
-	}
-
-	private static Message mAppToChild(CloudNumber child, CloudNumber ascn, XDIAddress aslc) {
-
-		MessageEnvelope me = new MessageEnvelope();
-		Message m = me.createMessage(ascn.getXDIAddress());
-		m.setFromPeerRootXDIArc(ascn.getPeerRootXDIArc());
-		m.setToPeerRootXDIArc(child.getPeerRootXDIArc());
-		m.setLinkContractXDIAddress(aslc);
-
-		return m;
-	}
-
-	private static Message mParentToChild(CloudNumber parent, CloudNumber child) {
-
-		MessageEnvelope me = new MessageEnvelope();
-		Message m = me.createMessage(parent.getXDIAddress());
-		m.setFromPeerRootXDIArc(parent.getPeerRootXDIArc());
-		m.setToPeerRootXDIArc(child.getPeerRootXDIArc());
-		m.setLinkContractXDIAddress(dependentLinkContractXDIAddress(child.getXDIAddress(), parent.getXDIAddress()));
-
-		return m;
-	}
-
-	private static Message mChildToChildConnect(CloudNumber child1, CloudNumber child2) {
-
-		MessageEnvelope me = new MessageEnvelope();
-		Message m = me.createMessage(child1.getXDIAddress());
-		m.setFromPeerRootXDIArc(child1.getPeerRootXDIArc());
-		m.setToPeerRootXDIArc(child2.getPeerRootXDIArc());
-		m.setLinkContractClass(ConnectLinkContract.class);
-
-		return m;
-	}
-
-	private static Message mChildToChildSend(CloudNumber child1, CloudNumber child2) {
-
-		MessageEnvelope me = new MessageEnvelope();
-		Message m = me.createMessage(child1.getXDIAddress());
-		m.setFromPeerRootXDIArc(child1.getPeerRootXDIArc());
-		m.setToPeerRootXDIArc(child2.getPeerRootXDIArc());
-		m.setLinkContractClass(SendLinkContract.class);
-
-		return m;
-	}
-
-	private static void mSign(Message m, byte[] aspk) throws GeneralSecurityException {
-
-		new EC25519StaticPrivateKeySignatureCreator(aspk).createSignature(m.getContextNode());
-	}
-
-	private static boolean isCynjaChatConnectM(Message m) {
-
-		Iterator<ConnectOperation> operations = m.getConnectOperations();
-		if (! operations.hasNext()) return false;
-		if (! XDI_ADD_CYNJA_CHAT_LINK_CONTRACT_TEMPLATE_DO.equals(operations.next().getTargetXDIAddress())) return false;
-
-		return true;
-	}
-
-	private static boolean isCynjaChatLC(LinkContract lc) {
-
-		if (! XDI_ADD_CYNJA_CHAT_LINK_CONTRACT_TEMPLATE.equals(((GenericLinkContract) lc).getTemplateAuthorityAndId())) return false;
-
-		return true;
-	}
-
-	private static XDIAddress chatLinkContractXDIAddress(XDIAddress child1, XDIAddress child2) {
-
-		return GenericLinkContract.createGenericLinkContractXDIAddress(child1, child2, XDI_ADD_CYNJA_CHAT_LINK_CONTRACT_TEMPLATE);
-	}
-
-	private static XDIAddress dependentLinkContractXDIAddress(XDIAddress child, XDIAddress parent) {
-
-		return GenericLinkContract.createGenericLinkContractXDIAddress(child, parent, null);
 	}
 }

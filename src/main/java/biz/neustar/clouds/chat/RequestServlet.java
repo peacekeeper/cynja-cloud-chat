@@ -22,8 +22,8 @@ public class RequestServlet extends HttpServlet {
 		XDIAddress child2 = XDIAddress.create(req.getParameter("child2"));
 		CloudNumber ascn = CloudNumber.create(req.getParameter("ascn"));
 		byte[] aspk = HexUtil.decodeHex(req.getParameter("aspk"));
-		XDIAddress aslc = XDIAddress.create(req.getParameter("aslc"));
+		XDIAddress caslc = XDIAddress.create(req.getParameter("caslc"));
 
-		CynjaCloudChat.connectionService.requestConnection(child1, child2, ascn, aspk, aslc);
+		CynjaCloudChat.connectionService.requestConnection(child1, child2, ascn, aspk, caslc);
 	}
 }
